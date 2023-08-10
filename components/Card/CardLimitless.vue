@@ -11,7 +11,7 @@
         </div>
       </div>
       <v-divider color="#C3C4C3" class="my-2" />
-      <v-btn class="btn-lg align-self-center" color="#0DACCB" elevation>
+      <v-btn class="btn-lg align-self-center semibold-subtitle" color="#1A334F" outlined elevation>
         Take The FIrst Step
       </v-btn>
     </div>
@@ -42,6 +42,10 @@ export default {
   @media screen and(max-width: 450px) {
     .card-limitless {
       flex-flow: column;
+
+      .v-divider {
+        margin: 12px 0 !important;
+      }
 
       img {
         border-radius: 16px 16px 0 0;

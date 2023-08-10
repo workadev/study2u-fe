@@ -57,7 +57,7 @@ export default {
 
 <style lang="scss">
   .home-cross {
-    background-image: url("@/assets/images/affiliate.svg");
+    background-image: url("@/assets/images/background/bg-affiliate.svg");
     background-size: cover;
 
     .wrap-content {

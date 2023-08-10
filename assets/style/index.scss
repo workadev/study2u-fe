@@ -5,6 +5,10 @@
   color: #262626;
 }
 
+body {
+  background: $color-lightest-grey;
+}
+
 // typography
 .regular-body {
   font-size: 12px;
@@ -55,47 +59,47 @@
 .semibold-body {
   font-size: 12px;
   line-height: 20px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .semibold-subtitle {
   font-size: 14px;
   line-height: 22px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .semibold-title {
   font-size: 16px;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .semibold-h6 {
   font-size: 20px;
   line-height: 28px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .semibold-h5 {
   font-size: 24px;
   line-height: 32px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .semibold-h4 {
   font-size: 30px;
   line-height: 38px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .semibold-h3 {
   font-size: 38px;
   line-height: 46px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .semibold-h2 {
   font-size: 46px;
   line-height: 54px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .semibold-h1 {
   font-size: 56px;
   line-height: 64px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 
 .bold-body {
@@ -152,7 +156,7 @@
 .caption-semibold {
   font-size: 10px;
   line-height: 18px;
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .caption-bold {
   font-size: 10px;
@@ -175,4 +179,17 @@
 .btn-primary {
   background: #1A334F !important;
   color: $color-white !important;
+}
+
+// input
+.v-input {
+  .v-input__slot {
+    min-height: 46px !important;
+    border-radius: 8px !important;
+    padding: 0 16px !important;
+
+    fieldset {
+      border-color: #EEF1F4 !important;
+    }
+  }
 }

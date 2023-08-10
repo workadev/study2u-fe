@@ -8,14 +8,14 @@
         <v-btn 
           v-for="(item, index) in categoryList" 
           :key="index"
-          class="btn-lg regular-subtitle item-category"
+          class="btn-lg item-category"
           elevation
           :class="{'item-active': item.active}"
         >
           {{ item.name }}
         </v-btn>
         <v-btn 
-          class="btn-lg regular-subtitle item-category item-more"
+          class="btn-lg item-category item-more"
           elevation
         >
           More Subject <img class="ml-2" width="22" height="22" src="@/assets/icons/arrow-small-right.svg" alt="arrow-small-right">
@@ -117,15 +117,17 @@ export default {
       .item-category {
         border: 1px solid $color-pacific;
         margin: 6px;
+        font-weight: 600;
       }
 
       .item-active {
         background: #C5F2FB;
         border-color: #C5F2FB;
+        font-weight: 400;
       }
 
       .item-more {
-        background: $color-pacific;
+        border-color: $color-space;
       }
     }
   }

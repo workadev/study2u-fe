@@ -1,41 +1,41 @@
 <template>
   <div class="footer">
     <v-container class="py-0">
-      <div class="py-10 mx-5 d-flex justify-space-between flex-wrap">
+      <div class="pt-10 pb-8 mx-5 d-flex justify-space-between flex-wrap">
         <div class="wrap-nav-footer d-flex justify-space-between mr-2">
           <div class="nav-footer d-flex flex-column">
-            <div class="semibold-subtitle mb-2">
+            <div class="semibold-title mb-2">
               Who we are
             </div>
-            <nuxt-link class="regular-body mb-2" to="">
+            <nuxt-link class="semibold-body mb-2" to="">
               Our Missions
             </nuxt-link>
-            <nuxt-link class="regular-body mb-2" to="">
+            <nuxt-link class="semibold-body mb-2" to="">
               Our Story
             </nuxt-link>
-            <nuxt-link class="regular-body" to="">
+            <nuxt-link class="semibold-body" to="">
               Our Principle
             </nuxt-link>
           </div>
           <div class="nav-footer d-flex flex-column px-2">
-            <div class="semibold-subtitle mb-2">
+            <div class="semibold-title mb-2">
               Contact
             </div>
-            <a class="regular-body mb-2" href="mailto:admin@study2u.com">
+            <a class="semibold-body mb-2" href="mailto:admin@study2u.com">
               admin@study2u.com
             </a>
-            <a class="regular-body" href="tel://0811-8822-7789">
+            <a class="semibold-body" href="tel://0811-8822-7789">
               +62811 8822 7789
             </a>
           </div>
           <div class="nav-footer d-flex flex-column">
-            <div class="semibold-subtitle mb-2">
+            <div class="semibold-title mb-2">
               Information
             </div>
-            <nuxt-link class="regular-body mb-2" to="">
+            <nuxt-link class="semibold-body mb-2" to="">
               Term of Services
             </nuxt-link>
-            <nuxt-link class="regular-body" to="">
+            <nuxt-link class="semibold-body" to="">
               Privacy Policy
             </nuxt-link>
           </div>
@@ -60,10 +60,10 @@
           </div>
         </div>
       </div>
-      <v-divider color="#0DACCB" />
+      <v-divider color="#C5F2FB" />
       <div class="pb-10 mt-8">
-        <div class="semibold-body mx-5">
-          Copyright of Study2U {{ new Date().getFullYear() }}. All Right Reserved
+        <div class="regular-body mx-5">
+          <span class="semibold-body">Copyright</span> of Study2U {{ new Date().getFullYear() }}. All Right Reserved
         </div>
       </div>
     </v-container>
@@ -94,6 +94,7 @@
     }
 
     .semibold-subtitle,
+    .semibold-title,
     .regular-body,
     .semibold-body {
       color: $color-white;
