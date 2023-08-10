@@ -28,4 +28,12 @@
       }
     }
   }
+
+  @media screen and(max-width: 450px) {
+    .login-header {
+      .wrap-header {
+        background-position: center;
+      }
+    }
+  }
 </style>
