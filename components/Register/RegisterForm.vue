@@ -1,5 +1,5 @@
 <template>
-  <div class="login-form">
+  <div class="register-form">
     <div class="wrap-input mb-4">
       <div class="regular-subtitle mb-1">Email</div>
       <v-text-field
@@ -23,12 +23,12 @@
         </template>
       </v-text-field>
     </div>
-    <nuxt-link class="regular-subtitle" to="">
-      Forgot password<v-icon size="18" class="ml-2" color="#1A334F">mdi-arrow-right</v-icon>
-    </nuxt-link>
+    <div class="regular-subtitle">
+      By clicking <b>Agree & Join</b>, you agree to the Study2U <b>User Agreement, Privacy Policy,</b> and <b>Cookie Policy</b>
+    </div>
     <div class="mt-4">
       <v-btn class="btn-lg btn-primary semibold-subtitle mb-3" block elevation>
-        Login
+        Agree & Join
       </v-btn>
       <div class="d-flex align-center mb-3">
         <v-divider color="#C3C4C3" />
@@ -51,9 +51,9 @@
         block 
         outlined 
         color="#1A334F"
-        @click="$router.push('/register')"
+        @click="$router.push('/login')"
       >
-        Don't have an account? Register now!
+        Already have an account? Log in
       </v-btn>
     </div>
   </div>
@@ -70,10 +70,11 @@ export default {
 </script>
 
 <style lang="scss">
-  .login-form {
-    a {
-      text-decoration: none;
-      color: $color-space !important;
+  .register-form {
+    .regular-subtitle {
+      b {
+        color: $color-space;
+      }
     }
 
     .wrap-input {

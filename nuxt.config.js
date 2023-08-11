@@ -49,6 +49,11 @@ export default {
         property: 'og:locale',
         content: `id_ID`,
       },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content: `/favicon.png`,
+      }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
