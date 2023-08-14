@@ -20,18 +20,28 @@
         </v-text-field>
       </div>
       <div class="d-flex align-center nav-desktop">
-        <div class="nav-header d-flex align-center pr-8 mr-8">
+        <div class="nav-header d-flex align-center pr-8 mr-6">
           <nuxt-link 
             v-for="(item, index) in listNavigation" :key="index"
-            class="regular-body" 
-            :class="{'mr-16': listNavigation.length -1 != index}"
-            to=""
+            class="regular-body item-nav" 
+            :class="{
+              'mr-13': listNavigation.length -1 != index,
+              'active': item.to == $route.path
+            }"
+            :to="item.to"
           >
             {{ item.name }}
+            <v-divider color="#1A334F" />
           </nuxt-link>
         </div>
         <div>
-          <nuxt-link class="regular-body d-flex align-center" to="/login">
+          <nuxt-link v-if="isLogin" class="d-flex flex-column align-center" to="">
+            <img height="24" width="24" src="@/assets/images/Ellipse 1 4.png" alt="Ellipse 1 4">
+            <div class="regular-body d-flex align-center">
+              Jhonny <img width="16" height="16" class="ml-1" src="@/assets/icons/chevron-down.svg">
+            </div>
+          </nuxt-link>
+          <nuxt-link v-else class="regular-body d-flex align-center" to="/login">
             <img class="mr-1" src="@/assets/icons/user-circle.svg" alt="user-circle">
             Log In
           </nuxt-link>
@@ -58,7 +68,13 @@
             </v-list-item>
             <v-divider class="my-4" />
             <v-list-item>
-              <nuxt-link class="semibold-subtitle d-flex align-center" to="/login">
+              <nuxt-link v-if="isLogin" class="d-flex align-center" to="">
+                <img height="40" width="40" src="@/assets/images/Ellipse 1 4.png" alt="Ellipse 1 4">
+                <div class="regular-subtitle ml-4">
+                  Jhonny
+                </div>
+              </nuxt-link>
+              <nuxt-link v-else class="semibold-subtitle d-flex align-center" to="/login">
                 <img class="mr-2" src="@/assets/icons/user-circle.svg" alt="user-circle">
                 Log In
               </nuxt-link>
@@ -78,7 +94,7 @@ export default {
       listNavigation: [
         {
           name: "Institution",
-          to: ""
+          to: "/institution"
         },
         {
           name: "Course",
@@ -91,6 +107,13 @@ export default {
       ]
     }
   },
+  computed: {
+    isLogin() {
+      if (this.$route.name == 'dashboard') {
+        return true
+      }
+    }
+  }
 }
 </script>
 
@@ -123,16 +146,42 @@ export default {
       display: none;
     }
 
-    .nav-header {
-      height: 40px;
-      border-right: 1px solid $color-grey;
+    a {
+      text-decoration: none;
+      color: $color-dark-grey !important;
+      min-width: max-content;
 
     }
 
-    a {
-      text-decoration: none;
-      color: $color-black !important;
-      min-width: max-content;
+    .nav-header {
+      height: 40px;
+      border-right: 0.5px solid $color-grey;
+
+      .item-nav {
+        padding: 6px 11.5px;
+        position: relative;
+
+        .v-divider {
+          position: absolute;
+          bottom: 0px;
+          left: 0px;
+          width: 0px;
+          transition: all .2s;
+        }
+      }
+
+      .active {
+        color: $color-space !important;
+
+        .v-divider {
+          border-width: 1px;
+          width: 100%;
+        }
+      }
+
+      .mr-13 {
+        margin-right: 55.5px !important;
+      }
     }
   }
 

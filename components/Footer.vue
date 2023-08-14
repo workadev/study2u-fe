@@ -76,7 +76,7 @@
     border-top: 4px solid $color-pacific;
     background-image: url("@/assets/images/background/bg-footer.svg");
     background-repeat: no-repeat;
-    background-position: bottom;
+    background-position: bottom left;
 
     .group-sosmed {
       a {

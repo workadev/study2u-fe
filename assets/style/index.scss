@@ -11,7 +11,7 @@ body {
 
 // typography
 .regular-body {
-  font-size: 12px;
+  font-size: 12px !important;
   line-height: 20px;
   font-weight: 400;
 }
@@ -57,7 +57,7 @@ body {
 }
 
 .semibold-body {
-  font-size: 12px;
+  font-size: 12px !important;
   line-height: 20px;
   font-weight: 600 !important;
 }
@@ -176,6 +176,12 @@ body {
   height: 46px !important;
 }
 
+.btn-sm {
+  border-radius: 8px !important;
+  padding: 0 12px !important;
+  height: 36px !important;
+}
+
 .btn-primary {
   background: #1A334F !important;
   color: $color-white !important;
@@ -192,4 +198,27 @@ body {
       border-color: #EEF1F4 !important;
     }
   }
+}
+
+.v-select {
+  .v-input__append-inner {
+    align-self: center !important;
+    margin-top: 0px !important;
+  }
+
+  .v-input__slot {
+    fieldset {
+      border-color: $color-light-grey !important;
+    }
+  }
+
+  .v-input__icon--clear {
+    .v-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+.v-list-item__title {
+  font-size: 14px !important;
 }

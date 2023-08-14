@@ -27,7 +27,7 @@
       Forgot password<v-icon size="18" class="ml-2" color="#1A334F">mdi-arrow-right</v-icon>
     </nuxt-link>
     <div class="mt-4">
-      <v-btn class="btn-lg btn-primary semibold-subtitle mb-3" block elevation>
+      <v-btn class="btn-lg btn-primary semibold-subtitle mb-3" block elevation @click="$router.push('/dashboard')">
         Login
       </v-btn>
       <div class="d-flex align-center mb-3">
