@@ -4,12 +4,12 @@
       <div class="wrap-content">
         <div style="z-index: 1;">
           <h3 class="semibold-h3">
-            Bridging Gaps, Empowering Futures
+            Discover Your Path to Success
           </h3>
           <div class="regular-subtitle my-4">
-            Our mission is to empower you with the knowledge, resources and opportunities to unlock that potential and achieve greatness.
+            At Study2U, we're dedicated to empowering students like you to embark on an extraordinary educational journey.  Our platform is designed to connect you with valuable resources, incredible opportunities, and a network of like-minded individuals who share your passion for learning and growth. 
           </div>
-          <v-btn class="btn-lg btn-primary" elevation>
+          <v-btn class="btn-lg btn-primary semibold-subtitle" elevation>
             Take The First Step
           </v-btn>
           <div class="mt-10">

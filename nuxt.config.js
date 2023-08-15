@@ -12,7 +12,7 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: 'Our mission is to empower you with the knowledge, resources and opportunities to unlock that potential and achieve greatness.',
+        content: `At Study2U, we're dedicated to empowering students like you to embark on an extraordinary educational journey. Our platform is designed to connect you with valuable resources, incredible opportunities, and a network of like-minded individuals who share your passion for learning and growth.`,
       },
       {
         hid: 'og:title',
@@ -22,7 +22,7 @@ export default {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: 'Our mission is to empower you with the knowledge, resources and opportunities to unlock that potential and achieve greatness.',
+        content: `At Study2U, we're dedicated to empowering students like you to embark on an extraordinary educational journey. Our platform is designed to connect you with valuable resources, incredible opportunities, and a network of like-minded individuals who share your passion for learning and growth.`,
       },
       {
         hid: 'og:url',

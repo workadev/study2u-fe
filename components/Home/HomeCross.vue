@@ -39,7 +39,7 @@ export default {
       listContent: [
         {
           title: "Discover Your Path to Success",
-          desc: "At Study2U, we're dedicated to empowering students like you to embark on an extraordinary educational journey. Our platform is designed to connect you with valuable resources, incredible opportunities, and a network of like-minded individuals who share your passion for learning and growth.",
+          desc: "Our mission is to empower you with the knowledge, resources and opportunities to unlock that potential and achieve greatness",
           img: require("@/assets/images/walk-student.svg"),
           reverse: false
         },

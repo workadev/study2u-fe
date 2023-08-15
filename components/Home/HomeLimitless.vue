@@ -20,15 +20,15 @@ export default {
     return {
       list: [
         {
-          title: "Ready to take leap? take the first step",
-          desc: "Exciting educational journey. It's time to unleash your full potential, ignite your passions, and shape a future that aligns with your dreams.",
+          title: "Ready to take leap?",
+          desc: "Join Study2U today and embark on an exciting educational journey. It's time to unleash your full potential, ignite your passions, and shape a future that aligns with your dreams. Let Study2U be your trusted companion on this incredible adventure!",
           img: require("@/assets/images/Frame 17360.png")
         },
-        {
-          title: "Ready to empower future generations?",
-          desc: "Take this opportunity to make lasting impact on students lives, contribute to society and shape the future of education.",
-          img: require("@/assets/images/Frame 17360 2.png")
-        }
+        // {
+        //   title: "Ready to empower future generations?",
+        //   desc: "Take this opportunity to make lasting impact on students lives, contribute to society and shape the future of education.",
+        //   img: require("@/assets/images/Frame 17360 2.png")
+        // }
       ]
     }
   },
@@ -47,7 +47,7 @@ export default {
 
     .card-limitless {
       margin: 8px;
-      width: calc(100% / 2);
+      width: 100%;
     }
   }
 

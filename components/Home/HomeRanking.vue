@@ -2,7 +2,7 @@
   <div class="home-ranking pt-13 pb-10">
     <v-container class="py-0">
       <h5 class="semibold-h5 text-center mb-7">
-        Cross-Disciplinary Expert: Connecting Knowledge for Excellence
+        World Institution Rankings by Subject 2023: <b>Engineering & Technology</b>
       </h5>
       <div class="wrap-category">
         <v-btn 
@@ -10,12 +10,11 @@
           :key="index"
           class="btn-lg item-category"
           elevation
-          :class="{'item-active': item.active}"
         >
           {{ item.name }}
         </v-btn>
         <v-btn 
-          class="btn-lg item-category item-more"
+          class="btn-lg item-category"
           elevation
         >
           More Subject <img class="ml-2" width="22" height="22" src="@/assets/icons/arrow-small-right.svg" alt="arrow-small-right">
@@ -46,7 +45,7 @@ export default {
         { name: "Childhood Education" },
         { name: "Design" },
         { name: "Digital" },
-        { name: "Engineering & Technology", active: true },
+        { name: "Engineering & Technology" },
         { name: "Entrepreneurship" }
       ],
       resultList: [
@@ -115,19 +114,11 @@ export default {
       margin: -6px;
 
       .item-category {
-        border: 1px solid $color-pacific;
+        border: 1px solid #0DACCB;
+        background: $color-pacific-50;
         margin: 6px;
         font-weight: 600;
-      }
-
-      .item-active {
-        background: #C5F2FB;
-        border-color: #C5F2FB;
-        font-weight: 400;
-      }
-
-      .item-more {
-        border-color: $color-space;
+        border-radius: 20px;
       }
     }
   }

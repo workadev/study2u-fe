@@ -11,17 +11,19 @@
           </div>
         </div>
       </div>
-      <div class="text-center wrap-info">
-        <div class="regular-body mb-2">Study Level</div>
-        <div class="bold-body">{{ data.level }}</div>
-      </div>
-      <div class="text-center wrap-info">
-        <div class="regular-body mb-2">Subject</div>
-        <div class="bold-body">{{ data.subject }}</div>
-      </div>
-      <div class="text-center wrap-info">
-        <div class="regular-body mb-2">Scholarships</div>
-        <div class="bold-body">{{ data.scholarships }}</div>
+      <div class="d-flex justify-space-between group-info">
+        <div class="text-center wrap-info">
+          <div class="regular-body mb-2">Study Level</div>
+          <div class="bold-body">{{ data.level }}</div>
+        </div>
+        <div class="text-center wrap-info">
+          <div class="regular-body mb-2">Subject</div>
+          <div class="bold-body">{{ data.subject }}</div>
+        </div>
+        <div class="text-center wrap-info">
+          <div class="regular-body mb-2">Scholarships</div>
+          <div class="bold-body">{{ data.scholarships }}</div>
+        </div>
       </div>
     </div>
     <div class="card-footer">
@@ -79,6 +81,10 @@ export default {
       display: flex;
       justify-content: space-between;
       border-bottom: 1px solid $color-light-grey;
+
+      .group-info {
+        width: calc(100% - 280px);
+      }
 
       .wrap-info {
         max-width: 182px;

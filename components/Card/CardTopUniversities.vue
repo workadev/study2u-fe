@@ -17,7 +17,7 @@
             <div class="caption-regular d-flex align-center mt-1 mb-3">
               <img class="mr-1" height="18" width="18" src="@/assets/icons/map-pin.svg"> {{ item.location }}
             </div>
-            <v-btn class="semibold-body px-3" height="36" elevation outlined>
+            <v-btn class="semibold-body px-3 btn-detail" height="36" elevation outlined rounded>
               See Detail
             </v-btn>
           </div>
@@ -78,10 +78,6 @@ export default {
           padding-bottom: 8px;
           border-bottom: 1px solid $color-light-grey;
           margin-top: 8px;
-
-          .v-btn {
-            border-radius: 8px;
-          }
 
           .item-title {
             text-overflow: ellipsis;

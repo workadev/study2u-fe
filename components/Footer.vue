@@ -10,9 +10,6 @@
             <nuxt-link class="semibold-body mb-2" to="">
               Our Missions
             </nuxt-link>
-            <nuxt-link class="semibold-body mb-2" to="">
-              Our Story
-            </nuxt-link>
             <nuxt-link class="semibold-body" to="">
               Our Principle
             </nuxt-link>

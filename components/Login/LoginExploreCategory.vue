@@ -44,8 +44,8 @@ export default {
       margin: -6px;
       
       .category {
-        border: 1px solid $color-space;
-        border-radius: 12px;
+        background: $color-pacific-50;
+        border-radius: 20px;
         padding: 12px 16px;
         margin: 6px;
       }

@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <v-container class="py-5 d-flex justify-center">
+    <v-container class="py-5 d-flex">
       <CardProfile />
       <div class="mx-4 group-feed">
         <div class="item-feed" v-for="(item, index) in listFeed" :key="index">
@@ -79,6 +79,10 @@ export default {
   .dashboard {
     background: $color-lightest-grey;
 
+    .container {
+      justify-content: center;
+    }
+
     .content-right {
       width: 100%;
       max-width: 270px;
@@ -96,6 +100,56 @@ export default {
 
       .item-feed:last-child {
         margin-bottom: 0px;
+      }
+    }
+  }
+
+  @media screen and(max-width: 1263px) {
+    .dashboard {
+      .card-profile {
+        max-width: 200px;
+      }
+      
+      .group-feed {
+        max-width: 400px;
+      }
+    }
+  }
+
+  @media screen and(max-width: 830px) {
+    .dashboard {
+      .group-feed,
+      .content-right {
+        width: calc(100% - 216px);
+        max-width: none;
+        margin-right: 0px !important;
+      }
+
+      .content-right {
+        margin-top: 8px;
+      }
+
+      .container {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  @media screen and(max-width: 550px) {
+    .dashboard {
+      .card-profile {
+        max-width: 100%;
+        margin-bottom: 8px;
+      }
+
+      .group-feed {
+        width: 100%;
+        margin-top: 0px !important;
+      }
+
+      .content-right {
+        width: 100%;
       }
     }
   }
