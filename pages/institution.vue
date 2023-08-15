@@ -32,7 +32,8 @@
 
   @media screen and(max-width: 890px) {
     .page-institution {
-      .card-university {
+      .card-university,
+      .card-college {
         .card-content {
           flex-wrap: wrap;
         }
@@ -65,7 +66,8 @@
         }
       }
 
-      .card-university {
+      .card-university,
+      .card-college {
         .card-content {
           .wrap-info:first-child {
             margin-left: 0px;

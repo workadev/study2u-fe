@@ -62,7 +62,7 @@
               <img height="41.93px" src="@/assets/images/logo-study2u.svg" alt="logo">
             </v-list-item>
             <v-list-item v-for="(item, index) in listNavigation" :key="index">
-              <nuxt-link class="semibold-subtitle" to="">
+              <nuxt-link class="semibold-subtitle" :to="item.to">
                 {{ item.name }}
               </nuxt-link>
             </v-list-item>

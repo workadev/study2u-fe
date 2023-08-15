@@ -52,7 +52,7 @@ export default {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: `/favicon.png`,
+        content: `/icon.png`,
       }
     ],
     link: [

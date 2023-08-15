@@ -8,10 +8,22 @@
         632 result
       </div>
       <div class="mt-6 d-flex">
-        <v-btn class="btn-sm semibold-body mr-3" outlined elevation>
+        <v-btn 
+          class="btn-sm semibold-body mr-3" 
+          :class="{'btn-primary': typeSearch == 'college'}"
+          outlined 
+          elevation
+          @click="typeSearch = 'college'"
+        >
           College
         </v-btn>
-        <v-btn class="btn-sm semibold-body btn-primary" outlined elevation>
+        <v-btn 
+          class="btn-sm semibold-body" 
+          :class="{'btn-primary': typeSearch == 'university'}"
+          outlined 
+          elevation
+          @click="typeSearch = 'university'"
+        >
           University
         </v-btn>
       </div>
@@ -78,7 +90,7 @@
     </div>
     <div class="filter-result">
       <div v-for="(item, index) in listResult" :key="index" class="wrap-item">
-        <CardUniversity :data="item" />
+        <CardUniversity :dataLabel="dataLabel" :data="item" />
       </div>
       <BasePagination 
         class="justify-end"
@@ -97,12 +109,15 @@ export default {
     return {
       pageNumber: 1,
       totalPages: 10,
+      typeSearch: "",
       filter: {
         city: "",
         level: "",
         subject: ""
       },
-      listResult: [
+      dataLabel: [],
+      listResult: [],
+      resultUniversity: [
         {
           img: require("@/assets/images/image 6.png"),
           name: "Massachusetts Institute of Technology (MIT)",
@@ -199,12 +214,118 @@ export default {
           subject: "Business and Management Studies",
           scholarships: "Yes"
         }
+      ],
+      resultCollege: [
+        {
+          img: require("@/assets/images/image 6 3.png"),
+          name: "Eurocolegio Privado Internacional Casvi",
+          location: "Madrid, Spain",
+          level: "Day & Boarding School",
+          subject: "~ 4.850 - 31.000 EUR",
+          scholarships: "A"
+        },
+        {
+          img: require("@/assets/images/image 6 3.png"),
+          name: "International School of Beijing",
+          location: "Beijing, PRC",
+          level: "Day School",
+          subject: "~ 232.800 - 333.000 RMB",
+          scholarships: "A"
+        },
+        {
+          img: require("@/assets/images/image 6 3.png"),
+          name: "TASIS The American School in Switzerland",
+          location: "Lugano, Switzerland",
+          level: "Day & Boarding School",
+          subject: "~ 28.000 to 98.000 USD",
+          scholarships: "A"
+        },
+        {
+          img: require("@/assets/images/image 6 3.png"),
+          name: "Fairfax Christian School",
+          location: "Sterling, USA",
+          level: "Day & Boarding School",
+          subject: "~ 30.000 to 47.800 USD",
+          scholarships: "A"
+        },
+        {
+          img: require("@/assets/images/image 6 3.png"),
+          name: "TASIS The American School in Switzerland",
+          location: "Lugano, Switzerland",
+          level: "Day & Boarding School",
+          subject: "~ 28.000 to 98.000 USD",
+          scholarships: "A"
+        },
+        {
+          img: require("@/assets/images/image 6 3.png"),
+          name: "Eurocolegio Privado Internacional Casvi",
+          location: "Madrid, Spain",
+          level: "Day & Boarding School",
+          subject: "~ 4.850 - 31.000 EUR",
+          scholarships: "A"
+        },
+        {
+          img: require("@/assets/images/image 6 3.png"),
+          name: "International School of Beijing",
+          location: "Beijing, PRC",
+          level: "Day School",
+          subject: "~ 232.800 - 333.000 RMB",
+          scholarships: "A"
+        },
+        {
+          img: require("@/assets/images/image 6 3.png"),
+          name: "TASIS The American School in Switzerland",
+          location: "Lugano, Switzerland",
+          level: "Day & Boarding School",
+          subject: "~ 28.000 to 98.000 USD",
+          scholarships: "A"
+        },
+        {
+          img: require("@/assets/images/image 6 3.png"),
+          name: "Fairfax Christian School",
+          location: "Sterling, USA",
+          level: "Day & Boarding School",
+          subject: "~ 30.000 to 47.800 USD",
+          scholarships: "A"
+        },
+        {
+          img: require("@/assets/images/image 6 3.png"),
+          name: "TASIS The American School in Switzerland",
+          location: "Lugano, Switzerland",
+          level: "Day & Boarding School",
+          subject: "~ 28.000 to 98.000 USD",
+          scholarships: "A"
+        },
       ]
+    }
+  },
+  watch: {
+    typeSearch() {
+      this.switchLabelCard()
+    }
+  },
+  created() {
+    this.typeSearch = this.$route.query.type ? this.$route.query.type : "university"
+    this.switchLabelCard()
+    if (this.$route.query.type) {
+      this.$router.replace({ query: [] })
     }
   },
   methods: {
     clickPage(page) {
       this.pageNumber = page
+    },
+    switchLabelCard() {
+      this.listResult = []
+      if (this.typeSearch == "university") {
+        this.dataLabel = ["Study Level", "Subject", "Scholarships"]
+        this.listResult = this.resultUniversity
+      } else if (this.typeSearch == "college") {
+        this.dataLabel = ["Type of School", "Yearly Fee", "Accreditations"]
+        this.listResult = this.resultCollege
+      } else {
+        this.dataLabel = []
+      }
     }
   },
 }

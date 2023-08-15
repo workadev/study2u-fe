@@ -11,17 +11,17 @@
           </div>
         </div>
       </div>
-      <div class="d-flex justify-space-between group-info">
+      <div v-if="dataLabel.length != 0" class="d-flex justify-space-between group-info">
         <div class="text-center wrap-info">
-          <div class="regular-body mb-2">Study Level</div>
+          <div class="regular-body mb-2">{{ dataLabel[0] }}</div>
           <div class="bold-body">{{ data.level }}</div>
         </div>
         <div class="text-center wrap-info">
-          <div class="regular-body mb-2">Subject</div>
+          <div class="regular-body mb-2">{{ dataLabel[1] }}</div>
           <div class="bold-body">{{ data.subject }}</div>
         </div>
         <div class="text-center wrap-info">
-          <div class="regular-body mb-2">Scholarships</div>
+          <div class="regular-body mb-2">{{ dataLabel[2] }}</div>
           <div class="bold-body">{{ data.scholarships }}</div>
         </div>
       </div>
@@ -44,7 +44,7 @@
 
 <script>
 export default {
-  props: ["data"]
+  props: ["data", "dataLabel"]
 }
 </script>
 
