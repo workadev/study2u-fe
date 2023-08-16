@@ -244,4 +244,25 @@ export default {
     }
   }
 }
+
+@media screen and(max-width: 420px) {
+  .table-pagination {
+    .pagination-center {
+      ul {
+        .ellipsis {
+          padding: 0px;
+          min-width: 20px;
+        }
+
+        li:first-child {
+          margin-right: 8px !important;
+        }
+
+        li:last-child {
+          margin-left: 8px !important;
+        }
+      }
+    }
+  }
+}
 </style>
