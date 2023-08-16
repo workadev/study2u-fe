@@ -6,7 +6,7 @@
       </h5>
     </div>
     <div class="wrap-card">
-      <v-btn text class="px-0 align-self-end" height="fit-content">
+      <v-btn text class="px-0 align-self-end" height="fit-content" to="/course">
         See More <img class="ml-2" src="@/assets/icons/arrow-small-right.svg">
       </v-btn>
       <div class="mt-4 group-card-mentors">

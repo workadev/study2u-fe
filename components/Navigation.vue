@@ -9,15 +9,52 @@
           alt="logo"
           @click="$router.push('/')"
         >
-        <v-text-field 
-          outlined
-          placeholder="Take The First Step" 
-          hide-details
+        <div id="menu-activator">
+          <v-text-field 
+            outlined
+            placeholder="Search" 
+            hide-details
+            :class="{'active-search': suggestionSearch}"
+          >
+            <template v-slot:append>
+              <img src="@/assets/icons/magnifying-glass.svg">
+            </template>
+          </v-text-field>
+        </div>
+        <v-menu 
+          v-model="suggestionSearch" 
+          activator="#menu-activator"
+          content-class="menu-search"
         >
-          <template v-slot:append>
-            <img src="@/assets/icons/magnifying-glass.svg">
-          </template>
-        </v-text-field>
+          <div class="wrap-menu">
+            <div class="group-top">
+              <div class="regular-subtitle">
+                What are you looking for?
+              </div>
+              <div class="wrap-tag">
+                <v-btn text class="item-tag">
+                  <div class="semibold-body">College</div>
+                </v-btn>
+                <v-btn text class="item-tag">
+                  <div class="semibold-body">University</div>
+                </v-btn>
+                <v-btn text class="item-tag">
+                  <div class="semibold-body">People</div>
+                </v-btn>
+              </div>
+            </div>
+            <div class="group-bottom">
+              <div class="regular-subtitle">
+                History
+              </div>
+              <div class="d-flex flex-wrap mt-3">
+                <v-btn text height="fit-content" class="regular-subtitle item-history">
+                  Stanford University
+                </v-btn>
+              </div>
+            </div>
+          </div>
+        </v-menu>
       </div>
       <div class="d-flex align-center nav-desktop">
         <div class="nav-header d-flex align-center pr-8 mr-6">
@@ -35,12 +72,12 @@
           </nuxt-link>
         </div>
         <div>
-          <nuxt-link v-if="isLogin" class="d-flex flex-column align-center" to="">
+          <div v-if="isLogin" id="btn-profile" class="px-0 btn-profile">
             <img height="24" width="24" src="@/assets/images/Ellipse 1 4.png" alt="Ellipse 1 4">
             <div class="regular-body d-flex align-center">
               Jhonny <img width="16" height="16" class="ml-1" src="@/assets/icons/chevron-down.svg">
             </div>
-          </nuxt-link>
+          </div>
           <nuxt-link v-else class="regular-body d-flex align-center" to="/login">
             <img class="mr-1" src="@/assets/icons/user-circle.svg" alt="user-circle">
             Log In
@@ -49,7 +86,7 @@
       </div>
       <div class="nav-mobile">
         <v-btn icon @click="showNavigation =  true">
-          <img src="@/assets/icons/bars-3.svg" alt="bars-3.">
+          <img src="@/assets/icons/bars-3.svg">
         </v-btn>
         <v-navigation-drawer
           v-model="showNavigation"
@@ -58,22 +95,33 @@
           location="right"
         >
           <v-list nav>
-            <v-list-item class="py-8">
+            <v-list-item class="py-5">
               <img height="41.93px" src="@/assets/images/logo-study2u.svg" alt="logo">
             </v-list-item>
-            <v-list-item v-for="(item, index) in listNavigation" :key="index">
-              <nuxt-link class="semibold-subtitle" :to="item.to">
+            <v-list-item v-for="(item, index) in listNavigation" :key="index" class="mb-0">
+              <nuxt-link class="regular-body" :to="item.to">
                 {{ item.name }}
               </nuxt-link>
             </v-list-item>
-            <v-divider class="my-4" />
+            <v-divider class="my-3" />
             <v-list-item>
-              <nuxt-link v-if="isLogin" class="d-flex align-center" to="">
-                <img height="40" width="40" src="@/assets/images/Ellipse 1 4.png" alt="Ellipse 1 4">
-                <div class="regular-subtitle ml-4">
-                  Jhonny
+              <div v-if="isLogin">
+                <div v-for="(item, index) in menuProfile" :key="index" class="menu-account">
+                  <nuxt-link 
+                    class="d-flex align-center regular-body" 
+                    :to="item.to"
+                  >
+                    <div class="mr-2 d-flex wrap-img justify-center">
+                      <img 
+                        :width="index == 0 ? 24 : 20" 
+                        :height="index == 0 ? 24 : 20" 
+                        :src="item.icon"
+                      >
+                    </div>
+                    {{  item.name  }}
+                  </nuxt-link>
                 </div>
-              </nuxt-link>
+              </div>
               <nuxt-link v-else class="semibold-subtitle d-flex align-center" to="/login">
                 <img class="mr-2" src="@/assets/icons/user-circle.svg" alt="user-circle">
                 Log In
@@ -83,6 +131,28 @@
         </v-navigation-drawer>
       </div>
     </v-container>
+
+    <v-menu activator="#btn-profile" content-class="menu-profile">
+      <div class="d-flex flex-column wrap-menu">
+        <v-btn
+          class="justify-start"
+          v-for="(item, index) in menuProfile"
+          :key="index"
+          :to="item.to"
+          text
+          height="48"
+        >
+          <div class="mr-2 d-flex wrap-img justify-center">
+            <img 
+              :width="index == 0 ? 24 : 20" 
+              :height="index == 0 ? 24 : 20" 
+              :src="item.icon"
+            >
+          </div>
+          {{  item.name  }}
+        </v-btn>
+      </div>
+    </v-menu>
   </div>
 </template>
 
@@ -91,6 +161,7 @@ export default {
   data() {
     return {
       showNavigation: false,
+      suggestionSearch: false,
       listNavigation: [
         {
           name: "Institution",
@@ -98,10 +169,27 @@ export default {
         },
         {
           name: "Course",
-          to: ""
+          to: "/course"
         },
         {
           name: "Mentor Connect",
+          to: ""
+        }
+      ],
+      menuProfile: [
+        {
+          icon: require("@/assets/images/Ellipse 1 4.png"),
+          name: "Profile",
+          to: ""
+        },
+        {
+          icon: require("@/assets/icons/heart.svg"),
+          name: "Shortlist",
+          to: ""
+        },
+        {
+          icon: require("@/assets/icons/power.svg"),
+          name: "Logout",
           to: ""
         }
       ]
@@ -126,12 +214,28 @@ export default {
     z-index: 7;
     border-bottom: 1px solid $color-space;
 
+    .regular-body {
+      color: $color-dark-grey;
+    }
+
+    .btn-profile {
+      cursor: pointer;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+    }
+
     .wrap-search {
       max-width: 414px;
       width: 100%;
 
-      .v-input {
+      #menu-activator {
+        width: 100%;
         max-width: 322px !important;
+      }
+
+      .v-input {
+        width: 100%;
         font-size: 12px;
       }
 
@@ -140,10 +244,30 @@ export default {
           margin-top: 11px;
         }
       }
+
+      .active-search {
+        .v-input__slot {
+          border-radius: 8px 8px 0 0 !important;
+        }
+      }
     }
 
     .nav-mobile {
       display: none;
+
+      .menu-account {
+        height: 48px;
+        display: flex;
+        align-items: center;
+
+        a {
+          height: fit-content;
+        }
+      }
+      
+      .wrap-img {
+        width: 24px;
+      }
     }
 
     a {
