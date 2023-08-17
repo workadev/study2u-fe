@@ -72,13 +72,38 @@
           </nuxt-link>
         </div>
         <div>
-          <div v-if="isLogin" id="btn-profile" class="px-0 btn-profile">
+          <v-menu
+            activator="#activator-profile"
+            content-class="menu-profile"
+            v-model="activatorProfile"
+          >
+            <div class="d-flex flex-column wrap-menu">
+              <v-btn
+                class="justify-start"
+                v-for="(item, index) in menuProfile"
+                :key="index"
+                :to="item.to"
+                text
+                height="48"
+              >
+                <div class="mr-2 d-flex wrap-img justify-center">
+                  <img 
+                    :width="index == 0 ? 24 : 20" 
+                    :height="index == 0 ? 24 : 20" 
+                    :src="item.icon"
+                  >
+                </div>
+                {{  item.name  }}
+              </v-btn>
+            </div>
+          </v-menu>
+          <div id="activator-profile" class="px-0 btn-profile" :style="{display: isLogin ? 'flex' : 'none'}">
             <img height="24" width="24" src="@/assets/images/Ellipse 1 4.png" alt="Ellipse 1 4">
             <div class="regular-body d-flex align-center">
               Jhonny <img width="16" height="16" class="ml-1" src="@/assets/icons/chevron-down.svg">
             </div>
           </div>
-          <nuxt-link v-else class="regular-body d-flex align-center" to="/login">
+          <nuxt-link v-if="!isLogin" class="regular-body d-flex align-center" to="/login">
             <img class="mr-1" src="@/assets/icons/user-circle.svg" alt="user-circle">
             Log In
           </nuxt-link>
@@ -131,28 +156,6 @@
         </v-navigation-drawer>
       </div>
     </v-container>
-
-    <v-menu activator="#btn-profile" content-class="menu-profile">
-      <div class="d-flex flex-column wrap-menu">
-        <v-btn
-          class="justify-start"
-          v-for="(item, index) in menuProfile"
-          :key="index"
-          :to="item.to"
-          text
-          height="48"
-        >
-          <div class="mr-2 d-flex wrap-img justify-center">
-            <img 
-              :width="index == 0 ? 24 : 20" 
-              :height="index == 0 ? 24 : 20" 
-              :src="item.icon"
-            >
-          </div>
-          {{  item.name  }}
-        </v-btn>
-      </div>
-    </v-menu>
   </div>
 </template>
 
@@ -162,6 +165,7 @@ export default {
     return {
       showNavigation: false,
       suggestionSearch: false,
+      activatorProfile: false,
       listNavigation: [
         {
           name: "Institution",
@@ -180,7 +184,7 @@ export default {
         {
           icon: require("@/assets/images/Ellipse 1 4.png"),
           name: "Profile",
-          to: ""
+          to: "/profile"
         },
         {
           icon: require("@/assets/icons/heart.svg"),
@@ -197,7 +201,7 @@ export default {
   },
   computed: {
     isLogin() {
-      if (this.$route.name == 'dashboard') {
+      if (this.$route.name == 'dashboard' || this.$route.name == 'profile') {
         return true
       }
     }

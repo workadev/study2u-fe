@@ -198,6 +198,11 @@ body {
       border-color: #EEF1F4 !important;
     }
   }
+
+  .v-input__append-inner {
+    align-self: center !important;
+    margin-top: 0px !important;
+  }
 }
 
 .v-select {
@@ -246,6 +251,18 @@ body {
       border-bottom: none;
     }
   }
+}
+
+.menu-datepicker {
+  min-width: auto !important;
+}
+
+.v-picker__title {
+  display: none;
+}
+
+.v-date-picker-header {
+  padding: 20px 16px 4px !important;
 }
 
 .menu-search {
