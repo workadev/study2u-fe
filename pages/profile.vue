@@ -4,11 +4,25 @@
       <div class="content-left">
         <div class="photo-profile">
           <div class="wrap-img">
-            <img class="photo" src="@/assets/images/Ellipse 1 4.png">
+            <img class="photo" :src="photoProfile ? photoProfile : require('@/assets/images/Ellipse 1 4.png')">
             <div class="change-photo">
-              <v-btn icon height="32" width="32" color="white" class="btn-icon">
+              <v-btn
+                icon
+                height="32"
+                width="32"
+                color="white"
+                class="btn-icon"
+                onclick="javascript:document.getElementById('uploadPhoto').click()"
+              >
                 <img width="16" height="16px" src="@/assets/icons/camera.svg">
               </v-btn>
+              <input
+                type="file"
+                hidden
+                id="uploadPhoto"
+                accept=".jpg, .jpeg, .png"
+                @change="handleUpload"
+              >
             </div>
           </div>
         </div>
@@ -107,7 +121,14 @@
               class="profile-input"
               :disabled="!isEditInfo"
               v-model="formContact.password"
-            />
+              :type="showPassword ? 'text' : 'password'"
+            >
+              <template v-slot:append>
+                <v-icon color="#1A334F" @click="showPassword = !showPassword">
+                  {{ showPassword ? "mdi-eye" : "mdi-eye-off" }}
+                </v-icon>
+              </template>
+            </v-text-field>
           </div>
           <div class="wrap-input mt-2">
             <div class="regular-subtitle mb-1">Phone number</div>
@@ -180,6 +201,7 @@ export default {
       isEdit: false,
       isEditInfo: false,
       menuDatepicker: false,
+      showPassword: false,
       form: {
         firstName: "Jhony Arama",
         lastName: "Kumar",
@@ -195,12 +217,39 @@ New York
 87506
 United States`,
         birthday: "2000-01-27",
-      }
+      },
+      photoProfile: ""
     }
   },
   computed: {
     computedDateFormattedMomentjs() {
       return this.formContact.birthday ? moment(this.formContact.birthday).format('DD / MMMM / YYYY') : ''
+    },
+  },
+  methods: {
+    handleUpload(e) {
+      this.photoProfile = ""
+      if (e.target.files[0]) {
+        const {files} = e.target
+        if (files[0].size > 1000000) {
+          let dataSnackbar = {
+            title: "Gagal Unggah Foto",
+            message: "Besar file maksimum adalah 1MB",
+            color: "#de1b1b",
+            icon: "mdi-close-circle-outline",
+            show: true
+          }
+          this.$store.dispatch("snackbar/getSnackbar", dataSnackbar)
+          document.getElementById('uploadPhoto').value = ''
+        } else {
+          let reader = new FileReader()
+          let _this = this
+          reader.onload = function() {
+            _this.photoProfile = reader.result
+          }
+          reader.readAsDataURL(files[0])
+        }
+      }
     },
   },
 }
@@ -344,6 +393,7 @@ United States`,
             border-radius: 50%;
             width: 100%;
             height: 100%;
+            object-fit: cover;
           }
         }
 

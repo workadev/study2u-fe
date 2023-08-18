@@ -38,13 +38,13 @@ export default {
 
     img {
       min-height: 100%;
-      width: 204px;
+      width: 450px;
       object-fit: cover;
       border-radius: 16px 0 0 16px;
     }
   }
 
-  @media screen and(max-width: 450px) {
+  @media screen and(max-width: 700px) {
     .card-limitless {
       flex-flow: column;
 
@@ -56,6 +56,7 @@ export default {
         border-radius: 16px 16px 0 0;
         width: 100%;
         height: 204px;
+        object-position: top;
       }
     }
   }
