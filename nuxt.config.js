@@ -48,11 +48,6 @@ export default {
         hid: 'og:locale',
         property: 'og:locale',
         content: `id_ID`,
-      },
-      {
-        hid: 'og:image',
-        property: 'og:image',
-        content: `/icon.png`,
       }
     ],
     link: [

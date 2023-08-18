@@ -44,6 +44,17 @@
 <script>
 export default {
   name: 'DefaultLayout',
+  head() {
+    return {
+      meta: [
+        {
+          hid: "og:image",
+          property: "og:image",
+          content: "/favicon.png",
+        }
+      ]
+    }
+  },
   computed: {
     snackbar() {
       return this.$store.state.snackbar.dataSnackbar
