@@ -1,11 +1,9 @@
 <template>
   <div class="page-index">
     <HomeHeader />
-    <HomeCross />
-    <HomeRanking />
-    <HomeMemberSay />
-    <HomeLimitless />
-    <BaseActionPlan :data="actionPlan" @handleClick="" />
+    <HomeFutures />
+    <HomeTrending />
+    <NotificationCookie />
   </div>
 </template>
 

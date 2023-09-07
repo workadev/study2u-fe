@@ -1,111 +1,34 @@
 <template>
-  <div class="header">
+  <div id="navigation" class="navigation">
     <v-container class="pt-0 pb-0 d-flex align-center justify-space-between">
-      <div class="d-flex wrap-search mr-4">
+      <div class="d-flex align-start mr-4">
         <img
-          class="mr-4"
-          height="48.92px"
+          height="81"
+          width="95"
           src="@/assets/images/logo-s.svg"
           alt="logo"
           @click="$router.push('/')"
         >
-        <div id="menu-activator">
-          <v-text-field 
-            outlined
-            placeholder="Search" 
-            hide-details
-            :class="{'active-search': suggestionSearch}"
-          >
-            <template v-slot:append>
-              <img src="@/assets/icons/magnifying-glass.svg">
-            </template>
-          </v-text-field>
-        </div>
-        <v-menu 
-          v-model="suggestionSearch" 
-          activator="#menu-activator"
-          content-class="menu-search"
-        >
-          <div class="wrap-menu">
-            <div class="group-top">
-              <div class="regular-subtitle">
-                What are you looking for?
-              </div>
-              <div class="wrap-tag">
-                <v-btn text class="item-tag">
-                  <div class="semibold-body">College</div>
-                </v-btn>
-                <v-btn text class="item-tag">
-                  <div class="semibold-body">University</div>
-                </v-btn>
-                <v-btn text class="item-tag">
-                  <div class="semibold-body">People</div>
-                </v-btn>
-              </div>
-            </div>
-            <div class="group-bottom">
-              <div class="regular-subtitle">
-                History
-              </div>
-              <div class="d-flex flex-wrap mt-3">
-                <v-btn text height="fit-content" class="regular-subtitle item-history">
-                  Stanford University
-                </v-btn>
-              </div>
-            </div>
-          </div>
-        </v-menu>
+        <img class="mt-1" src="@/assets/images/beta.svg">
       </div>
       <div class="d-flex align-center nav-desktop">
-        <div class="nav-header d-flex align-center pr-8 mr-6">
+        <div class="nav-header d-flex align-center mr-16">
           <nuxt-link 
             v-for="(item, index) in listNavigation" :key="index"
-            class="regular-body item-nav" 
+            class="item-nav" 
             :class="{
-              'mr-13': listNavigation.length -1 != index,
-              'active': item.to == $route.path
+              'mr-7': listNavigation.length -1 != index,
+              'active': item.to == $route.path,
+              'disabled': item.disabled
             }"
             :to="item.to"
           >
             {{ item.name }}
-            <v-divider color="#1A334F" />
           </nuxt-link>
         </div>
         <div>
-          <v-menu
-            activator="#activator-profile"
-            content-class="menu-profile"
-            v-model="activatorProfile"
-          >
-            <div class="d-flex flex-column wrap-menu">
-              <v-btn
-                class="justify-start"
-                v-for="(item, index) in menuProfile"
-                :key="index"
-                :to="item.to"
-                text
-                height="48"
-              >
-                <div class="mr-2 d-flex wrap-img justify-center">
-                  <img 
-                    :width="index == 0 ? 24 : 20" 
-                    :height="index == 0 ? 24 : 20" 
-                    :src="item.icon"
-                  >
-                </div>
-                {{  item.name  }}
-              </v-btn>
-            </div>
-          </v-menu>
-          <div id="activator-profile" class="px-0 btn-profile" :style="{display: isLogin ? 'flex' : 'none'}">
-            <img height="24" width="24" src="@/assets/images/Ellipse 1 4.png" alt="Ellipse 1 4">
-            <div class="regular-body d-flex align-center">
-              Jhonny <img width="16" height="16" class="ml-1" src="@/assets/icons/chevron-down.svg">
-            </div>
-          </div>
-          <nuxt-link v-if="!isLogin" class="regular-body d-flex align-center" to="/login">
-            <img class="mr-1" src="@/assets/icons/user-circle.svg" alt="user-circle">
-            Log In
+          <nuxt-link v-if="!isLogin" class="d-flex align-center btn-login" to="/login">
+            LOGIN
           </nuxt-link>
         </div>
       </div>
@@ -121,35 +44,26 @@
         >
           <v-list nav>
             <v-list-item class="py-5">
-              <img height="41.93px" src="@/assets/images/logo-study2u.svg" alt="logo">
+              <div class="d-flex align-start">
+                <img
+                  height="81"
+                  width="95"
+                  src="@/assets/images/logo-s.svg"
+                  alt="logo"
+                  @click="$router.push('/')"
+                >
+                <img class="mt-1" src="@/assets/images/beta.svg">
+              </div>
             </v-list-item>
             <v-list-item v-for="(item, index) in listNavigation" :key="index" class="mb-0">
-              <nuxt-link class="regular-body" :to="item.to">
+              <nuxt-link class="item-nav" :class="{disabled: item.disabled}" :to="item.to">
                 {{ item.name }}
               </nuxt-link>
             </v-list-item>
             <v-divider class="my-3" />
             <v-list-item>
-              <div v-if="isLogin">
-                <div v-for="(item, index) in menuProfile" :key="index" class="menu-account">
-                  <nuxt-link 
-                    class="d-flex align-center regular-body" 
-                    :to="item.to"
-                  >
-                    <div class="mr-2 d-flex wrap-img justify-center">
-                      <img 
-                        :width="index == 0 ? 24 : 20" 
-                        :height="index == 0 ? 24 : 20" 
-                        :src="item.icon"
-                      >
-                    </div>
-                    {{  item.name  }}
-                  </nuxt-link>
-                </div>
-              </div>
-              <nuxt-link v-else class="semibold-subtitle d-flex align-center" to="/login">
-                <img class="mr-2" src="@/assets/icons/user-circle.svg" alt="user-circle">
-                Log In
+              <nuxt-link v-if="!isLogin" class="d-flex align-center btn-login" to="/login">
+                LOGIN
               </nuxt-link>
             </v-list-item>
           </v-list>
@@ -164,39 +78,26 @@ export default {
   data() {
     return {
       showNavigation: false,
-      suggestionSearch: false,
-      activatorProfile: false,
       listNavigation: [
         {
-          name: "Institution",
+          name: "INSTITUTIONS",
           to: "/institution"
         },
         {
-          name: "Course",
-          to: "/course"
+          name: "COMPARISON",
+          to: "/comparison"
         },
         {
-          name: "Mentor Connect",
-          to: ""
+          name: "COURSE",
+          to: "/course",
+          disabled: true
+        },
+        {
+          name: "SCHOLARSHIP",
+          to: "/scholarship",
+          disabled: true
         }
       ],
-      menuProfile: [
-        {
-          icon: require("@/assets/images/Ellipse 1 4.png"),
-          name: "Profile",
-          to: "/profile"
-        },
-        {
-          icon: require("@/assets/icons/heart.svg"),
-          name: "Shortlist",
-          to: ""
-        },
-        {
-          icon: require("@/assets/icons/power.svg"),
-          name: "Logout",
-          to: ""
-        }
-      ]
     }
   },
   computed: {
@@ -205,21 +106,39 @@ export default {
         return true
       }
     }
-  }
+  },
+  mounted() {
+    let getElement = document.getElementById('navigation')
+    window.onscroll = function () {
+      if (window.pageYOffset > 10) {
+        getElement.classList.add('stickyBorder')
+      } else {
+        getElement.classList.remove('stickyBorder')
+      }
+    }
+  },
 }
 </script>
 
 <style lang="scss">
-  .header {
+  .navigation {
     background: $color-white;
-    padding: 16px 0;
+    padding: 12px 0;
     position: sticky;
     top: 0px;
     z-index: 7;
-    border-bottom: 1px solid $color-space;
+    transition: all .3s;
 
-    .regular-body {
-      color: $color-dark-grey;
+    .nav-desktop {
+      .btn-login {
+        font-weight: 700;
+        font-size: 14px;
+        width: 99px;
+        height: 35px;
+        border: 3px solid #FF5ABE;
+        border-radius: 14px;
+        justify-content: center;
+      }
     }
 
     .btn-profile {
@@ -229,65 +148,39 @@ export default {
       align-items: center;
     }
 
-    .wrap-search {
-      max-width: 414px;
-      width: 100%;
-
-      #menu-activator {
-        width: 100%;
-        max-width: 322px !important;
-      }
-
-      .v-input {
-        width: 100%;
-        font-size: 12px;
-      }
-
-      .v-text-field--enclosed {
-        .v-input__append-inner {
-          margin-top: 11px;
-        }
-      }
-
-      .active-search {
-        .v-input__slot {
-          border-radius: 8px 8px 0 0 !important;
-        }
-      }
-    }
-
     .nav-mobile {
       display: none;
 
-      .menu-account {
-        height: 48px;
-        display: flex;
-        align-items: center;
-
-        a {
-          height: fit-content;
-        }
+      .item-nav {
+        font-weight: 700;
       }
-      
-      .wrap-img {
-        width: 24px;
+
+      .disabled {
+        pointer-events: none;
+        color: #BCBCBC !important;
+      }
+
+      .btn-login {
+        font-weight: 700;
+        font-size: 14px;
+        width: 99px;
+        height: 35px;
+        border: 3px solid #FF5ABE;
+        border-radius: 14px;
+        justify-content: center;
       }
     }
 
     a {
       text-decoration: none;
-      color: $color-dark-grey !important;
+      color: #000000 !important;
       min-width: max-content;
-
     }
 
     .nav-header {
-      height: 40px;
-      border-right: 0.5px solid $color-grey;
-
       .item-nav {
-        padding: 6px 11.5px;
-        position: relative;
+        font-size: 20px;
+        font-weight: 700;
 
         .v-divider {
           position: absolute;
@@ -298,23 +191,19 @@ export default {
         }
       }
 
-      .active {
-        color: $color-space !important;
-
-        .v-divider {
-          border-width: 1px;
-          width: 100%;
-        }
-      }
-
-      .mr-13 {
-        margin-right: 55.5px !important;
+      .disabled {
+        pointer-events: none;
+        color: #BCBCBC !important;
       }
     }
   }
 
-  @media screen and(max-width: 700px) {
-    .header {
+  .stickyBorder {
+    border-bottom: 1px solid #FF5ABE;
+  }
+
+  @media screen and(max-width: 865px) {
+    .navigation {
       .nav-desktop {
         display: none !important;
       }
