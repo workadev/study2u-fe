@@ -30,6 +30,11 @@
           <nuxt-link v-if="!isLogin" class="d-flex align-center btn-login" to="/login">
             LOGIN
           </nuxt-link>
+          <div v-else class="d-flex avatar">
+            <nuxt-link to="/profile" class="d-flex">
+              <img src="@/assets/images/mini avatar.png">
+            </nuxt-link>
+          </div>
         </div>
       </div>
       <div class="nav-mobile">
@@ -65,6 +70,11 @@
               <nuxt-link v-if="!isLogin" class="d-flex align-center btn-login" to="/login">
                 LOGIN
               </nuxt-link>
+              <div v-else class="d-flex avatar">
+                <nuxt-link to="/profile" class="d-flex">
+                  <img src="@/assets/images/mini avatar.png">
+                </nuxt-link>
+              </div>
             </v-list-item>
           </v-list>
         </v-navigation-drawer>
@@ -89,22 +99,18 @@ export default {
         },
         {
           name: "COURSE",
-          to: "/course",
-          disabled: true
+          to: "/course"
         },
         {
           name: "SCHOLARSHIP",
-          to: "/scholarship",
-          disabled: true
+          to: "/scholarship"
         }
       ],
     }
   },
   computed: {
     isLogin() {
-      if (this.$route.name == 'dashboard' || this.$route.name == 'profile') {
-        return true
-      }
+      return this.$store.state.login.isLogin
     }
   },
   mounted() {
@@ -130,6 +136,14 @@ export default {
     transition: all .3s;
 
     .nav-desktop {
+      .avatar {
+        img {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+        }
+      }
+
       .btn-login {
         font-weight: 700;
         font-size: 14px;
@@ -138,14 +152,8 @@ export default {
         border: 3px solid #FF5ABE;
         border-radius: 14px;
         justify-content: center;
+        cursor: pointer;
       }
-    }
-
-    .btn-profile {
-      cursor: pointer;
-      display: flex;
-      flex-flow: column;
-      align-items: center;
     }
 
     .nav-mobile {

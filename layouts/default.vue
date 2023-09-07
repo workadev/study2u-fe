@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import 'animate.css';
+
 export default {
   name: 'DefaultLayout',
   head() {
