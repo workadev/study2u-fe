@@ -62,6 +62,7 @@
             width="256"
             class="btn-compare"
             :disabled="shortlist.length < 2"
+            @click="$router.push('/comparison')"
           >
             Compare Selected
           </v-btn>
