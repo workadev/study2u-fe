@@ -72,7 +72,7 @@
               </nuxt-link>
               <div v-else class="d-flex avatar">
                 <nuxt-link to="/profile" class="d-flex">
-                  <img src="@/assets/images/mini avatar.png">
+                  <img width="70" src="@/assets/images/mini avatar.png">
                 </nuxt-link>
               </div>
             </v-list-item>
@@ -91,7 +91,7 @@ export default {
       listNavigation: [
         {
           name: "INSTITUTIONS",
-          to: "/institution"
+          to: "/institutions"
         },
         {
           name: "COMPARISON",
@@ -128,7 +128,7 @@ export default {
 
 <style lang="scss">
   .navigation {
-    background: $color-white;
+    background: #F3F3F3;
     padding: 12px 0;
     position: sticky;
     top: 0px;
@@ -161,6 +161,7 @@ export default {
 
       .item-nav {
         font-weight: 700;
+        transition: all .3s;
       }
 
       .disabled {
@@ -189,6 +190,7 @@ export default {
       .item-nav {
         font-size: 20px;
         font-weight: 700;
+        transition: all .3s;
 
         .v-divider {
           position: absolute;
@@ -197,6 +199,10 @@ export default {
           width: 0px;
           transition: all .2s;
         }
+      }
+
+      .active {
+        color: #FF5ABE !important;
       }
 
       .disabled {

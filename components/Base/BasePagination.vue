@@ -200,6 +200,11 @@ export default {
   align-items: center;
 
   .pagination-center {
+    .regular-body {
+      font-size: 14px !important;
+      color: #000;
+    }
+
     ul {
       display: flex;
       list-style: none;
@@ -214,13 +219,11 @@ export default {
         min-width: 30px;
         align-items: center;
         justify-content: center;
-        border-radius: 8px;
         transition: all 0.2s;
       }
 
       .page-number {
         margin-right: 5px;
-        border: 1px solid $color-pacific;
       }
 
       .ellipsis {
@@ -232,9 +235,12 @@ export default {
         background: none;
       }
 
-      .active,
-      .active:hover {
-        background: $color-pacific;
+      .active {
+        border-bottom: 1px solid;
+
+        .regular-body {
+          font-weight: 700;
+        }
       }
     }
 

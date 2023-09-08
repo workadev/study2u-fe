@@ -78,8 +78,7 @@ export default {
         },
         {
           name: "Courses",
-          to: "/courses",
-          disabled: true
+          to: "/courses"
         },
         {
           name: "About us",
