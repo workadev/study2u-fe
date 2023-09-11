@@ -121,6 +121,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 16px;
 
       .wrap-form {
         .link {
@@ -191,6 +192,25 @@ export default {
     .content-left,
     .content-right {
       width: 50%;
+    }
+  }
+
+  @media screen and(max-width: 700px) {
+    .page-register {
+      .content-left {
+        box-shadow: none;
+        width: 100%;
+
+        .wrap-form {
+          .btn-login {
+            width: 100% !important;
+          }
+        }
+      }
+
+      .content-right {
+        display: none;
+      }
     }
   }
 </style>
