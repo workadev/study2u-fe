@@ -64,6 +64,7 @@
           elevation
           height="33"
           width="171"
+          to="/comparison"
         >
           Compare seletion
         </v-btn>

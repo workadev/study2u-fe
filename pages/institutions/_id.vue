@@ -7,7 +7,7 @@
     <client-only>
       <carousel v-bind="options" class="mt-13">
         <slide v-for="(item, index) in 4" :key="index">
-          <img height="350" src="@/assets/images/bac-01 1.png">
+          <img width="100%" src="@/assets/images/bac-01 1.png">
         </slide>
       </carousel>
     </client-only>
@@ -61,7 +61,7 @@
               {{ item }}
             </div>
           </div>
-          <div class="info-time mt-1">
+          <!-- <div class="info-time mt-1">
             <div class="wrap-info">
               <b>Duration</b>
               <div>7 semester regular</div>
@@ -75,29 +75,20 @@
               <b>Fee</b>
               <div>RM 8,000</div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="detail-action">
         <v-btn
-          color="#5EC9AA"
+          :color="interest ? '#91D1BF' : '#5EC9AA'"
           elevation
           class="btn-action"
           height="58"
           width="256"
+          @click="interest = !interest"
         >
-          <v-icon color="#2ca481" size="35">mdi-heart</v-icon> 
-          <div>I’m Interested</div>
-        </v-btn>
-        <v-btn
-          color="#91D1BF"
-          elevation
-          class="btn-action mt-6"
-          height="58"
-          width="256"
-        >
-          <v-icon color="#ff5abe" size="35">mdi-heart</v-icon> 
-          <div>Added to Shortlist</div>
+          <v-icon :color="interest ? '#ff5abe' : '#2ca481'" size="35">mdi-heart</v-icon> 
+          <div>{{ interest ? "Added to Shortlist" : "I’m Interested" }}</div>
         </v-btn>
       </div>
     </v-container>
@@ -117,7 +108,8 @@ export default {
         "Pre-Uni", "Law", "Business", "Digital Media, Design & Comms", 
         "Technology & Innovation", "Hospitality, Culinary & Tourism", 
         "Psychology", "Early Childhood"
-      ]
+      ],
+      interest: false
     }
   },
 }

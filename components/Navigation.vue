@@ -99,11 +99,13 @@ export default {
         },
         {
           name: "COURSE",
-          to: "/course"
+          to: "/course",
+          disabled: true
         },
         {
           name: "SCHOLARSHIP",
-          to: "/scholarship"
+          to: "/scholarship",
+          disabled: true
         }
       ],
     }

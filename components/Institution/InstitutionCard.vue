@@ -129,9 +129,9 @@ export default {
     }
   }
 
-  .institution-card:hover {
-    box-shadow: 0px 4px 4px 0px #00000040;
-    border: 2px solid #000000;
-    padding: 30px 13px;
-  }
+  // .institution-card:hover {
+  //   box-shadow: 0px 4px 4px 0px #00000040;
+  //   border: 2px solid #000000;
+  //   padding: 30px 13px;
+  // }
 </style>
