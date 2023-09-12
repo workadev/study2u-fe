@@ -1,48 +1,50 @@
 <template>
   <div class="my-interest">
-    <v-container class="d-flex">
-      <div class="content-left">
-        <div class="title-content">
-          My Interests
-        </div>
-        <div class="d-flex flex-wrap wrap-my-interest">
-          <div class="chip-square" v-for="(item, index) in myInterest" :key="index">
-            {{ item }}
-            <v-btn icon class="btn-delete" @click="clickDelete(item)">
-              <img src="@/assets/icons/delete.svg">
+    <v-container class="d-flex flex-column">
+      <div class="title-content">
+        My Interests
+      </div>
+      <div class="d-flex wrap-content">
+        <div class="content-left">
+          <div class="d-flex flex-wrap wrap-my-interest">
+            <div class="chip-square" v-for="(item, index) in myInterest" :key="index">
+              {{ item }}
+              <v-btn icon class="btn-delete" @click="clickDelete(item)">
+                <img src="@/assets/icons/delete.svg">
+              </v-btn>
+            </div>
+          </div>
+          <div class="d-flex flex-column wrap-btn-action mt-5">
+            <v-btn
+              elevation
+              dark
+              height="58"
+              width="140"
+              color="#5EC9AA"
+              class="btn-done"
+              @click="$router.push('/profile')"
+            >
+              Done
             </v-btn>
+            <nuxt-link to="/profile">
+              cancel
+            </nuxt-link>
           </div>
         </div>
-        <div class="d-flex flex-column wrap-btn-action">
-          <v-btn
-            elevation
-            dark
-            height="58"
-            width="140"
-            color="#5EC9AA"
-            class="btn-done"
-            @click="$router.push('/profile')"
-          >
-            Done
-          </v-btn>
-          <nuxt-link to="/profile">
-            cancel
-          </nuxt-link>
-        </div>
-      </div>
-      <div class="content-right">
-        <div class="title-add">
-          <img src="@/assets/icons/add.svg" class="mr-3"> Add interest
-        </div>
-        <div class="d-flex flex-wrap wrap-list-add">
-          <div 
-            class="chip-square" 
-            :class="{disabled: chipDisabled(item)}"
-            v-for="(item, index) in listInterest" 
-            :key="index"
-            @click="addInterest(item)"
-          >
-            {{ item }}
+        <div class="content-right">
+          <div class="title-add">
+            <img src="@/assets/icons/add.svg" class="mr-3"> Add interest
+          </div>
+          <div class="d-flex flex-wrap wrap-list-add">
+            <div 
+              class="chip-square" 
+              :class="{disabled: chipDisabled(item)}"
+              v-for="(item, index) in listInterest" 
+              :key="index"
+              @click="addInterest(item)"
+            >
+              {{ item }}
+            </div>
           </div>
         </div>
       </div>
@@ -91,8 +93,13 @@ export default {
       padding-top: 133px;
       padding-bottom: 125px;
 
+      .title-content {
+        font-size: 36px;
+        font-weight: 700;
+      }
+
       .content-right {
-        margin-top: 90px;
+        margin-top: 30px;
         width: inherit;
 
         .wrap-list-add {
@@ -121,6 +128,7 @@ export default {
       .content-left {
         max-width: 300px;
         width: 100%;
+        margin-right: 20px;
 
         .wrap-btn-action {
           width: fit-content;
@@ -142,7 +150,7 @@ export default {
 
         .wrap-my-interest {
           margin: 20px -16px 0;
-          min-height: 20em;
+          min-height: 15em;
           align-content: flex-start;
 
           .chip-square {
@@ -156,10 +164,20 @@ export default {
             }
           }
         }
+      }
+    }
+  }
 
-        .title-content {
-          font-size: 36px;
-          font-weight: 700;
+  @media screen and(max-width: 700px) {
+    .my-interest {
+      .wrap-content {
+        flex-wrap: wrap-reverse;
+      }
+
+      .container {
+        .content-left {
+          max-width: 100%;
+          margin-right: 0px;
         }
       }
     }

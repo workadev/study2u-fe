@@ -1,43 +1,66 @@
 <template>
   <div class="home-futures py-10">
-    <v-container class="py-0 d-flex justify-space-between align-center">
-      <v-btn icon class="mr-13 btn-arrow" @click="clickPrev()" :disabled="itemList[0].active">
-        <img v-if="itemList[0].active" src="@/assets/icons/grey-button-arrow-circle.svg">
-        <img v-else style="transform: rotate(180deg);" src="@/assets/icons/pink-button-arrow-circle.svg">
-      </v-btn>
-      <div v-for="(item, index) in itemList" :key="index">
-        <div v-if="item.active" :id="'item'+index" class="item-future animate__animated">
-          <div v-if="index == 0" class="wrap-img">
-            <div class="d-flex flex-column group-circle">
-              <img width="21" src="@/assets/images/Ellipse 5.png">
-              <img width="47" class="mt-2" src="@/assets/images/Ellipse 5.png">
+    <v-container class="py-0">
+      <div class="d-flex justify-space-between align-center">
+        <v-btn icon class="mr-13 btn-arrow arrow-left" @click="clickPrev()" :disabled="itemList[0].active">
+          <img v-if="itemList[0].active" src="@/assets/icons/grey-button-arrow-circle.svg">
+          <img v-else style="transform: rotate(180deg);" src="@/assets/icons/pink-button-arrow-circle.svg">
+        </v-btn>
+        <div v-for="(item, index) in itemList" :key="index">
+          <div 
+            :style="{
+              display: item.active ? 'flex' : 'none',
+              position: item.active ? 'relative' : 'absolute'
+            }" 
+            :id="'item'+index" 
+            class="item-future animate__animated"
+          >
+            <div v-if="index == 0" class="wrap-img">
+              <div class="d-flex flex-column group-circle">
+                <img width="21" src="@/assets/images/Ellipse 5.png">
+                <img width="47" class="mt-2" src="@/assets/images/Ellipse 5.png">
+              </div>
+              <div class="img-future">
+                <img src="@/assets/images/Mask group.png">
+                <img class="img-pencil" src="@/assets/images/Mask group 2.png">
+              </div>
             </div>
-            <div class="img-future">
-              <img src="@/assets/images/Mask group.png">
-              <img class="img-pencil" src="@/assets/images/Mask group 2.png">
+            <div v-else class="wrap-img">
+              <div class="img-future">
+                <img width="247" height="247" src="">
+              </div>
             </div>
-          </div>
-          <div v-else class="wrap-img">
-            <div class="img-future">
-              <img width="247" height="247" src="">
+            <div class="future-text">
+              <div class="future-title">{{ item.name }}</div>
+              <p class="mb-0 mt-4">
+                {{ item.desc }}
+              </p>
             </div>
-          </div>
-          <div class="future-text">
-            <div class="future-title">{{ item.name }}</div>
-            <p class="mb-0 mt-4">
-              {{ item.desc }}
-            </p>
           </div>
         </div>
+        <v-btn icon class="ml-13 btn-arrow arrow-right" @click="clickNext()" :disabled="this.itemList[this.itemList.length-1].active">
+          <img 
+            v-if="this.itemList[this.itemList.length-1].active" 
+            src="@/assets/icons/grey-button-arrow-circle.svg"
+            style="transform: rotate(180deg);"
+          >
+          <img v-else src="@/assets/icons/pink-button-arrow-circle.svg">
+        </v-btn>
       </div>
-      <v-btn icon class="ml-13 btn-arrow" @click="clickNext()" :disabled="this.itemList[this.itemList.length-1].active">
-        <img 
-          v-if="this.itemList[this.itemList.length-1].active" 
-          src="@/assets/icons/grey-button-arrow-circle.svg"
-          style="transform: rotate(180deg);"
-        >
-        <img v-else src="@/assets/icons/pink-button-arrow-circle.svg">
-      </v-btn>
+      <div class="btn-arrow-mobile">
+        <v-btn icon class="btn-arrow mr-5" @click="clickPrev()" :disabled="itemList[0].active">
+          <img v-if="itemList[0].active" src="@/assets/icons/grey-button-arrow-circle.svg">
+          <img v-else style="transform: rotate(180deg);" src="@/assets/icons/pink-button-arrow-circle.svg">
+        </v-btn>
+        <v-btn icon class="btn-arrow ml-5" @click="clickNext()" :disabled="this.itemList[this.itemList.length-1].active">
+          <img 
+            v-if="this.itemList[this.itemList.length-1].active" 
+            src="@/assets/icons/grey-button-arrow-circle.svg"
+            style="transform: rotate(180deg);"
+          >
+          <img v-else src="@/assets/icons/pink-button-arrow-circle.svg">
+        </v-btn>
+      </div>
     </v-container>
   </div>
 </template>
@@ -74,22 +97,26 @@ export default {
       document.getElementById(`item${index}`).classList.add("animate__fadeOutLeftBig")
       setTimeout(() => {
         this.itemList[index].active = false
-        setTimeout(() => {
-          document.getElementById(`item${index+1}`).classList.add("animate__fadeInRightBig")
-        }, 0);
+        document.getElementById(`item${index}`).classList.remove("animate__fadeOutLeftBig")
         this.itemList[index+1].active = true
-      }, 200);
+        document.getElementById(`item${index+1}`).classList.add("animate__fadeInRightBig")
+        setTimeout(() => {
+          document.getElementById(`item${index+1}`).classList.remove("animate__fadeInRightBig")
+        }, 1000);
+      }, 300);
     },
     clickPrev() {
       let index = this.itemList.findIndex(x => x.active === true);
       document.getElementById(`item${index}`).classList.add("animate__fadeOutRightBig")
       setTimeout(() => {
         this.itemList[index].active = false
-        setTimeout(() => {
-          document.getElementById(`item${index-1}`).classList.add("animate__fadeInLeftBig")
-        }, 0);
+        document.getElementById(`item${index}`).classList.remove("animate__fadeOutRightBig")
         this.itemList[index-1].active = true
-      }, 200);
+        document.getElementById(`item${index-1}`).classList.add("animate__fadeInLeftBig")
+        setTimeout(() => {
+          document.getElementById(`item${index-1}`).classList.remove("animate__fadeInLeftBig")
+        }, 1000);
+      }, 300);
     }
   },
 }
@@ -98,6 +125,12 @@ export default {
 <style lang="scss">
   .home-futures {
     background: #F3F3F3;
+
+    .btn-arrow-mobile {
+      display: none;
+      text-align: center;
+      margin-top: 30px;
+    }
 
     .btn-arrow {
       height: auto;
@@ -157,9 +190,29 @@ export default {
     }
   }
 
+  @media screen and(max-width: 850px) {
+    .home-futures {
+      .item-future {
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .future-text {
+          z-index: 1;
+        }
+      }
+    }
+  }
+
   @media screen and(max-width: 700px) {
     .home-futures {
-      
+      .btn-arrow-mobile {
+        display: block;
+      }
+
+      .arrow-left,
+      .arrow-right {
+        display: none;
+      }
     }
   }
 </style>

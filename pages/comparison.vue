@@ -215,4 +215,28 @@ export default {
       }
     }
   }
+
+  @media screen and(max-width: 800px) {
+    .comparison {
+      .container {
+        .wrap-item-compare {
+          .item-compare {
+            max-width: calc(100% / 2 - 46px);
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and(max-width: 700px) {
+    .comparison {
+      .container {
+        .wrap-item-compare {
+          .item-compare {
+            max-width: calc(100% / 1 - 46px);
+          }
+        }
+      }
+    }
+  }
 </style>
