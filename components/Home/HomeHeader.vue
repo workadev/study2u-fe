@@ -13,7 +13,7 @@
   Our platform is designed to connect you with valuable resources, incredible opportunities, and a network of like-minded individuals who share your passion for learning and growth.
         </p>
         <v-btn color="#FF5ABE" height="58" elevation dark class="btn-start mt-7">
-          START HERE
+          TAKE THE FIRST STEP
         </v-btn>
       </div>
     </v-container>

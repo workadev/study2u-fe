@@ -15,7 +15,7 @@
       <div class="desc">
         The BAC Story We began with a single campus in Brickfields in 1991 with fewer than 50 students and only three programmes – Cambridge A-Levels, the University of London law degree, and the Certificate of Legal Practice (CLP). Today, we offer over 500 world-class pre-university, undergraduate, postgraduate, and professional programmes in business, law, and technology across three campuses in Kuala Lumpur, Petaling Jaya, and Singapore.
       </div>
-      <div class="d-flex justify-space-between mt-9">
+      <div class="d-flex justify-space-between mt-9 wrap-content-info">
         <div class="content-left">
           <div class="wrap-info">
             <img src="@/assets/icons/pin-map.svg">
@@ -33,28 +33,8 @@
             <b>Admittance:</b>
             <div class="text-info">Public</div>
           </div>
-          <div class="wrap-info mt-11">
-            <b>Contact Person</b>
-            <div class="d-flex align-center mt-2">
-              <img class="mr-4" width="125" height="125" src="@/assets/images/Ellipse 8.png">
-              <div>
-                <div class="mb-3">
-                  <b>Hardy Tame</b>
-                </div>
-                <v-btn
-                  elevation
-                  color="#F4BF28"
-                  class="btn-send"
-                  height="36"
-                  width="159"
-                >
-                  Send message
-                </v-btn>
-              </div>
-            </div>
-          </div>
         </div>
-        <div class="content-right">
+        <div class="content-center">
           <img class="mb-2" src="@/assets/icons/star.svg">
           <div class="d-flex flex-wrap mx-n1">
             <div v-for="(item, index) in categoryList" :key="index" class="chip-square">
@@ -76,6 +56,32 @@
               <div>RM 8,000</div>
             </div>
           </div> -->
+        </div>
+        <div class="content-right mt-8">
+          <img src="@/assets/images/Rectangle 74.png">
+          <v-btn icon class="btn-play">
+            <img src="@/assets/icons/play.svg">
+          </v-btn>
+        </div>
+      </div>
+      <div class="wrap-info mt-11">
+        <b>Contact Person</b>
+        <div class="d-flex align-center mt-2">
+          <img class="mr-4" width="125" height="125" src="@/assets/images/Ellipse 8.png">
+          <div>
+            <div class="mb-3">
+              <b>Hardy Tame</b>
+            </div>
+            <v-btn
+              elevation
+              color="#F4BF28"
+              class="btn-send"
+              height="36"
+              width="159"
+            >
+              Send message
+            </v-btn>
+          </div>
         </div>
       </div>
       <div class="detail-action">
@@ -143,7 +149,26 @@ export default {
     }
 
     .content-right {
+      position: relative;
+      display: flex;
+      height: fit-content;
+      align-items: center;
+      justify-content: center;
+      max-width: 360px;
+      width: 100%;
+
+      img {
+        width: 100%;
+      }
+
+      .btn-play {
+        position: absolute;
+      }
+    }
+
+    .content-center {
       max-width: 320px;
+      margin-right: 20px;
 
       .info-time {
         box-shadow: 0px 4px 4px 0px #00000040;
@@ -166,7 +191,8 @@ export default {
     }
 
     .content-left {
-      max-width: 270px;
+      max-width: 300px;
+      margin-right: 20px;
 
       .wrap-info {
         .btn-send {
@@ -230,6 +256,17 @@ export default {
       .institution-name {
         font-size: 36px;
         font-weight: 700;
+      }
+    }
+  }
+
+  @media screen and(max-width: 865px) {
+    .institution-detail {
+      .content-left {
+        margin-bottom: 20px;
+      }
+      .wrap-content-info {
+        flex-wrap: wrap;
       }
     }
   }

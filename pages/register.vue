@@ -2,11 +2,7 @@
   <div class="page-register">
     <div class="content-left">
       <div class="wrap-form">
-        <div class="title-form">REGISTER</div>
-        <v-btn outlined height="59" width="288" class="btn-google mt-6">
-          use my <img class="ml-4" width="33" height="33" src="@/assets/icons/google.svg">
-        </v-btn>
-        <div class="my-4">or</div>
+        <div class="title-form mb-10">REGISTER</div>
         <v-text-field hide-details height="38" placeholder="email" />
         <v-text-field 
           class="mt-5" 
@@ -48,6 +44,26 @@
             </v-btn>
           </template>
         </v-text-field>
+        <v-select 
+          class="mt-5"
+          :items="[]"
+          hide-details
+          placeholder="current qualification"
+        >
+          <template v-slot:append>
+            <img width="21" src="@/assets/icons/chevron-down.svg">
+          </template>
+        </v-select>
+        <v-select 
+          class="mt-5"
+          :items="[]"
+          hide-details
+          placeholder="nationality"
+        >
+          <template v-slot:append>
+            <img width="21" src="@/assets/icons/chevron-down.svg">
+          </template>
+        </v-select>
         <div class="mt-6 d-flex justify-space-between align-end">
           <v-checkbox 
             hide-details

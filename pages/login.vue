@@ -2,11 +2,10 @@
   <div class="page-login">
     <div class="content-left">
       <div class="wrap-form">
-        <div class="title-form">LOGIN</div>
-        <v-btn outlined height="59" width="288" class="btn-google mt-6">
-          use my <img class="ml-4" width="33" height="33" src="@/assets/icons/google.svg">
-        </v-btn>
-        <div class="my-4">or</div>
+        <div class="wrap-header">
+          <img class="mb-5" src="@/assets/images/logo-s.svg">
+          <div class="title-form">LOGIN</div>
+        </div>
         <v-text-field hide-details height="38" placeholder="email" />
         <v-text-field 
           class="mt-5" 
@@ -34,29 +33,49 @@
             hide-details
             color="#000"
           />
-          <nuxt-link to="" class="link">
-            forgot my password
+        </div>
+        <div class="d-flex flex-column mt-16">
+          <div class="mt-16 mobile-register">
+            Don’t have an account? <nuxt-link class="link" to="/register">Create one here</nuxt-link>.
+          </div>
+          <v-btn
+            class="btn-action mb-4"
+            elevation
+            color="#FF5ABE"
+            dark
+            height="58"
+            width="189"
+            @click="clickLogin()"
+          >
+            LOGIN
+          </v-btn>
+          <nuxt-link to="" class="link text-decoration-none">
+            I forgot my password
           </nuxt-link>
         </div>
-        <div class="mt-16">
-          Don’t have an account? <nuxt-link class="link" to="/register">Create one here</nuxt-link>.
+      </div>
+    </div>
+    <div class="content-right">
+      <div class="wrap-content">
+        <div class="title-form text-center mb-8">
+          New Here?
+        </div>
+        <div>
+          Sign up and discover a great amount of opportunities!
         </div>
         <v-btn
-          class="btn-login"
+          class="btn-action mt-16"
           elevation
           color="#FF5ABE"
           dark
           height="58"
-          width="189"
-          @click="clickLogin()"
+          width="100%"
+          to="/register"
         >
-          LOGIN
+          TAKE THE FIRST STEP
         </v-btn>
       </div>
-    </div>
-    <div class="content-right">
-      <img src="@/assets/images/logo-s.svg">
-      <div class="mt-3">
+      <div class="mb-10 copyright">
         © {{ new Date().getFullYear() }} study2u. All rights reserved.
       </div>
     </div>
@@ -85,12 +104,34 @@ export default {
     display: flex;
     height: 100vh;
 
+    .title-form {
+      font-size: 36px;
+      font-weight: 700;
+    }
+
+    .btn-action {
+      font-size: 20px;
+      font-weight: 700;
+      border-radius: 16px;
+      margin-top: 26px;
+    }
+
     .content-right {
       background: #F3F3F3;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-flow: column;
+
+      .copyright {
+        position: absolute;
+        bottom: 0px;
+      }
+
+      .wrap-content {
+        width: 100%;
+        max-width: 269px;
+      }
     }
 
     .content-left {
@@ -102,15 +143,20 @@ export default {
       padding: 16px;
 
       .wrap-form {
-        .link {
-          color: #000000;
+        width: 100%;
+        max-width: 317px;
+
+        .mobile-register {
+          display: none;
         }
 
-        .btn-login {
-          font-size: 20px;
-          font-weight: 700;
-          border-radius: 16px;
-          margin-top: 26px;
+        .wrap-header {
+          text-align-last: center;
+          margin-bottom: 60px;
+        }
+
+        .link {
+          color: #000000;
         }
 
         .v-input {
@@ -156,11 +202,6 @@ export default {
           justify-content: flex-start;
           padding: 0 38px;
         }
-
-        .title-form {
-          font-size: 36px;
-          font-weight: 700;
-        }
       }
     }
 
@@ -172,13 +213,17 @@ export default {
 
   @media screen and(max-width: 700px) {
     .page-login {
+      .btn-action {
+        width: 100% !important;
+      }
+
       .content-left {
         box-shadow: none;
         width: 100%;
 
         .wrap-form {
-          .btn-login {
-            width: 100% !important;
+          .mobile-register {
+            display: block;
           }
         }
       }
