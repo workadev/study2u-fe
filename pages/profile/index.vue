@@ -13,13 +13,13 @@
         </div>
         <div class="w-100 info-study">
           <div class="mb-3">
-            <b>Current:</b>
+            <b>Education</b>
           </div>
           <div>The British International School</div>
           <div>Kuala Lumpur</div>
         </div>
         <div class="w-100 mt-7 mb-13">
-          <nuxt-link class="btn-edit" to="">
+          <nuxt-link class="btn-edit" to="/profile/edit">
             <img class="mr-3" src="@/assets/icons/icon-edit.svg">
             Edit my profile
           </nuxt-link>

@@ -35,9 +35,6 @@
           />
         </div>
         <div class="d-flex flex-column mt-16">
-          <div class="mt-16 mobile-register">
-            Don’t have an account? <nuxt-link class="link" to="/register">Create one here</nuxt-link>.
-          </div>
           <v-btn
             class="btn-action mb-4"
             elevation
@@ -122,6 +119,7 @@ export default {
       align-items: center;
       justify-content: center;
       flex-flow: column;
+      position: relative;
 
       .copyright {
         position: absolute;
@@ -213,6 +211,13 @@ export default {
 
   @media screen and(max-width: 700px) {
     .page-login {
+      flex-wrap: wrap;
+
+      .content-right {
+        width: 100%;
+        padding: 40px 16px 150px;
+      }
+
       .btn-action {
         width: 100% !important;
       }
@@ -220,16 +225,7 @@ export default {
       .content-left {
         box-shadow: none;
         width: 100%;
-
-        .wrap-form {
-          .mobile-register {
-            display: block;
-          }
-        }
-      }
-
-      .content-right {
-        display: none;
+        padding: 40px 16px;
       }
     }
   }
