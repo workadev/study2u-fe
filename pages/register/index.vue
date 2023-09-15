@@ -1,5 +1,5 @@
 <template>
-  <div class="page-login">
+  <div class="page-register">
     <div class="logo-background">
       <img src="@/assets/icons/big-s.svg">
     </div>
@@ -7,10 +7,21 @@
       <div class="wrap-form">
         <div class="wrap-header">
           <img class="mb-3" src="@/assets/images/Study2U-Logo-FA-04.png">
-          <h3 class="bold-h3">LOGIN</h3>
+          <h3 class="bold-h3">REGISTER</h3>
         </div>
         <div class="card-form">
-          <v-text-field hide-details height="38" placeholder="email" />
+          <v-text-field
+            hide-details
+            height="38"
+            placeholder="name"
+          />
+          <v-text-field
+            class="mt-2"
+            hide-details
+            height="38"
+            placeholder="email"
+            autocomlete="off"
+          />
           <v-text-field 
             class="mt-2" 
             hide-details 
@@ -31,53 +42,56 @@
               </v-btn>
             </template>
           </v-text-field>
-          <div class="mt-3 d-flex justify-space-between align-end">
+          <!-- <v-text-field 
+            class="mt-5" 
+            hide-details 
+            height="38" 
+            placeholder="confirm password" 
+            :type="showPassswordConfirm ? 'text' : 'password'"
+          >
+            <template v-slot:append>
+              <v-btn
+                text
+                class="px-0"
+                height="fit-content"
+                min-width="fit-content"
+                @click="showPassswordConfirm = !showPassswordConfirm"
+              >
+                <img v-if="!showPassswordConfirm" src="@/assets/icons/close-eye.svg">
+                <img v-else src="@/assets/icons/eye.svg">
+              </v-btn>
+            </template>
+          </v-text-field> -->
+          <div class="mt-6 d-flex justify-space-between align-end">
             <v-checkbox 
-              label="remember me" 
               hide-details
               color="#000"
-              on-icon="mdi-check-circle-outline"
-              off-icon="mdi-checkbox-blank-circle-outline"
-            />
-          </div>
-          <div class="d-flex flex-column mt-8">
-            <v-btn
-              class="btn-action mb-4"
-              elevation
-              color="#E75982"
-              dark
-              height="58"
-              width="189"
-              @click="clickLogin()"
             >
-              LOGIN
-            </v-btn>
-            <nuxt-link to="" class="link text-decoration-none">
-              <b>I forgot my password</b>
-            </nuxt-link>
+              <template v-slot:label>
+                <div>
+                  I hereby agree with study2u <nuxt-link to="" class="link">Terms & Conditions</nuxt-link> and <nuxt-link to="" class="link">Privacy Policy</nuxt-link>
+                </div>
+              </template>
+            </v-checkbox>
+          </div>
+          <v-btn
+            class="btn-login mt-16"
+            elevation
+            color="#FF5ABE"
+            dark
+            height="58"
+            width="189"
+            @click="clickRegister()"
+          >
+            CREATE
+          </v-btn>
+          <div class="mt-4">
+            Already have one? <nuxt-link class="link" to="/login">Login here</nuxt-link>.
           </div>
         </div>
       </div>
     </div>
     <div class="content-right">
-      <div class="wrap-content">
-        <h3 class="bold-h3 text-center mb-8">
-          New Here?
-        </h3>
-        <div>
-          Sign up and discover a great amount of opportunities!
-        </div>
-        <v-btn
-          class="btn-action mt-16"
-          elevation
-          color="#FABF48"
-          height="58"
-          width="100%"
-          to="/register"
-        >
-          TAKE THE FIRST STEP
-        </v-btn>
-      </div>
       <div class="mb-10 copyright">
         © {{ new Date().getFullYear() }} study2u. All rights reserved.
       </div>
@@ -90,23 +104,23 @@ export default {
   layout: 'clearlayout',
   data() {
     return {
-      showPasssword: false
+      showPasssword: false,
+      showPassswordConfirm: false
     }
   },
   methods: {
-    clickLogin() {
-      this.$store.dispatch("login/getLogin", true)
-      this.$router.push("/")
+    clickRegister() {
+      this.$router.push("/login")
     }
   },
 }
 </script>
 
 <style lang="scss">
-  .page-login {
+  .page-register {
     display: flex;
-    min-height: 100vh;
     background: #0B5994;
+    min-height: 100vh;
 
     .logo-background {
       position: absolute;
@@ -124,39 +138,16 @@ export default {
       }
     }
 
-    .bold-h3 {
-      color: #fff;
-    }
-
-    .btn-action {
-      font-size: 20px;
-      font-weight: 700;
-      border-radius: 16px;
-      margin-top: 26px;
-    }
-
     .content-right {
       display: flex;
       align-items: center;
+      justify-content: center;
       flex-flow: column;
-      position: relative;
-      padding-top: 142px;
-      z-index: 1;
-      background: transparent;
 
       .copyright {
         position: absolute;
         bottom: 0px;
         color: #fff;
-      }
-
-      .wrap-content {
-        width: 100%;
-        max-width: 269px;
-        
-        div {
-          color: #fff;
-        }
       }
     }
 
@@ -166,32 +157,37 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 40px 16px 100px;
 
       .wrap-form {
         width: 100%;
-        max-width: 450px;
+        max-width: 561px;
 
         .card-form {
           background: #fff;
           border-radius: 20px;
-          padding: 44px 44px 53px;
+          padding: 24px 43px 53px;
         }
-
-        .mobile-register {
-          display: none;
-        }
-
+        
         .wrap-header {
           text-align-last: center;
-          margin-bottom: 60px;
+          margin-bottom: 53px;
         }
 
         .link {
           color: #000000;
         }
 
+        .btn-login {
+          font-size: 20px;
+          font-weight: 700;
+          border-radius: 16px;
+          margin-top: 26px;
+        }
+
         .v-input {
+          max-width: 317px;
+
           .v-input__slot {
             padding: 0 12px !important;
             min-height: 38px !important;
@@ -200,6 +196,7 @@ export default {
 
         .v-input--checkbox {
           width: fit-content;
+          max-width: fit-content;
           color: #000000;
 
           .v-label {
@@ -219,11 +216,10 @@ export default {
             height: 16px;
             width: 16px;
             margin-right: 4px;
-            margin-top: 3px;
           }
 
           .v-icon.v-icon {
-            font-size: 18px;
+            font-size: 20px;
           }
         }
 
@@ -235,6 +231,11 @@ export default {
           justify-content: flex-start;
           padding: 0 38px;
         }
+
+        .bold-h3 {
+          color: #fff;
+          text-align: center;
+        }
       }
     }
 
@@ -244,23 +245,21 @@ export default {
     }
   }
 
-  @media screen and(max-width: 700px) {
-    .page-login {
-      flex-wrap: wrap;
-
-      .content-right {
-        width: 100%;
-        padding: 40px 16px 150px;
-      }
-
-      .btn-action {
-        width: 100% !important;
-      }
-
+  @media screen and(max-width: 830px) {
+    .page-register {
       .content-left {
         box-shadow: none;
         width: 100%;
-        padding: 40px 16px;
+
+        .wrap-form {
+          .btn-login {
+            width: 100% !important;
+          }
+        }
+      }
+
+      .content-right {
+        display: none;
       }
     }
   }

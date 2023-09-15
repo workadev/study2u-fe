@@ -136,10 +136,7 @@
 </template>
 
 <script>
-import DataMixins from "@/mixins";
-
 export default {
-  mixins: [DataMixins],
   data() {
     return {
       profile: {

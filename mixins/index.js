@@ -2,6 +2,14 @@ import Cookies from "js-cookie";
 import dayjs from "dayjs";
 
 export default {
+  data() {
+    return {
+      resourceColor: [
+        "#06b6de", "#78cab7", "#0a5994", "#565fcc", 
+        "#ff6d3b", "#e75982", "#739ef1", "#fabe49"
+      ]
+    }
+  },
   filters: {
     capitalized: function(data) {
       if (data) {

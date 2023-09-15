@@ -31,10 +31,10 @@
               </div>
             </div>
             <div class="future-text">
-              <div class="future-title">{{ item.name }}</div>
-              <p class="mb-0 mt-4">
+              <h3 class="bold-h3">{{ item.name }}</h3>
+              <h6 class="mb-0 mt-4 regular-h6">
                 {{ item.desc }}
-              </p>
+              </h6>
             </div>
           </div>
         </div>
@@ -172,20 +172,8 @@ export default {
         }
       }
 
-      
       .future-text {
         max-width: 497px;
-
-        p {
-          font-size: 20px;
-          line-height: 25.88px;
-        }
-
-        .future-title {
-          font-size: 36px;
-          font-weight: 700;
-          line-height: 46.58px;
-        }
       }
     }
   }

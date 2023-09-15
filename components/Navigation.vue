@@ -1,5 +1,5 @@
 <template>
-  <div id="navigation" class="navigation" :style="{background: bgHeader}">
+  <div id="navigation" class="navigation">
     <v-container class="pt-0 pb-0 d-flex align-center justify-space-between">
       <div class="d-flex align-start mr-4">
         <img
@@ -68,7 +68,7 @@
         </div>
         <div>
           <nuxt-link v-if="!isLogin" class="d-flex align-center btn-login" to="/login">
-            LOGIN
+            SIGN IN/REGISTER
           </nuxt-link>
           <div v-else class="d-flex avatar">
             <nuxt-link to="/profile" class="d-flex">
@@ -130,7 +130,7 @@
             <v-divider class="my-3" />
             <v-list-item>
               <nuxt-link v-if="!isLogin" class="d-flex align-center btn-login" to="/login">
-                LOGIN
+                SIGN IN/REGISTER
               </nuxt-link>
               <div v-else class="d-flex avatar">
                 <nuxt-link to="/profile" class="d-flex">
@@ -164,34 +164,27 @@ export default {
           name: "INSTITUTIONS",
           to: "/institutions"
         },
-        {
-          name: "COURSES",
-          to: "/courses"
-        },
+        // {
+        //   name: "COURSES",
+        //   to: "/courses"
+        // },
         {
           name: "MENTOR CONNECT",
           to: "/mentor"
         },
-        {
-          name: "STUDY & YOU",
-          to: "",
-          subNav: [
-            { name: "Study", to: "" },
-          ]
-        }
+        // {
+        //   name: "STUDY & YOU",
+        //   to: "",
+        //   subNav: [
+        //     { name: "Study", to: "" },
+        //   ]
+        // }
       ],
     }
   },
   computed: {
     isLogin() {
       return this.$store.state.login.isLogin
-    },
-    bgHeader() {
-      if (this.$route.name == "index") {
-        return "#fff"
-      } else {
-        return "#F3F3F3"
-      }
     }
   },
   mounted() {
@@ -239,6 +232,7 @@ export default {
     top: 0px;
     z-index: 7;
     transition: all .3s;
+    background: #fff;
 
     .nav-desktop {
       .avatar {
@@ -252,9 +246,9 @@ export default {
       .btn-login {
         font-weight: 700;
         font-size: 14px;
-        width: 99px;
+        width: 169px;
         height: 35px;
-        border: 3px solid #FF5ABE;
+        border: 3px solid #FABF48;
         border-radius: 14px;
         justify-content: center;
         cursor: pointer;
@@ -306,9 +300,9 @@ export default {
       .btn-login {
         font-weight: 700;
         font-size: 14px;
-        width: 99px;
+        width: 169px;
         height: 35px;
-        border: 3px solid #FF5ABE;
+        border: 3px solid #FABF48;
         border-radius: 14px;
         justify-content: center;
       }
@@ -358,7 +352,7 @@ export default {
     border-bottom: 1px solid #FF5ABE;
   }
 
-  @media screen and(max-width: 1263px) {
+  @media screen and(max-width: 875px) {
     .navigation {
       .nav-desktop {
         display: none !important;

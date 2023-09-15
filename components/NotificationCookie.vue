@@ -1,6 +1,6 @@
 <template>
   <div class="notification-cookie">
-    <v-container class="py-10">
+    <v-container class="py-6">
       <div class="mr-5">
         We value your privacy. study2u uses cookies to personalise content and analyse our traffic. See our <nuxt-link to="">Terms & Conditions</nuxt-link>. 
       </div>
@@ -13,8 +13,7 @@
 
 <style lang="scss">
   .notification-cookie {
-    background: #6F41DB;
-    box-shadow: 0px -6px 12px 2px #00000040;
+    background: #FABE47;
 
     .container {
       display: flex;
@@ -25,15 +24,26 @@
     .btn-understood {
       font-size: 20px;
       font-weight: 700;
-      color: #E0E0E0;
       border-radius: 16px;
-      border: 3px solid #fff;
+      border: 3px solid #000;
     }
     
     div,
     a {
-      color: #fff !important;
+      color: #000 !important;
       font-weight: 700;
+    }
+  }
+
+  @media screen and(max-width: 700px) {
+    .notification-cookie {
+      .container {
+        flex-wrap: wrap;
+      }
+
+      .btn-understood {
+        margin-top: 20px;
+      }
     }
   }
 </style>

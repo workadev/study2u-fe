@@ -1,9 +1,9 @@
 <template>
   <div class="home-trending">
     <v-container>
-      <div class="title-content">#TRENDING</div>
+      <h3 class="bold-h3">EDUCATION AFFILIATES</h3>
       <div class="group-item">
-        <div v-for="(item, index) in trendingList" :key="index" class="item">
+        <div v-for="(item, index) in affiliateList" :key="index" class="item">
           <img :src="item.img">
           <div class="title-name mt-2">{{ item.name }}</div>
           <div class="type">{{ item.type }}</div>
@@ -17,7 +17,7 @@
 export default {
   data() {
     return {
-      trendingList: [
+      affiliateList: [
         {
           img: require("@/assets/images/ea-inst-logo-admal 1.png"),
           name: "ADMAL Aviation College",
@@ -81,10 +81,7 @@ export default {
       }
     }
 
-    .title-content {
-      font-size: 36px;
-      font-weight: 700;
-      line-height: 46.58px;
+    .bold-h3 {
       text-align: center;
     }
   }

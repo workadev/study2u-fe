@@ -2,16 +2,22 @@
   <div class="footer">
     <v-container>
       <div class="d-flex justify-space-between content-footer">
-        <div class="mr-5">
-          <div class="d-flex align-start wrap-logo">
+        <div class="mr-5 d-flex info-left">
+          <div>
             <img
-              height="81"
-              width="95"
-              src="@/assets/images/logo-s.svg"
+              src="@/assets/images/Study2U-Logo-FA-13.png"
               alt="logo"
               @click="$router.push('/')"
             >
-            <img class="mt-1" src="@/assets/images/beta.svg">
+            <div class="info-address">
+              <div class="my-3">
+                <b>STUDY2U</b>
+              </div>
+              C2-6-3A, Block C2 <br>
+              Level 6, Solaris Dutamas <br>
+              No 1, Jalan Dutamas 1 <br>
+              50480 Kuala Lumpur
+            </div>
           </div>
           <div class="d-flex flex-column ml-4">
             <nuxt-link 
@@ -69,12 +75,12 @@ export default {
     return {
       listFooter: [
         {
-          name: "Home",
+          name: "Who We Are",
           to: "/"
         },
         {
-          name: "Comparison",
-          to: "/comparison"
+          name: "Institutions",
+          to: "/institutions"
         },
         {
           name: "Courses",
@@ -82,8 +88,17 @@ export default {
           disabled: true
         },
         {
-          name: "About us",
-          to: "/about-us"
+          name: "Mentor Connect",
+          to: "/"
+        },
+        {
+          name: "Study and You",
+          to: "/",
+          disabled: true
+        },
+        {
+          name: "Contact Us",
+          to: "/"
         },
       ]
     }
@@ -93,7 +108,24 @@ export default {
 
 <style lang="scss">
   .footer {
-    background: #231A50;
+    background: #09B6DE;
+
+    .info-left {
+      width: 100%;
+      max-width: 385px;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      .info-address,
+      b {
+        color: #fff;
+        font-size: 14px;
+      }
+
+      b {
+        font-size: 16px;
+      }
+    }
 
     .copyright {
       padding-top: 39px;
@@ -159,10 +191,6 @@ export default {
         font-size: 24px;
         font-weight: 700;
       }
-    }
-
-    .wrap-logo {
-      margin-bottom: 14px;
     }
 
     .link-item {

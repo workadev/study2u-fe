@@ -43,6 +43,10 @@
 
 <script>
 import 'animate.css';
+import Vue from 'vue';
+import DataMixins from "@/mixins";
+
+Vue.mixin(DataMixins)
 
 export default {
   name: 'DefaultLayout',

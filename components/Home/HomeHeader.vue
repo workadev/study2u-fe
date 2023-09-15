@@ -2,17 +2,17 @@
   <div class="home-header">
     <v-container>
       <div class="text-header">
-        <div class="title-1">
+        <h3 class="bold-h3">
           DISCOVER YOUR PATH
-        </div>
-        <div class="title-2">
+        </h3>
+        <h1 class="bold-h1">
           TO SUCCESS
-        </div>
-        <p class="mt-4 mb-0">
+        </h1>
+        <h6 class="mt-4 mb-0 regular-h6">
           At Study2U, we're dedicated to empowering students like you to embark on an extraordinary educational journey.
   Our platform is designed to connect you with valuable resources, incredible opportunities, and a network of like-minded individuals who share your passion for learning and growth.
-        </p>
-        <v-btn color="#FF5ABE" height="58" elevation dark class="btn-start mt-7">
+        </h6>
+        <v-btn color="#FABF48" height="58" elevation dark class="btn-start mt-7">
           TAKE THE FIRST STEP
         </v-btn>
       </div>
@@ -40,23 +40,11 @@
         padding: 0 36px;
       }
 
-      p {
-        font-size: 20px;
-        line-height: 25.88px;
-      }
-
-      .title-1 {
+      .bold-h3 {
         font-weight: 700;
         font-size: 36px;
         line-height: 1em;
       }
-
-      .title-2 {
-        font-weight: 700;
-        font-size: 64px;
-        line-height: 1em;
-      }
-
     }
   }
 

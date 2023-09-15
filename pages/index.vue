@@ -1,8 +1,11 @@
 <template>
   <div class="page-index">
     <HomeHeader />
-    <HomeFutures />
+    <HomeServices />
     <HomeTrending />
+    <HomeMentor />
+    <HomeReadyLeap v-if="!isLogin" />
+    <HomeEmpowered v-if="!isLogin" />
     <NotificationCookie />
   </div>
 </template>
@@ -17,5 +20,10 @@ export default {
       }
     }
   },
+  computed: {
+    isLogin() {
+      return this.$store.state.login.isLogin
+    },
+  }
 }
 </script>
