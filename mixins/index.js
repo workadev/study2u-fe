@@ -35,5 +35,9 @@ export default {
     formatDate(value, format = "YYYY-MM-DD") {
       return dayjs(value).format(format)
     },
+    randomCode() {
+      let getColor = this.resourceColor[Math.floor(Math.random() * this.resourceColor.length)];
+      return getColor
+    },
   },
 }

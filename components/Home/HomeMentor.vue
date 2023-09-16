@@ -22,15 +22,7 @@
 
 <script>
 export default {
-  mounted() {
-    this.randomCode()
-  },
-  methods: {
-    randomCode() {
-      let getColor = this.resourceColor[Math.floor(Math.random() * this.resourceColor.length)];
-      return getColor
-    },
-  },
+  
 }
 </script>
 

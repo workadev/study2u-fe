@@ -170,7 +170,7 @@ export default {
         // },
         {
           name: "MENTOR CONNECT",
-          to: "/mentor"
+          to: "/mentor-connect"
         },
         // {
         //   name: "STUDY & YOU",

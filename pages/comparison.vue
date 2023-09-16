@@ -44,7 +44,7 @@
             <div class="wrap-info">
               <div class="title-info">Studies</div>
               <div class="mb-4" v-for="(itemChild, indexChild) in item.studies" :key="indexChild">
-                <div class="name-bold">{{ itemChild.name }}</div>
+                <!-- <div class="name-bold">{{ itemChild.name }}</div> -->
                 <div class="wrap-chip">
                   <div class="chip-square" v-for="(itemCategory, indexCategory) in itemChild.categoryList" :key="indexCategory">
                     {{ itemCategory }}
@@ -105,16 +105,11 @@ export default {
               name: "D3",
               categoryList: [
                 "Life Science", "Physical Science", "Islamic Studies", "Social Science",
-                "Islamic Studies and Science", "Special Preparation (Japan)"
-              ]
-            },
-            {
-              name: "S1",
-              categoryList: [
+                "Islamic Studies and Science", "Special Preparation (Japan)",
                 "Music", "Law", "Nursing Science", "Science in Applied Geology", "Medicine and Surgery",
                 "Biomedical Science", "Real Estate", "Finance"
               ]
-            }
+            },
           ]
         },
         {

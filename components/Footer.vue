@@ -84,8 +84,7 @@ export default {
         },
         {
           name: "Courses",
-          to: "/courses",
-          disabled: true
+          to: "/courses"
         },
         {
           name: "Mentor Connect",
@@ -93,8 +92,7 @@ export default {
         },
         {
           name: "Study and You",
-          to: "/",
-          disabled: true
+          to: "/"
         },
         {
           name: "Contact Us",
@@ -197,10 +195,15 @@ export default {
       color: #fff !important;
       text-decoration: none;
       margin-bottom: 20px;
+      transition: all .3s;
     }
 
     .link-item:last-child {
       margin-bottom: 0px;
+    }
+
+    .link-item:hover {
+      color: #473D7A !important;
     }
 
     .container {
@@ -211,11 +214,6 @@ export default {
     div,
     a {
       color: #fff !important;
-    }
-
-    .disabled {
-      pointer-events: none;
-      color: #473D7A !important;
     }
   }
 

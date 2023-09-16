@@ -12,6 +12,19 @@
       </carousel>
     </client-only>
     <v-container class="py-0 mt-12">
+      <div class="detail-action">
+        <v-btn
+          :color="interest ? '#91D1BF' : '#5EC9AA'"
+          elevation
+          class="btn-action"
+          height="58"
+          width="256"
+          @click="interest = !interest"
+        >
+          <v-icon :color="interest ? '#ff5abe' : '#2ca481'" size="35">mdi-heart</v-icon> 
+          <div>{{ interest ? "Added to Shortlist" : "I’m Interested" }}</div>
+        </v-btn>
+      </div>
       <div class="desc">
         The BAC Story We began with a single campus in Brickfields in 1991 with fewer than 50 students and only three programmes – Cambridge A-Levels, the University of London law degree, and the Certificate of Legal Practice (CLP). Today, we offer over 500 world-class pre-university, undergraduate, postgraduate, and professional programmes in business, law, and technology across three campuses in Kuala Lumpur, Petaling Jaya, and Singapore.
       </div>
@@ -33,6 +46,10 @@
             <b>Admittance:</b>
             <div class="text-info">Public</div>
           </div>
+          <div class="wrap-info mt-5">
+            <b>Area:</b>
+            <div class="text-info">Urban</div>
+          </div>
         </div>
         <div class="content-center">
           <img class="mb-2" src="@/assets/icons/star.svg">
@@ -41,21 +58,6 @@
               {{ item }}
             </div>
           </div>
-          <!-- <div class="info-time mt-1">
-            <div class="wrap-info">
-              <b>Duration</b>
-              <div>7 semester regular</div>
-              <div>1 semester special</div>
-            </div>
-            <div class="wrap-info mt-1">
-              <b>Start</b>
-              <div>October</div>
-            </div>
-            <div class="wrap-info mt-1">
-              <b>Fee</b>
-              <div>RM 8,000</div>
-            </div>
-          </div> -->
         </div>
         <div class="content-right mt-8">
           <img src="@/assets/images/Rectangle 74.png">
@@ -64,38 +66,33 @@
           </v-btn>
         </div>
       </div>
-      <div class="wrap-info mt-11">
-        <b>Contact Person</b>
-        <div class="d-flex align-center mt-2">
-          <img class="mr-4" width="125" height="125" src="@/assets/images/Ellipse 8.png">
-          <div>
-            <div class="mb-3">
-              <b>Hardy Tame</b>
+      <div class="text-center mt-7">
+        <h6 class="bold-h6">
+          Mentor
+        </h6>
+        <div class="d-flex justify-center flex-wrap wrap-list">
+          <div v-for="(item, index) in listMentor" :key="index" class="item-list">
+            <div class="wrap-img" :style="{background: randomCode()}">
+              <img v-if="item.photo" :src="item.photo">
+              <h1 v-else class="bold-h1">
+                {{ item.name.charAt(0) }}
+              </h1>
             </div>
+            <h6 class="bold-h6 mt-5 mb-2">
+              {{ item.name }}
+            </h6>
             <v-btn
+              color="#09B6DE"
+              dark
+              width="115"
+              height="45"
+              class="btn-connect"
               elevation
-              color="#F4BF28"
-              class="btn-send"
-              height="36"
-              width="159"
             >
-              Send message
+              Connect
             </v-btn>
           </div>
         </div>
-      </div>
-      <div class="detail-action">
-        <v-btn
-          :color="interest ? '#91D1BF' : '#5EC9AA'"
-          elevation
-          class="btn-action"
-          height="58"
-          width="256"
-          @click="interest = !interest"
-        >
-          <v-icon :color="interest ? '#ff5abe' : '#2ca481'" size="35">mdi-heart</v-icon> 
-          <div>{{ interest ? "Added to Shortlist" : "I’m Interested" }}</div>
-        </v-btn>
       </div>
     </v-container>
   </div>
@@ -115,7 +112,21 @@ export default {
         "Technology & Innovation", "Hospitality, Culinary & Tourism", 
         "Psychology", "Early Childhood"
       ],
-      interest: false
+      interest: false,
+      listMentor: [
+        {
+          photo: require("@/assets/images/Ellipse 9.png"),
+          name: "Mentor Name"
+        },
+        {
+          photo: "",
+          name: "Hardy Tame"
+        },
+        {
+          photo: require("@/assets/images/Ellipse 10.png"),
+          name: "Some Name Here"
+        },
+      ]
     }
   },
 }
@@ -125,8 +136,43 @@ export default {
   .institution-detail {
     padding: 99px 0;
 
+    .wrap-list {
+      margin: 8px -15px -15px;
+
+      .item-list {
+        margin: 15px;
+        max-width: 250px;
+
+        .btn-connect {
+          border-radius: 14px;
+          font-size: 16px;
+          font-weight: 700;
+        }
+
+        .wrap-img {
+          border-radius: 50%;
+          width: 250px;
+          height: 250px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .bold-h1 {
+            font-size: 12em;
+            color: #fff;
+          }
+
+          img {
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+
     .detail-action {
-      margin-top: 53px;
+      margin: 50px 0;
       display: flex;
       flex-flow: column;
       align-items: center;
@@ -195,16 +241,6 @@ export default {
       margin-right: 20px;
 
       .wrap-info {
-        .btn-send {
-          border-radius: 0px;
-          font-size: 16px;
-          font-weight: 700;
-        }
-
-        img {
-          border-radius: 50%;
-        }
-
         .title-bold {
           font-size: 24px;
           font-weight: 700;
