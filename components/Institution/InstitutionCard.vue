@@ -53,7 +53,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    // transition: all .3s;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    border: 2px solid #E2E2E2;
+    transition: .3s;
+    padding: 30px 13px;
 
     .info-institution {
       width: 100%;
@@ -84,8 +87,16 @@ export default {
     }
 
     .wrap-info-center {
-      width: 170px;
+      border-right: 3px solid #E2E2E2;
+      border-left: 3px solid #E2E2E2;
+      padding-left: 28px;
+      padding-right: 48px;
       min-width: 170px;
+      height: 148px;
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      transition: .3s;
 
       .content-center {
         font-size: 20px;
@@ -113,7 +124,9 @@ export default {
 
       .name {
         font-size: 24px;
+        font-weight: 700;
         color: #000;
+        text-decoration: none;
       }
 
       .type {
@@ -130,8 +143,54 @@ export default {
   }
 
   .institution-card:hover {
-    box-shadow: 0px 4px 4px 0px #00000040;
     border: 2px solid #000000;
-    padding: 30px 13px;
+
+    .wrap-info-center {
+      border-color: #000;
+    }
+
+    .wrap-logo {
+      .name {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  @media screen and(max-width: 900px) {
+    .institution-card {
+      flex-wrap: wrap;
+
+      .wrap-info-center {
+        border-right: none;
+      }
+
+      .info-institution {
+        max-width: 100%;
+      }
+
+      .desc {
+        max-width: 100%;
+        margin-top: 20px;
+      }
+    }
+  }
+
+  @media screen and(max-width: 700px) {
+    .institution-card {
+      .wrap-logo {
+        max-width: fit-content;
+      }
+      
+      .wrap-info-center {
+        border-left: none;
+        height: auto;
+        padding: 0px;
+        margin-top: 20px;
+      }
+
+      .info-institution {
+        flex-wrap: wrap;
+      }
+    }
   }
 </style>
