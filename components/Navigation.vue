@@ -153,12 +153,12 @@ export default {
       listNavigation: [
         {
           name: "WHO WE ARE",
-          to: "",
-          subNav: [
-            { name: "Our Mission", to: "" },
-            { name: "Our Story", to: "" },
-            { name: "Our Principles", to: "" },
-          ]
+          to: "/who-we-are",
+          // subNav: [
+          //   { name: "Our Mission", to: "" },
+          //   { name: "Our Story", to: "" },
+          //   { name: "Our Principles", to: "" },
+          // ]
         },
         {
           name: "INSTITUTIONS",
