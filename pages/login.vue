@@ -10,13 +10,19 @@
           <h3 class="bold-h3">LOGIN</h3>
         </div>
         <div class="card-form">
-          <v-text-field hide-details height="38" placeholder="email" />
+          <v-text-field
+            hide-details
+            height="38"
+            placeholder="email"
+            v-model="form.email"
+          />
           <v-text-field 
             class="mt-2" 
             hide-details 
             height="38" 
             placeholder="password" 
             :type="showPasssword ? 'text' : 'password'"
+            v-model="form.password"
           >
             <template v-slot:append>
               <v-btn
@@ -90,13 +96,31 @@ export default {
   layout: 'clearlayout',
   data() {
     return {
-      showPasssword: false
+      showPasssword: false,
+      form: {
+        email: "",
+        password: ""
+      }
     }
   },
   methods: {
-    clickLogin() {
-      this.$store.dispatch("login/getLogin", true)
-      this.$router.push("/")
+    async clickLogin() {
+      await this.$axios.post("users/v1/sign_in", this.form)
+      .then((res) => {
+        if (res.status == 200) {
+          
+        }
+      })
+      .catch(err => {
+        this.$store.dispatch("snackbar/getSnackbar", {
+          show: true,
+          color: "#ff004a",
+          icon: "mdi-close",
+          title: "Login Failed",
+          message: err.response ? err.response.message : err
+        })
+      })
+      // this.$router.push("/")
     }
   },
 }

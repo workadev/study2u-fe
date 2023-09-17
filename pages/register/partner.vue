@@ -117,6 +117,14 @@ export default {
       showPassswordConfirm: false
     }
   },
+  computed: {
+    listStudy() {
+      return this.$store.state.study.listStudy
+    }
+  },
+  mounted() {
+    this.$store.dispatch("study/getStudy")
+  },
   methods: {
     clickRegister() {
       this.$router.push("/login")

@@ -325,3 +325,9 @@ body {
   font-weight: 700;
   color: #FF0000;
 }
+
+.alert-snackbar {
+  .btn-close {
+    font-size: 22px !important;
+  }
+}

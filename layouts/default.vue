@@ -6,7 +6,7 @@
       <Footer />
     </v-main>
     <v-snackbar
-      v-model="snackbar.show"
+      v-model="snackbarShow"
       :timeout="6000"
       :top="'top'"
       :color="snackbar.color"
@@ -32,6 +32,7 @@
           text
           dark
           v-bind="attrs"
+          class="btn-close"
           @click="$store.dispatch('snackbar/getSnackbar', {show: false})"
         >
           &times;
@@ -61,11 +62,24 @@ export default {
       ]
     }
   },
+  data() {
+    return {
+      snackbarShow: false
+    }
+  },
   computed: {
     snackbar() {
       return this.$store.state.snackbar.dataSnackbar
     }
-  }
+  },
+  watch: {
+    snackbar: {
+      deep: true,
+      handler: function(newVal) {
+        this.snackbarShow = newVal.show
+      }
+    }
+  },
 }
 </script>
 
