@@ -1,5 +1,5 @@
 <template>
-  <div class="page-login">
+  <div class="forgot-password">
     <div class="logo-background">
       <img src="@/assets/icons/big-s.svg">
     </div>
@@ -7,77 +7,46 @@
       <div class="wrap-form">
         <div class="wrap-header">
           <img class="mb-3" src="@/assets/images/Study2U-Logo-FA-04.png">
-          <h3 class="bold-h3">LOGIN</h3>
+          <h3 class="bold-h3">FORGOT PASSWORD</h3>
         </div>
         <div class="card-form">
-          <v-text-field hide-details height="38" placeholder="email" />
-          <v-text-field 
-            class="mt-2" 
-            hide-details 
-            height="38" 
-            placeholder="password" 
-            :type="showPasssword ? 'text' : 'password'"
-          >
-            <template v-slot:append>
-              <v-btn
-                text
-                class="px-0"
-                height="fit-content"
-                min-width="fit-content"
-                @click="showPasssword = !showPasssword"
-              >
-                <img v-if="!showPasssword" src="@/assets/icons/close-eye.svg">
-                <img v-else src="@/assets/icons/eye.svg">
-              </v-btn>
-            </template>
-          </v-text-field>
-          <div class="mt-3 d-flex justify-space-between align-end">
-            <v-checkbox 
-              label="remember me" 
-              hide-details
-              color="#000"
-              on-icon="mdi-check-circle-outline"
-              off-icon="mdi-checkbox-blank-circle-outline"
-            />
+          <div class="regular-title ml-2">
+            Kindly enter your email. You will receive a link to reset your password.
           </div>
-          <div class="d-flex flex-column mt-8">
+          <div>
+            <v-text-field
+              hide-details
+              height="38"
+              placeholder="email"
+              v-model="email"
+            />
+            <div v-if="error.email" class="error-field ml-2 mt-3">
+              {{ error.email }}
+            </div>
+          </div>
+          <div class="d-flex flex-column mt-10">
             <v-btn
               class="btn-action mb-4"
               elevation
               color="#E75982"
-              dark
               height="58"
               width="189"
-              @click="clickLogin()"
+              :disabled="disButton"
+              @click="clickReset()"
             >
-              LOGIN
+              RESET
             </v-btn>
-            <nuxt-link to="/forgot-password" class="link text-decoration-none">
-              <b>I forgot my password</b>
-            </nuxt-link>
+            <div>
+              or return to login
+              <nuxt-link to="/login" class="link">
+                here
+              </nuxt-link>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="content-right">
-      <div class="wrap-content">
-        <h3 class="bold-h3 text-center mb-8">
-          New Here?
-        </h3>
-        <div>
-          Sign up and discover a great amount of opportunities!
-        </div>
-        <v-btn
-          class="btn-action mt-16"
-          elevation
-          color="#FABF48"
-          height="58"
-          width="100%"
-          to="/register"
-        >
-          TAKE THE FIRST STEP
-        </v-btn>
-      </div>
       <div class="mb-10 copyright">
         © {{ new Date().getFullYear() }} study2u. All rights reserved.
       </div>
@@ -90,20 +59,31 @@ export default {
   layout: 'clearlayout',
   data() {
     return {
-      showPasssword: false
+      email: "",
+      error: {
+        email: ""
+      }
+    }
+  },
+  computed: {
+    disButton() {
+      if (this.email) {
+        return false
+      }
+
+      return true
     }
   },
   methods: {
-    clickLogin() {
-      this.$store.dispatch("login/getLogin", true)
-      this.$router.push("/")
+    clickReset() {
+      this.error.email = "No email was found."
     }
   },
 }
 </script>
 
 <style lang="scss">
-  .page-login {
+  .forgot-password {
     display: flex;
     min-height: 100vh;
     background: #0B5994;
@@ -132,7 +112,7 @@ export default {
       font-size: 20px;
       font-weight: 700;
       border-radius: 16px;
-      margin-top: 26px;
+      color: #fff;
     }
 
     .content-right {
@@ -148,15 +128,6 @@ export default {
         position: absolute;
         bottom: 0px;
         color: #fff;
-      }
-
-      .wrap-content {
-        width: 100%;
-        max-width: 269px;
-        
-        div {
-          color: #fff;
-        }
       }
     }
 
@@ -193,37 +164,8 @@ export default {
 
         .v-input {
           .v-input__slot {
-            padding: 0 12px !important;
+            padding: 0 8px !important;
             min-height: 38px !important;
-          }
-        }
-
-        .v-input--checkbox {
-          width: fit-content;
-          color: #000000;
-
-          .v-label {
-            color: #000000;
-          }
-          
-          .v-input__slot {
-            padding: 0px !important;
-            min-height: 20px !important;
-          }
-
-          .v-input--selection-controls__ripple {
-            display: none;
-          }
-
-          .v-input--selection-controls__input {
-            height: 16px;
-            width: 16px;
-            margin-right: 4px;
-            margin-top: 3px;
-          }
-
-          .v-icon.v-icon {
-            font-size: 18px;
           }
         }
 
@@ -245,7 +187,7 @@ export default {
   }
 
   @media screen and(max-width: 700px) {
-    .page-login {
+    .forgot-password {
       flex-wrap: wrap;
 
       .content-right {

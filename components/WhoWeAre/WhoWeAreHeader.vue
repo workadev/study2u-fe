@@ -8,8 +8,8 @@
         </h6>
       </div>
       <div class="wrap-img relative">
-        <img src="@/assets/images/Mask group.png">
-        <img class="img-2" src="@/assets/images/Mask group 2.png">
+        <img src="@/assets/images/rudal_01.png">
+        <img class="img-2" src="@/assets/images/rudal_02.png">
       </div>
     </v-container>
   </div>
@@ -24,18 +24,30 @@
       align-items: center;
 
       .wrap-img {
+        width: 326px;
+        min-width: 326px;
+
+        img {
+          width: 100%;
+        }
+
         .img-2 {
           position: absolute;
           right: 0px;
           bottom: 0px;
-          margin-bottom: -93px;
-          margin-right: 49px;
+          margin-bottom: -105px;
+          margin-right: 0px;
+          width: 100%;
         }
       }
 
       .text-header {
         color: #222222;
-        max-width: 550px;
+        max-width: 660px;
+
+        .regular-h6 {
+          max-width: 497px;
+        }
 
         .bold-h1 {
           line-height: 82.82px;
@@ -43,6 +55,18 @@
       }
     }
     
+  }
+
+  @media screen and(max-width: 1263px) {
+    .who-we-are-header {
+      .container {
+        .wrap-img {
+          .img-2 {
+            // margin-bottom: -93px;
+          }
+        }
+      }
+    }
   }
 
   @media screen and(max-width: 700px) {

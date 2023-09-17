@@ -76,7 +76,7 @@ export default {
       listFooter: [
         {
           name: "Who We Are",
-          to: "/"
+          to: "/whoweare"
         },
         {
           name: "Institutions",
@@ -88,7 +88,7 @@ export default {
         },
         {
           name: "Mentor Connect",
-          to: "/"
+          to: "/mentor-connect"
         },
         {
           name: "Study and You",
@@ -96,7 +96,7 @@ export default {
         },
         {
           name: "Contact Us",
-          to: "/"
+          to: "/contact"
         },
       ]
     }

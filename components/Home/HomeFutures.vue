@@ -21,8 +21,8 @@
                 <img width="47" class="mt-2" src="@/assets/images/Ellipse 5.png">
               </div>
               <div class="img-future">
-                <img src="@/assets/images/Mask group.png">
-                <img class="img-pencil" src="@/assets/images/Mask group 2.png">
+                <!-- <img src="@/assets/images/Mask group.png">
+                <img class="img-pencil" src="@/assets/images/Mask group 2.png"> -->
               </div>
             </div>
             <div v-else class="wrap-img">
