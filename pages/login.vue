@@ -105,10 +105,10 @@ export default {
   },
   methods: {
     async clickLogin() {
-      await this.$axios.post("users/v1/sign_in", this.form)
+      await this.$axios.post("users/v1/sign_in", this.form, { headers: this.$store.state.config.headers })
       .then((res) => {
         if (res.status == 200) {
-          
+          this.$router.push("/")
         }
       })
       .catch(err => {
@@ -117,10 +117,9 @@ export default {
           color: "#ff004a",
           icon: "mdi-close",
           title: "Login Failed",
-          message: err.response ? err.response.message : err
+          message: err.response ? err.response.data.message : err
         })
       })
-      // this.$router.push("/")
     }
   },
 }

@@ -10,13 +10,19 @@
           <h3 class="bold-h3">PARTNER REGISTRATION</h3>
         </div>
         <div class="card-form">
-          <v-text-field hide-details height="38" placeholder="email" />
+          <v-text-field
+            hide-details
+            height="38"
+            placeholder="email"
+            v-model="form.email"
+          />
           <v-text-field 
             class="mt-2" 
             hide-details 
             height="38" 
             placeholder="user typed in password" 
             :type="showPasssword ? 'text' : 'password'"
+            v-model="form.password"
           >
             <template v-slot:append>
               <v-btn
@@ -37,6 +43,7 @@
             height="38" 
             placeholder="confirm password" 
             :type="showPassswordConfirm ? 'text' : 'password'"
+            v-model="form.password_confirmation"
           >
             <template v-slot:append>
               <v-btn
@@ -53,9 +60,12 @@
           </v-text-field>
           <v-select 
             class="mt-2"
-            :items="[]"
+            :items="listStudy"
             hide-details
             placeholder="current qualification"
+            item-text="name"
+            item-value="id"
+            v-model="form.current_education_id"
           >
             <template v-slot:append>
               <img width="21" src="@/assets/icons/chevron-down.svg">
@@ -63,9 +73,10 @@
           </v-select>
           <v-select 
             class="mt-2"
-            :items="[]"
+            :items="listCountry"
             hide-details
             placeholder="nationality"
+            v-model="form.nationality"
           >
             <template v-slot:append>
               <img width="21" src="@/assets/icons/chevron-down.svg">
@@ -75,6 +86,7 @@
             <v-checkbox 
               hide-details
               color="#000"
+              v-model="form.tnc"
             >
               <template v-slot:label>
                 <div>
@@ -87,13 +99,15 @@
             class="btn-login mt-16"
             elevation
             color="#FF5ABE"
-            dark
             height="58"
             width="189"
             @click="clickRegister()"
+            :loading="loading"
+            :disabled="disCreate"
           >
             CREATE
           </v-btn>
+          {{ this.form }}
           <div class="mt-4">
             Already have one? <nuxt-link class="link" to="/login">Login here</nuxt-link>.
           </div>
@@ -114,20 +128,82 @@ export default {
   data() {
     return {
       showPasssword: false,
-      showPassswordConfirm: false
+      showPassswordConfirm: false,
+      form: {
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+        current_education_id: "",
+        interest_ids: [],
+        nationality: "",
+        tnc: false
+      },
+      loading: false
     }
   },
   computed: {
     listStudy() {
       return this.$store.state.study.listStudy
+    },
+    disCreate() {
+      if (this.form.email && this.form.password && this.form.password_confirmation &&
+        this.form.current_education_id && this.form.nationality && this.form.tnc && 
+        (this.form.password == this.form.password_confirmation)
+      ) {
+        return false  
+      }
+      return true
     }
   },
   mounted() {
     this.$store.dispatch("study/getStudy")
   },
   methods: {
-    clickRegister() {
-      this.$router.push("/login")
+    async clickRegister() {
+      if (!this.loading) {
+        this.loading = true
+        await this.$axios.post("users/v1/sign_up", { user: this.form })
+        .then((res) => {
+          if (res.status == 200) {
+            this.formClear()
+            this.$store.dispatch("snackbar/getSnackbar", {
+              show: true,
+              color: "#74b816",
+              icon: "mdi-check",
+              title: "Register Success",
+              message: res.data.data.message
+            })
+            setTimeout(() => {
+              this.$router.push("/login")
+            }, 6000);
+          }
+        })
+        .catch(err => {
+          this.$store.dispatch("snackbar/getSnackbar", {
+            show: true,
+            color: "#ff004a",
+            icon: "mdi-close",
+            title: "Register Failed",
+            message: err.response ? err.response.data.message : err
+          })
+        })
+        this.loading = false
+      }
+    },
+    formClear() {
+      this.form = {
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+        current_education_id: "",
+        interest_ids: [],
+        nationality: "",
+        tnc: false
+      }
     }
   },
 }
@@ -200,6 +276,7 @@ export default {
           font-weight: 700;
           border-radius: 16px;
           margin-top: 26px;
+          color: #fff;
         }
 
         .v-input {

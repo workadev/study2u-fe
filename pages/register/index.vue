@@ -14,6 +14,7 @@
             hide-details
             height="38"
             placeholder="name"
+            v-model="form.first_name"
           />
           <v-text-field
             class="mt-2"
@@ -21,6 +22,7 @@
             height="38"
             placeholder="email"
             autocomlete="off"
+            v-model="form.email"
           />
           <v-text-field 
             class="mt-2" 
@@ -28,6 +30,7 @@
             height="38" 
             placeholder="password" 
             :type="showPasssword ? 'text' : 'password'"
+            v-model="form.password"
           >
             <template v-slot:append>
               <v-btn
@@ -66,6 +69,7 @@
             <v-checkbox 
               hide-details
               color="#000"
+              v-model="form.tnc"
             >
               <template v-slot:label>
                 <div>
@@ -78,10 +82,11 @@
             class="btn-login mt-16"
             elevation
             color="#FF5ABE"
-            dark
             height="58"
             width="189"
             @click="clickRegister()"
+            :disabled="disCreate"
+            :loading="loading"
           >
             CREATE
           </v-btn>
@@ -105,12 +110,76 @@ export default {
   data() {
     return {
       showPasssword: false,
-      showPassswordConfirm: false
+      showPassswordConfirm: false,
+      form: {
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+        current_education_id: "",
+        interest_ids: [],
+        nationality: "",
+        tnc: false
+      },
+      loading: false
+    }
+  },
+  computed: {
+    disCreate() {
+      if (this.form.first_name && this.form.email && 
+        this.form.password && this.form.tnc
+      ) {
+        return false  
+      }
+      return true
     }
   },
   methods: {
-    clickRegister() {
-      this.$router.push("/login")
+    async clickRegister() {
+      if (!this.loading) {
+        this.loading = true
+        this.form.password_confirmation = this.form.password
+        await this.$axios.post("users/v1/sign_up", { user: this.form })
+        .then((res) => {
+          if (res.status == 200) {
+            this.formClear()
+            this.$store.dispatch("snackbar/getSnackbar", {
+              show: true,
+              color: "#74b816",
+              icon: "mdi-check",
+              title: "Register Success",
+              message: res.data.data.message
+            })
+            setTimeout(() => {
+              this.$router.push("/login")
+            }, 6000);
+          }
+        })
+        .catch(err => {
+          this.$store.dispatch("snackbar/getSnackbar", {
+            show: true,
+            color: "#ff004a",
+            icon: "mdi-close",
+            title: "Register Failed",
+            message: err.response ? err.response.data.message : err
+          })
+        })
+        this.loading = false
+      }
+    },
+    formClear() {
+      this.form = {
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+        current_education_id: "",
+        interest_ids: [],
+        nationality: "",
+        tnc: false
+      }
     }
   },
 }
@@ -183,6 +252,7 @@ export default {
           font-weight: 700;
           border-radius: 16px;
           margin-top: 26px;
+          color: #fff;
         }
 
         .v-input {
