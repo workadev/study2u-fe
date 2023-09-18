@@ -149,7 +149,7 @@ export default {
               color: "#74b816",
               icon: "mdi-check",
               title: "Register Success",
-              message: res.data.data.message
+              message: res.data.message
             })
             setTimeout(() => {
               this.$router.push("/login")

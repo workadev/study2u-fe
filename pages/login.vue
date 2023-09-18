@@ -108,7 +108,16 @@ export default {
       await this.$axios.post("users/v1/sign_in", this.form, { headers: this.$store.state.config.headers })
       .then((res) => {
         if (res.status == 200) {
-          this.$router.push("/")
+          this.$store.dispatch("snackbar/getSnackbar", {
+            show: true,
+            color: "#74b816",
+            icon: "mdi-check",
+            title: "Login Success",
+            message: res.data.message
+          })
+          setTimeout(() => {
+            this.$router.push("/")
+          }, 2000);
         }
       })
       .catch(err => {

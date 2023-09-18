@@ -62,7 +62,8 @@ export default {
       email: "",
       error: {
         email: ""
-      }
+      },
+      loading: false
     }
   },
   computed: {
@@ -75,8 +76,36 @@ export default {
     }
   },
   methods: {
-    clickReset() {
-      this.error.email = "No email was found."
+    async clickReset() {
+      if (!this.loading) {
+        this.loading = true
+        this.error.email = ""
+        await this.$axios.post("users/v1/reset_passwords", this.form)
+        .then((res) => {
+          if (res.status == 200) {
+            this.$store.dispatch("snackbar/getSnackbar", {
+              show: true,
+              color: "#74b816",
+              icon: "mdi-check",
+              title: "Forgot Password Success",
+              message: res.data.message
+            })
+            this.email = ""
+          } else {
+            this.error.email = "No email was found."
+          }
+        })
+        .catch(err => {
+          this.$store.dispatch("snackbar/getSnackbar", {
+            show: true,
+            color: "#ff004a",
+            icon: "mdi-close",
+            title: "Forgot Password Failed",
+            message: err.response ? err.response.data.message : err
+          })
+        })
+        this.loading = false
+      }
     }
   },
 }
