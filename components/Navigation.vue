@@ -70,7 +70,7 @@
           <nuxt-link v-if="!user" class="d-flex align-center btn-login" to="/login">
             SIGN IN/REGISTER
           </nuxt-link>
-          <div class="d-flex avatar wrap-img" :style="{background: randomCode()}">
+          <div v-else class="d-flex avatar wrap-img" :style="{background: randomCode()}">
             <nuxt-link to="/profile" class="d-flex">
               <img src="@/assets/images/mini avatar.png">
               <!-- <h1 class="bold-h1">
@@ -248,11 +248,15 @@ export default {
       align-items: center;
       justify-content: center;
 
+      a {
+        height: 100%;
+      }
+
       .bold-h1 {
         font-size: 4em;
         color: #fff;
       }
-      
+
       img {
         border-radius: 50%;
         width: 100%;
