@@ -165,7 +165,7 @@ export default {
         this.loading = true
         await this.$axios.post("users/v1/sign_up", { user: this.form })
         .then((res) => {
-          if (res.status == 200) {
+          if (res.status == 201) {
             this.formClear()
             this.$store.dispatch("snackbar/getSnackbar", {
               show: true,
@@ -276,6 +276,10 @@ export default {
           border-radius: 16px;
           margin-top: 26px;
           color: #fff;
+
+          circle {
+            color: #fff;
+          }
         }
 
         .v-input {
@@ -314,15 +318,6 @@ export default {
           .v-icon.v-icon {
             font-size: 20px;
           }
-        }
-
-        .btn-google {
-          font-size: 24px;
-          border-radius: 20px;
-          border: 2px solid #000000;
-          text-transform: lowercase !important;
-          justify-content: flex-start;
-          padding: 0 38px;
         }
 
         .bold-h3 {

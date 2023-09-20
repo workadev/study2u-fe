@@ -51,10 +51,11 @@
               class="btn-action mb-4"
               elevation
               color="#E75982"
-              dark
               height="58"
               width="189"
               @click="clickLogin()"
+              :disabled="disLogin"
+              :loading="loading"
             >
               LOGIN
             </v-btn>
@@ -100,24 +101,27 @@ export default {
       form: {
         email: "",
         password: ""
+      },
+      loading: false
+    }
+  },
+  computed: {
+    disLogin() {
+      if (this.form.email && this.form.password) {
+        return false
       }
+      return true
     }
   },
   methods: {
     async clickLogin() {
+      this.loading = true
       await this.$axios.post("users/v1/sign_in", this.form, { headers: this.$store.state.config.headers })
       .then((res) => {
         if (res.status == 200) {
-          this.$store.dispatch("snackbar/getSnackbar", {
-            show: true,
-            color: "#74b816",
-            icon: "mdi-check",
-            title: "Login Success",
-            message: res.data.message
-          })
-          setTimeout(() => {
-            this.$router.push("/")
-          }, 2000);
+          this.setCookies("token", res.headers.token)
+          this.$store.dispatch("login/getUser", res.data.data.user)
+          this.$router.push("/")
         }
       })
       .catch(err => {
@@ -129,6 +133,7 @@ export default {
           message: err.response ? err.response.data.message : err
         })
       })
+      this.loading = false
     }
   },
 }
@@ -165,6 +170,10 @@ export default {
       font-weight: 700;
       border-radius: 16px;
       margin-top: 26px;
+
+      circle {
+        color: #fff;
+      }
     }
 
     .content-right {
@@ -259,13 +268,8 @@ export default {
           }
         }
 
-        .btn-google {
-          font-size: 24px;
-          border-radius: 20px;
-          border: 2px solid #000000;
-          text-transform: lowercase !important;
-          justify-content: flex-start;
-          padding: 0 38px;
+        .btn-action {
+          color: #fff;
         }
       }
     }

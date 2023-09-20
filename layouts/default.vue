@@ -80,6 +80,15 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$axios.get("users/v1/current", this.token)
+    .then((res) => {
+      if (res.status == 200) {
+        this.$store.dispatch("login/getUser", res.data.data.user)
+      }
+    })
+    .catch(err => {})
+  },
 }
 </script>
 

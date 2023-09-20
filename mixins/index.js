@@ -73,6 +73,16 @@ export default {
       }
     }
   },
+  computed: {
+    token() {
+      let getHeaders = {
+        headers: {
+          authorization: this.getCookies("token")
+        }
+      }
+      return getHeaders
+    }
+  },
   methods: {
     formatDate(value, format = "YYYY-MM-DD") {
       return dayjs(value).format(format)
@@ -80,6 +90,12 @@ export default {
     randomCode() {
       let getColor = this.resourceColor[Math.floor(Math.random() * this.resourceColor.length)];
       return getColor
+    },
+    setCookies(name, value) {
+      Cookies.set(name, value)
+    },
+    getCookies(name) {
+      return Cookies.get(name)
     },
   },
 }

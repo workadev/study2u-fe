@@ -18,7 +18,7 @@
               hide-details
               height="38"
               placeholder="email"
-              v-model="email"
+              v-model="form.email"
             />
             <div v-if="error.email" class="error-field ml-2 mt-3">
               {{ error.email }}
@@ -32,6 +32,7 @@
               height="58"
               width="189"
               :disabled="disButton"
+              :loading="loading"
               @click="clickReset()"
             >
               RESET
@@ -59,7 +60,9 @@ export default {
   layout: 'clearlayout',
   data() {
     return {
-      email: "",
+      form: {
+        email: ""
+      },
       error: {
         email: ""
       },
@@ -68,7 +71,7 @@ export default {
   },
   computed: {
     disButton() {
-      if (this.email) {
+      if (this.form.email) {
         return false
       }
 
@@ -90,7 +93,7 @@ export default {
               title: "Forgot Password Success",
               message: res.data.message
             })
-            this.email = ""
+            this.form.email = ""
           } else {
             this.error.email = "No email was found."
           }
@@ -142,6 +145,10 @@ export default {
       font-weight: 700;
       border-radius: 16px;
       color: #fff;
+
+      circle {
+        color: #fff;
+      }
     }
 
     .content-right {

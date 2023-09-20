@@ -9,11 +9,15 @@ const getters = {
 }
 
 const mutations = {
-  
+  SET_HEADERS(state, data) {
+    state.headers = data
+  },
 }
 
 const actions = {
-  
+  getHeaders(context, data) {
+    context.commit('SET_HEADERS', data)
+  },
 }
 
 const configModule = () => ({

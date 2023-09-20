@@ -82,18 +82,18 @@ export default {
           name: "Institutions",
           to: "/institutions"
         },
-        {
-          name: "Courses",
-          to: "/courses"
-        },
+        // {
+        //   name: "Courses",
+        //   to: "/courses"
+        // },
         {
           name: "Mentor Connect",
           to: "/mentor-connect"
         },
-        {
-          name: "Study and You",
-          to: "/"
-        },
+        // {
+        //   name: "Study and You",
+        //   to: "/"
+        // },
         {
           name: "Contact Us",
           to: "/contact"
