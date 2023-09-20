@@ -70,12 +70,12 @@
           <nuxt-link v-if="!user" class="d-flex align-center btn-login" to="/login">
             SIGN IN/REGISTER
           </nuxt-link>
-          <div v-else class="d-flex avatar wrap-img" :style="{background: randomCode()}">
+          <div v-else class="d-flex avatar wrap-img" :style="{background: user.bgAvatar}">
             <nuxt-link to="/profile" class="d-flex">
-              <img src="@/assets/images/mini avatar.png">
-              <!-- <h1 class="bold-h1">
-                {{ "Ardhi".charAt(0) }}
-              </h1> -->
+              <img v-if="user.avatar" :src="user.avatar">
+              <h1 v-else class="bold-h1 mb-1">
+                {{ user.first_name.charAt(0).toUpperCase() }}
+              </h1>
             </nuxt-link>
           </div>
         </div>
@@ -135,12 +135,12 @@
               <nuxt-link v-if="!user" class="d-flex align-center btn-login" to="/login">
                 SIGN IN/REGISTER
               </nuxt-link>
-              <div v-else class="d-flex avatar" :style="{background: randomCode()}">
+              <div v-else class="d-flex avatar" :style="{background: user.bgAvatar}">
                 <nuxt-link to="/profile" class="d-flex">
-                  <img width="70" src="@/assets/images/mini avatar.png">
-                  <!-- <h1 class="bold-h1">
-                    {{ "Ardhi".charAt(0) }}
-                  </h1> -->
+                  <img v-if="user.avatar" width="70" :src="user.avatar">
+                  <h1 v-else class="bold-h1">
+                    {{ user.first_name.charAt(0).toUpperCase() }}
+                  </h1>
                 </nuxt-link>
               </div>
             </v-list-item>
@@ -185,7 +185,7 @@ export default {
         //     { name: "Study", to: "" },
         //   ]
         // }
-      ],
+      ]
     }
   },
   computed: {
@@ -250,6 +250,7 @@ export default {
 
       a {
         height: 100%;
+        align-items: center;
       }
 
       .bold-h1 {

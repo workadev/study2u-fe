@@ -1,6 +1,7 @@
 const createState = () => ({
   isLogin: false,
-  user: null
+  user: null,
+  loading: true
 })
 
 const getters = {
@@ -14,6 +15,9 @@ const mutations = {
   SET_USER(state, data) {
     state.user = data
   },
+  SET_LOADING(state, data) {
+    state.loading = data
+  },
 }
 
 const actions = {
@@ -22,6 +26,9 @@ const actions = {
   },
   getUser(context, data) {
     context.commit('SET_USER', data)
+  },
+  getLoading(context, data) {
+    context.commit('SET_LOADING', data)
   },
 }
 

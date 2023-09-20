@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
       <Navigation />
-      <Nuxt />
+      <Nuxt v-if="!loading" />
       <Footer />
     </v-main>
     <v-snackbar
@@ -70,6 +70,9 @@ export default {
   computed: {
     snackbar() {
       return this.$store.state.snackbar.dataSnackbar
+    },
+    loading() {
+      return this.$store.state.login.loading
     }
   },
   watch: {
@@ -80,14 +83,19 @@ export default {
       }
     }
   },
-  mounted() {
-    this.$axios.get("users/v1/current", this.token)
+  async mounted() {
+    this.$store.dispatch("login/getLoading", true)
+    await this.$axios.get("users/v1/current", this.token)
     .then((res) => {
       if (res.status == 200) {
+        res.data.data.user = {
+          ...res.data.data.user, bgAvatar: this.randomColor()
+        }
         this.$store.dispatch("login/getUser", res.data.data.user)
       }
     })
     .catch(err => {})
+    this.$store.dispatch("login/getLoading", false)
   },
 }
 </script>

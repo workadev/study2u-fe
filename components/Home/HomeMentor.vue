@@ -9,7 +9,7 @@
       </h6>
       <div class="wrap-list">
         <div class="item-list" v-for="(item, index) in 3" :key="index">
-          <h1 class="wrap-img bold-h1" :style="{background: randomCode()}">
+          <h1 class="wrap-img bold-h1" :style="{background: randomColor()}">
             N
           </h1>
           <h6 class="bold-h6 mt-7">Name</h6>

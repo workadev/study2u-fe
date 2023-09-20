@@ -2,14 +2,23 @@
   <div class="page-profile">
     <v-container class="profile-container">
       <div class="info-profile">
-        <img width="250" src="@/assets/images/mini avatar.png">
+        <div class="wrap-avatar" :style="{background: user.bgAvatar}">
+          <img
+            v-if="user.avatar"
+            width="250"
+            :src="user.avatar"
+          >
+          <h1 v-else class="bold-h1">
+            {{ user.first_name.charAt(0).toUpperCase() }}
+          </h1>
+        </div>
         <div class="user-name">
-          MARIJKE OEMAR
+          {{ user.first_name }} {{ user.last_name }}
         </div>
         <div class="w-100 mt-6 info-contact">
-          <div>10 March 2008</div>
-          <div>marijkeoemar@gmail.com</div>
-          <div>+66 1023 323 230</div>
+          <div v-if="user.birthday">{{ user.birthday }}</div>
+          <div>{{ user.email }}</div>
+          <div v-if="user.phone_number">{{ user.phone_number }}</div>
         </div>
         <div class="w-100 info-study">
           <div class="mb-3">
@@ -144,7 +153,12 @@ export default {
         { name: "Brickfields Asia College" },
         { name: "Long Title College or Univesity Name" },
         { name: "Brickfields Asia Collegee" },
-      ]
+      ],
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.login.user
     }
   },
 }
@@ -235,6 +249,26 @@ export default {
         width: 100%;
         max-width: 368px;
         margin-right: 42px;
+
+        .wrap-avatar {
+          border-radius: 50%;
+          width: 250px;
+          height: 250px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .bold-h1 {
+            font-size: 12em;
+            color: #fff;
+          }
+
+          img {
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+          }
+        }
 
         .btn-change-password {
           font-size: 20px;

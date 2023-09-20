@@ -120,6 +120,9 @@ export default {
       .then((res) => {
         if (res.status == 200) {
           this.setCookies("token", res.headers.token)
+          res.data.data.user = {
+            ...res.data.data.user, bgAvatar: this.randomColor()
+          }
           this.$store.dispatch("login/getUser", res.data.data.user)
           this.$router.push("/")
         }

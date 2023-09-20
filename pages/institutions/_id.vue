@@ -72,7 +72,7 @@
         </h6>
         <div class="d-flex justify-center flex-wrap wrap-list">
           <div v-for="(item, index) in listMentor" :key="index" class="item-list">
-            <div class="wrap-img" :style="{background: randomCode()}">
+            <div class="wrap-img" :style="{background: randomColor()}">
               <img v-if="item.photo" :src="item.photo">
               <h1 v-else class="bold-h1">
                 {{ item.name.charAt(0) }}
