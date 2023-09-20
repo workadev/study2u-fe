@@ -4,7 +4,7 @@ module.exports = {
     script: "./node_modules/nuxt/bin/nuxt-start",
     env: {
       "HOST": "0.0.0.0",
-      "PORT": 80,
+      "PORT": 8080,
       "NODE_ENV": "production"
     }
   }]
