@@ -67,12 +67,15 @@
           </div>
         </div>
         <div>
-          <nuxt-link v-if="!isLogin" class="d-flex align-center btn-login" to="/login">
+          <nuxt-link v-if="!user" class="d-flex align-center btn-login" to="/login">
             SIGN IN/REGISTER
           </nuxt-link>
-          <div v-else class="d-flex avatar">
+          <div class="d-flex avatar wrap-img" :style="{background: randomCode()}">
             <nuxt-link to="/profile" class="d-flex">
               <img src="@/assets/images/mini avatar.png">
+              <!-- <h1 class="bold-h1">
+                {{ "Ardhi".charAt(0) }}
+              </h1> -->
             </nuxt-link>
           </div>
         </div>
@@ -129,12 +132,15 @@
             </v-list-item>
             <v-divider class="my-3" />
             <v-list-item>
-              <nuxt-link v-if="!isLogin" class="d-flex align-center btn-login" to="/login">
+              <nuxt-link v-if="!user" class="d-flex align-center btn-login" to="/login">
                 SIGN IN/REGISTER
               </nuxt-link>
-              <div v-else class="d-flex avatar">
+              <div v-else class="d-flex avatar" :style="{background: randomCode()}">
                 <nuxt-link to="/profile" class="d-flex">
                   <img width="70" src="@/assets/images/mini avatar.png">
+                  <!-- <h1 class="bold-h1">
+                    {{ "Ardhi".charAt(0) }}
+                  </h1> -->
                 </nuxt-link>
               </div>
             </v-list-item>
@@ -183,9 +189,9 @@ export default {
     }
   },
   computed: {
-    isLogin() {
-      return this.$store.state.login.isLogin
-    }
+    user() {
+      return this.$store.state.login.user
+    },
   },
   mounted() {
     let getElement = document.getElementById('navigation')
@@ -234,15 +240,27 @@ export default {
     transition: all .3s;
     background: #fff;
 
-    .nav-desktop {
-      .avatar {
-        img {
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-        }
-      }
+    .avatar {
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
+      .bold-h1 {
+        font-size: 4em;
+        color: #fff;
+      }
+      
+      img {
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .nav-desktop {
       .btn-login {
         font-weight: 700;
         font-size: 14px;
@@ -305,6 +323,11 @@ export default {
         border: 3px solid #FABF48;
         border-radius: 14px;
         justify-content: center;
+      }
+
+      .avatar {
+        width: 80px;
+        height: 80px;
       }
     }
 
