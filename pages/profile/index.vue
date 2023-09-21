@@ -16,7 +16,9 @@
           {{ user.first_name }} {{ user.last_name }}
         </div>
         <div class="w-100 mt-6 info-contact">
-          <div v-if="user.birthday">{{ user.birthday }}</div>
+          <div v-if="user.birthday">
+            {{ formatDate(user.birthday, "DD MMMM YYYY") }}
+          </div>
           <div>{{ user.email }}</div>
           <div v-if="user.phone_number">{{ user.phone_number }}</div>
         </div>
@@ -24,8 +26,11 @@
           <div class="mb-3">
             <b>Education</b>
           </div>
-          <div>The British International School</div>
-          <div>Kuala Lumpur</div>
+          <div>
+            {{ user.current_education ? user.current_education.name : "-" }}
+          </div>
+          <div v-if="user.current_school">{{ user.current_school }}</div>
+          <div v-if="user.nationality">{{ user.nationality }}</div>
         </div>
         <div class="w-100 mt-7 mb-13">
           <nuxt-link class="btn-edit" to="/profile/edit">
@@ -33,7 +38,14 @@
             Edit my profile
           </nuxt-link>
         </div>
-        <v-btn elevation color="#5EC9AA" height="58" width="100%" class="btn-change-password">
+        <v-btn
+          elevation
+          color="#5EC9AA"
+          height="58"
+          width="100%"
+          class="btn-change-password"
+          to="/profile/change-password"
+        >
           <img src="@/assets/icons/green-lock.svg" class="mr-10"> Change Password
         </v-btn>
       </div>
@@ -42,13 +54,13 @@
           <div>
             <b>My Shortlist:</b>
           </div>
-          <!-- <div v-if="shortlist.length == 0 && !editShortlist" class="mt-4">
-            Oops, you have not select any institution. <nuxt-link to="">Go here</nuxt-link>!
-          </div> -->
-          <div class="mt-1 d-flex flex-wrap wrap-option-shortlist">
+          <div v-if="user.institutions.length == 0 && !editShortlist" class="mt-4">
+            Oops, you have not select any institution. <nuxt-link to="/institutions">Go here</nuxt-link>!
+          </div>
+          <div v-else class="mt-1 d-flex flex-wrap wrap-option-shortlist">
             <div 
               class="d-flex flex-column item-option-shortlist" 
-              v-for="(item, index) in optionShortlist" 
+              v-for="(item, index) in user.institutions" 
               :key="index"
             >
               <img width="130" height="130" class="ml-6" src="@/assets/images/BACedu_logofav2 1 (1).png">
@@ -80,12 +92,12 @@
           <div>
             <b>My Interests:</b>
           </div>
-          <!-- <div class="mt-4">
-            Add something you’re interested <nuxt-link to="">here.</nuxt-link>
-          </div> -->
-          <div class="d-flex flex-wrap wrap-item-interest">
+          <div v-if="user.interests.length == 0" class="mt-4">
+            Add something you’re interested <nuxt-link to="/profile/my-interest">here.</nuxt-link>
+          </div>
+          <div v-else class="d-flex flex-wrap wrap-item-interest">
             <div
-              v-for="(item, index) in interestList"
+              v-for="(item, index) in user.interests"
               :key="index"
               class="chip-square"
             >
@@ -103,28 +115,32 @@
           <div>
             <b>Recommendation</b>
           </div>
-          <!-- <div class="mt-4">
+          <div v-if="user.interests.length == 0" class="mt-4">
             Sorry we are unable to show you any recommendation yet.<br>
             Please  add your interests first.
-          </div> -->
-          <div class="d-flex flex-wrap wrap-item-interest mb-2">
-            <div
-              v-for="(item, index) in interestList"
-              :key="index"
-              class="chip-square"
-            >
-              {{ item.name }}
-            </div>
           </div>
-          <div class="d-flex flex-wrap wrap-item-recommendation">
-            <div 
-              v-for="(item, index) in recommendationList" 
-              :key="index"
-              class="item-recommendation"
-            >
-              <img width="150" height="150" src="@/assets/images/BACedu_logofav2 1 (1).png">
-              <div class="name-recommendation">{{ item.name }}</div>
-              <div class="mt-2">{{ item.type }}</div>
+          <div v-else>
+            <div class="d-flex flex-wrap wrap-item-interest mb-2">
+              <div
+                v-for="(item, index) in user.interests"
+                :key="index"
+                class="chip-square"
+              >
+                {{ item.name }}
+              </div>
+            </div>
+            <div class="d-flex flex-wrap wrap-item-recommendation">
+              <div 
+                v-for="(item, index) in recommendationList" 
+                :key="index"
+                class="item-recommendation"
+              >
+                <img width="150" height="150" src="@/assets/images/BACedu_logofav2 1 (1).png">
+                <div class="name-recommendation">{{ item.name }}</div>
+                <div class="mt-2">
+                  {{ item.institution_type }}, {{ item.reputation }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -138,28 +154,23 @@ export default {
   data() {
     return {
       shortlist: [],
-      interestList: [
-        { name: "Pre-Uni" },
-        { name: "Law" }
-      ],
-      recommendationList: [
-        { name: "Institution Name", type: "University, Public" },
-        { name: "Institution Name", type: "College, Public" },
-        { name: "Institution Name", type: "College, Private" },
-        { name: "Institution Name", type: "University, Public" },
-      ],
+      recommendationList: [],
       editShortlist: false,
-      optionShortlist: [
-        { name: "Brickfields Asia College" },
-        { name: "Long Title College or Univesity Name" },
-        { name: "Brickfields Asia Collegee" },
-      ],
     }
   },
   computed: {
     user() {
       return this.$store.state.login.user
     }
+  },
+  mounted() {
+    this.$axios.get("v1/institutions/recommendations?per_page=10&page=1", this.token)
+    .then((res) => {
+      if (res.status == 200) {
+        this.recommendationList = res.data.data.institutions
+      }
+    })
+    .catch(err => {})
   },
 }
 </script>

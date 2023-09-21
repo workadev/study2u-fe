@@ -9,7 +9,7 @@
           hide-details
           height="38"
           placeholder="name"
-          v-model="profile.name"
+          v-model="profile.first_name"
         />
         <v-menu 
           ref="menuDateofbirth"
@@ -17,6 +17,8 @@
           transition="slide-y-transition"
           origin="center center"
           offset-y
+          content-class="menu-datepicker"
+          :close-on-content-click="false"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
@@ -26,7 +28,7 @@
               height="38"
               placeholder="date of birth"
               readonly
-              v-model="profile.dateofbirth"
+              v-model="birthdayFormat"
               class="mt-3"
             >
               <template v-slot:prepend-inner>
@@ -35,7 +37,7 @@
             </v-text-field>
           </template>
           <v-date-picker
-            v-model="profile.dateofbirth"
+            v-model="profile.birthday"
             no-title
             scrollable
             prev-icon="mdi-chevron-double-left"
@@ -43,7 +45,7 @@
           />
         </v-menu>
         <div class="phone d-flex mt-3">
-          <v-text-field
+          <!-- <v-text-field
             hide-details
             height="38"
             style="max-width: 47px;"
@@ -51,12 +53,12 @@
             placeholder="+xx"
             v-model="profile.phone.code"
             max-length="3"
-          />
+          /> -->
           <v-text-field
             hide-details
             height="38"
-            placeholder="xx-xxxx-xxxx"
-            v-model="profile.phone.number"
+            placeholder="+xx-xx-xxxx-xxxx"
+            v-model="profile.phone_number"
           />
         </div>
         <v-text-field
@@ -70,15 +72,17 @@
           hide-details
           height="38"
           placeholder="current school"
-          v-model="profile.currentSchool"
+          v-model="profile.current_school"
           class="mt-3"
         />
         <v-select 
           class="mt-5"
-          :items="[]"
+          :items="listStudy"
           hide-details
           placeholder="current qualification"
-          v-model="profile.qualification"
+          item-text="name"
+          item-value="id"
+          v-model="profile.current_education_id"
         >
           <template v-slot:append>
             <img width="21" src="@/assets/icons/chevron-down.svg">
@@ -86,7 +90,7 @@
         </v-select>
         <v-select 
           class="mt-5"
-          :items="[]"
+          :items="listCountry"
           hide-details
           placeholder="nationality"
           v-model="profile.nationality"
@@ -103,7 +107,8 @@
             width="140"
             color="#5EC9AA"
             class="btn-done"
-            @click="$router.push('/profile')"
+            @click="clickDone()"
+            :loading="loading"
           >
             Done
           </v-btn>
@@ -114,9 +119,12 @@
       </div>
       <div class="content-right">
         <div class="text-center wrap-photo">
-          <img v-if="imgPreview" :src="imgPreview">
-          <div v-else class="default-img">
-            {{ profile.name.charAt(0) }}
+          <div class="default-img" :style="{background: user.bgAvatar}">
+            <img v-if="imgPreview" :src="imgPreview">
+            <img v-else-if="user.avatar" :src="user.avatar">
+            <div v-else>
+              {{ user.first_name.charAt(0).toUpperCase() }}
+            </div>
           </div>
           <input
             id="photo"
@@ -136,42 +144,154 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {
       profile: {
-        name: "Marijke Oemar",
-        dateofbirth: null ,
-        phone: {
-          code: "",
-          number: ""
-        },
-        email: "",
-        currentSchool: "",
-        qualification: "",
+        first_name: "",
+        last_name: "",
+        phone_number: "",
+        headline: "",
+        about_me: "",
+        address: "",
+        birthday: "",
+        //avatar_id: "28b1b3a50575bbac53a2e9fc25debfdb.png",
+        current_school: "",
         nationality: "",
-        photo: null
+        current_education_id: "",
+        email: ""
       },
+      photo: null,
       menuDateofbirth: false,
-      imgPreview: null
+      imgPreview: null,
+      loading: false,
+      birthdayFormat: "",
+      fileUpload: null,
     }
   },
+  computed: {
+    user() {
+      return this.$store.state.login.user
+    },
+    listStudy() {
+      return this.$store.state.study.listStudy
+    },
+  },
+  watch: {
+    "profile.birthday"(newVal) {
+      this.birthdayFormat = this.formatDate(newVal, "DD MMMM YYYY")
+    }
+  },
+  mounted() {
+    this.profile = {
+      first_name: this.user.first_name,
+      last_name: this.user.last_name,
+      phone_number: this.user.phone_number,
+      headline: this.user.headline,
+      about_me: this.user.about_me,
+      address: this.user.address,
+      birthday: this.user.birthday,
+      //avatar_id: "28b1b3a50575bbac53a2e9fc25debfdb.png",
+      current_school: this.user.current_school,
+      nationality: this.user.nationality,
+      current_education_id: this.user.current_education,
+      email: this.user.email
+    }
+    this.$store.dispatch("study/getStudy")
+  },
   methods: {
-    inputFile(evt) {
+    async inputFile(evt) {
       let src = null
       if (evt.target.files[0]) {
         src = URL.createObjectURL(evt.target.files[0])
-        this.profile.photo = evt.target.files[0]
+        this.photo = evt.target.files[0]
       } else {
-        this.profile.photo = null
+        this.photo = null
       }
       this.imgPreview = src
+      this.fileUpload = null
+      if (this.photo) {
+        await this.$axios.get(`v1/presign?${evt.target.files[0].name}`)
+        .then((res) => {
+          if (res.status == 200) {
+            this.fileUpload = res.data.fields
+            this.fileUpload = {
+              ...this.fileUpload, file: this.photo
+            }
+          }
+        })
+        .catch(err => {})
+      }
+    },
+    async clickDone() {
+      this.loading = true
+      let failed = false
+      await this.$axios.put("users/v1/current", { user: this.profile }, this.token)
+      .then(async (res) => {
+        if (res.status == 200) {
+          if (this.fileUpload) {
+            await axios.post("https://study2u-dev.s3.ap-southeast-1.amazonaws.com", this.generateData())
+            .then((res) => {})
+            .catch(err => {
+              failed = true
+              this.imgPreview = null
+              this.fileUpload = null
+              this.$store.dispatch("snackbar/getSnackbar", {
+                show: true,
+                color: "#ff004a",
+                icon: "mdi-close",
+                title: "Upload Failed",
+                message: err.response ? err.response.data.message : err
+              })
+            })
+          }
+          res.data.data.user = {
+            ...res.data.data.user, bgAvatar: this.user.bgAvatar
+          }
+          this.$store.dispatch("login/getUser", res.data.data.user)
+          if (!failed) {
+            this.$store.dispatch("snackbar/getSnackbar", {
+              show: true,
+              color: "#74b816",
+              icon: "mdi-check",
+              title: "Edit Success",
+              message: res.data.message
+            })
+            this.$router.push("/profile")
+          }
+        }
+      })
+      .catch(err => {
+        this.$store.dispatch("snackbar/getSnackbar", {
+          show: true,
+          color: "#ff004a",
+          icon: "mdi-close",
+          title: "Edit Failed",
+          message: err.response ? err.response.data.message : err
+        })
+      })
+      this.loading = false
+    },
+    generateData() {
+      let data = new FormData()
+      Object.keys(this.fileUpload).forEach((key) => {
+        data.append([key], this.fileUpload[key]) 
+      })
+      return data
     }
   },
 }
 </script>
 
 <style lang="scss">
+  .menu-datepicker {
+    .v-picker {
+      width: 100%;
+    }
+  }
+  
   .profile-edit {
     padding-top: 133px;
     padding-bottom: 133px;
@@ -190,12 +310,15 @@ export default {
         height: 250px;
         border-radius: 50%;
         background: #F4BF28;
-        color: #fff;
         font-size: 150px;
         font-weight: 700;
         display: flex;
         align-items: center;
         justify-content: center;
+
+        div {
+          color: #fff;
+        }
       }
 
       .btn-change {
@@ -207,6 +330,10 @@ export default {
     .content-left {
       width: 100%;
       max-width: 317px;
+
+      .v-select__selection {
+        height: 22px;
+      }
 
       .wrap-btn-action {
         width: fit-content;
@@ -223,6 +350,10 @@ export default {
           border-radius: 16px;
           font-weight: 700;
           font-size: 20px;
+
+          circle {
+            color: #fff;
+          }
         }
       }
 

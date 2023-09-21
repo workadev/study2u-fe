@@ -2,7 +2,18 @@
   <v-app>
     <v-main>
       <Navigation />
-      <Nuxt v-if="!loading" />
+      <v-container 
+        v-if="loading"
+        style="height: calc(100vh - 106px);" 
+        class="d-flex align-center"
+      >
+        <v-progress-circular
+          indeterminate
+          :size="100"
+          style="width: 100% !important;"
+        />
+      </v-container>
+      <Nuxt v-else />
       <Footer />
     </v-main>
     <v-snackbar

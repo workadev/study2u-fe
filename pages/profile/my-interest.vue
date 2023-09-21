@@ -8,7 +8,7 @@
         <div class="content-left">
           <div class="d-flex flex-wrap wrap-my-interest">
             <div class="chip-square" v-for="(item, index) in myInterest" :key="index">
-              {{ item }}
+              {{ item.name }}
               <v-btn icon class="btn-delete" @click="clickDelete(item)">
                 <img src="@/assets/icons/delete.svg">
               </v-btn>
@@ -22,7 +22,8 @@
               width="140"
               color="#5EC9AA"
               class="btn-done"
-              @click="$router.push('/profile')"
+              :loading="loading"
+              @click="clickDone()"
             >
               Done
             </v-btn>
@@ -43,7 +44,7 @@
               :key="index"
               @click="addInterest(item)"
             >
-              {{ item }}
+              {{ item.name }}
             </div>
           </div>
         </div>
@@ -56,13 +57,17 @@
 export default {
   data() {
     return {
-      myInterest: ["Pre-Uni", "Law"],
-      listInterest: [
-        "Pre-Uni", "Law", "Business", "Digital Media, Design & Comms",
-        "Technology & Innovation", "Hospitality, Culinary & Tourism",
-        "Psychology", "Early Childhood"
-      ]
+      myInterest: [],
+      loading: false
     }
+  },
+  computed: {
+    listInterest() {
+      return this.$store.state.interests.listInterest
+    }
+  },
+  mounted() {
+    this.$store.dispatch("interests/getListInterests")
   },
   methods: {
     clickDelete(value) {
@@ -72,7 +77,7 @@ export default {
     },
     chipDisabled(value) {
       let checkValue = this.myInterest.filter((str) => {
-        return str == value
+        return str.name == value.name
       })
 
       if (checkValue.length != 0) {
@@ -82,6 +87,36 @@ export default {
     },
     addInterest(value) {
       this.myInterest.push(value)
+    },
+    async clickDone() {
+      let interestsId = []
+      this.myInterest.forEach(element => {
+        interestsId.push(element.id)
+      });
+      if (!this.loading) {
+        this.loading = true
+        await this.$axios.put("users/v1/current/update/interests", { user: interestsId }, this.token)
+        .then((res) => {
+          this.$store.dispatch("snackbar/getSnackbar", {
+            show: true,
+            color: "#74b816",
+            icon: "mdi-check",
+            title: "Save Interests Success",
+            message: res.data.message
+          })
+          this.$router.push("/profile")
+        })
+        .catch(err => {
+          this.$store.dispatch("snackbar/getSnackbar", {
+            show: true,
+            color: "#ff004a",
+            icon: "mdi-close",
+            title: "Save Interests Failed",
+            message: err.response ? err.response.data.message : err
+          })
+        })
+        this.loading = false
+      }
     }
   },
 }
@@ -144,6 +179,10 @@ export default {
             border-radius: 16px;
             font-weight: 700;
             font-size: 20px;
+
+            circle {
+              color: #fff;
+            }
           }
         }
 
