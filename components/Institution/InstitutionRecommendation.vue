@@ -7,11 +7,8 @@
         </div>
         <div class="d-flex wrap-chip mr-5">
           <div class="d-flex mr-4">
-            <div class="chip-square">
-              Pre-Uni
-            </div>
-            <div class="chip-square">
-              Law
+            <div v-for="(item, index) in user.interests" :key="index" class="chip-square">
+              {{ item.name }}
             </div>
           </div>
           <div class="align-self-end" style="margin-bottom: 7px;">
@@ -20,6 +17,7 @@
               min-width="fit-content"
               height="fit-content"
               class="px-0"
+              to="/profile/my-interest"
             >
               <img src="@/assets/icons/icon-edit.svg">
             </v-btn>
@@ -28,16 +26,31 @@
       </div>
       <div class="section-list">
         <div class="d-flex flex-wrap">
-          <div class="item-list" v-for="(item, index) in 4" :key="index">
+          <div class="item-list" v-for="(item, index) in list" :key="index">
             <img width="150" height="150" src="@/assets/images/BACedu_logofav2 1 (1).png">
-            <div class="name-institution my-2">Institution Name</div>
-            <div>University, Public</div>
+            <div class="name-institution my-2">
+              {{ item.name }}
+            </div>
+            <div>
+              {{ item.institution_type }}, {{ item.ownership }}
+            </div>
           </div>
         </div>
       </div>
     </v-container>
   </div>
 </template>
+
+<script>
+export default {
+  props: ["list"],
+  computed: {
+    user() {
+      return this.$store.state.login.user
+    }
+  },
+}
+</script>
 
 <style lang="scss">
   .our-recommendation {

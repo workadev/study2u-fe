@@ -64,10 +64,14 @@ export default {
   computed: {
     listInterest() {
       return this.$store.state.interests.listInterest
+    },
+    user() {
+      return this.$store.state.login.user
     }
   },
   mounted() {
     this.$store.dispatch("interests/getListInterests")
+    this.myInterest = [...this.user.interests]
   },
   methods: {
     clickDelete(value) {
@@ -89,22 +93,30 @@ export default {
       this.myInterest.push(value)
     },
     async clickDone() {
-      let interestsId = []
+      let interestsId = {
+        interest_ids: []
+      }
       this.myInterest.forEach(element => {
-        interestsId.push(element.id)
+        interestsId.interest_ids.push(element.id)
       });
       if (!this.loading) {
         this.loading = true
         await this.$axios.put("users/v1/current/update/interests", { user: interestsId }, this.token)
         .then((res) => {
-          this.$store.dispatch("snackbar/getSnackbar", {
-            show: true,
-            color: "#74b816",
-            icon: "mdi-check",
-            title: "Save Interests Success",
-            message: res.data.message
-          })
-          this.$router.push("/profile")
+          if (res.status == 200) {
+            res.data.data.user = {
+              ...res.data.data.user, bgAvatar: this.user.bgAvatar
+            }
+            this.$store.dispatch("login/getUser", res.data.data.user)
+            this.$store.dispatch("snackbar/getSnackbar", {
+              show: true,
+              color: "#74b816",
+              icon: "mdi-check",
+              title: "Save Interests Success",
+              message: res.data.message
+            })
+            this.$router.push("/profile")
+          }
         })
         .catch(err => {
           this.$store.dispatch("snackbar/getSnackbar", {

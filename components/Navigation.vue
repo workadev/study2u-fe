@@ -250,6 +250,7 @@ export default {
 
       a {
         height: 100%;
+        min-width: 100%;
         align-items: center;
       }
 

@@ -4,6 +4,7 @@ import loginModule from "~/store/login";
 import studyModule from "~/store/study";
 import configModule from "~/store/config";
 import interestsModule from "~/store/interests";
+import institutionsModule from "~/store/institutions";
 
 const createStore = () => {
   return new Vuex.Store({
@@ -14,6 +15,7 @@ const createStore = () => {
       study: studyModule(),
       config: configModule(),
       interests: interestsModule(),
+      institutions: institutionsModule(),
     }
   })
 }

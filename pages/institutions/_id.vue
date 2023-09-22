@@ -1,28 +1,28 @@
 <template>
   <div class="institution-detail">
     <v-container class="py-0 container-header">
-      <img height="150" src="@/assets/images/BACedu_logofav2 1.png">
-      <div class="institution-name mt-5">BRICKFIELDS ASIA COLLEGE</div>
+      <img height="150" :src="institutionDetail.logo">
+      <div class="institution-name mt-5">{{ institutionDetail.name }}</div>
     </v-container>
     <client-only>
       <carousel v-bind="options" class="mt-13">
-        <slide v-for="(item, index) in 4" :key="index">
-          <img width="100%" src="@/assets/images/bac-01 1.png">
+        <slide v-for="(item, index) in institutionDetail.images" :key="index">
+          <img width="100%" :src="item.image">
         </slide>
       </carousel>
     </client-only>
     <v-container class="py-0 mt-12">
       <div class="detail-action">
         <v-btn
-          :color="interest ? '#91D1BF' : '#5EC9AA'"
+          :color="institutionDetail.is_shortlisted ? '#91D1BF' : '#5EC9AA'"
           elevation
           class="btn-action"
           height="58"
           width="256"
-          @click="interest = !interest"
+          @click="clickInterested()"
         >
-          <v-icon :color="interest ? '#ff5abe' : '#2ca481'" size="35">mdi-heart</v-icon> 
-          <div>{{ interest ? "Added to Shortlist" : "I’m Interested" }}</div>
+          <v-icon :color="institutionDetail.is_shortlisted ? '#ff5abe' : '#2ca481'" size="35">mdi-heart</v-icon> 
+          <div>{{ institutionDetail.is_shortlisted ? "Added to Shortlist" : "I’m Interested" }}</div>
         </v-btn>
       </div>
       <div class="desc">
@@ -126,7 +126,39 @@ export default {
           photo: require("@/assets/images/Ellipse 10.png"),
           name: "Some Name Here"
         },
-      ]
+      ],
+      institutionDetail: {}
+    }
+  },
+  async mounted() {
+    await this.$axios.get(`v1/institutions/${this.$route.params.id}`)
+    .then((res) => {
+      if (res.status == 200) {
+        this.institutionDetail = res.data.data.institution
+      }
+    })
+    .catch(err => {
+      this.$store.dispatch("snackbar/getSnackbar", {
+        show: true,
+        color: "#ff004a",
+        icon: "mdi-close",
+        title: "Error Page",
+        message: err.response ? err.response.data.message : err
+      })
+      setTimeout(() => {
+        this.$router.push("/institutions")
+      }, 3000);
+    })
+  },
+  methods: {
+    clickInterested() {
+      this.institutionDetail.is_shortlisted = !this.institutionDetail.is_shortlisted
+      let dataShortlist = {
+        id: this.institutionDetail.id,
+        shortlist: this.institutionDetail.is_shortlisted ? "shortlist" : "unshortlist",
+        token: this.token
+      }
+      this.$store.dispatch("institutions/getListInstitutions", dataShortlist)
     }
   },
 }

@@ -157,7 +157,6 @@ export default {
         about_me: "",
         address: "",
         birthday: "",
-        //avatar_id: "28b1b3a50575bbac53a2e9fc25debfdb.png",
         current_school: "",
         nationality: "",
         current_education_id: "",
@@ -193,7 +192,7 @@ export default {
       about_me: this.user.about_me,
       address: this.user.address,
       birthday: this.user.birthday,
-      //avatar_id: "28b1b3a50575bbac53a2e9fc25debfdb.png",
+      avatar_id: this.user.avatar_id,
       current_school: this.user.current_school,
       nationality: this.user.nationality,
       current_education_id: this.user.current_education,
@@ -213,7 +212,7 @@ export default {
       this.imgPreview = src
       this.fileUpload = null
       if (this.photo) {
-        await this.$axios.get(`v1/presign?${evt.target.files[0].name}`)
+        await this.$axios.get(`v1/presign`, { params: { filename: evt.target.files[0].name } })
         .then((res) => {
           if (res.status == 200) {
             this.fileUpload = res.data.fields
@@ -228,50 +227,58 @@ export default {
     async clickDone() {
       this.loading = true
       let failed = false
-      await this.$axios.put("users/v1/current", { user: this.profile }, this.token)
-      .then(async (res) => {
-        if (res.status == 200) {
-          if (this.fileUpload) {
-            await axios.post("https://study2u-dev.s3.ap-southeast-1.amazonaws.com", this.generateData())
-            .then((res) => {})
-            .catch(err => {
-              failed = true
-              this.imgPreview = null
-              this.fileUpload = null
-              this.$store.dispatch("snackbar/getSnackbar", {
-                show: true,
-                color: "#ff004a",
-                icon: "mdi-close",
-                title: "Upload Failed",
-                message: err.response ? err.response.data.message : err
-              })
-            })
-          }
-          res.data.data.user = {
-            ...res.data.data.user, bgAvatar: this.user.bgAvatar
-          }
-          this.$store.dispatch("login/getUser", res.data.data.user)
-          if (!failed) {
-            this.$store.dispatch("snackbar/getSnackbar", {
-              show: true,
-              color: "#74b816",
-              icon: "mdi-check",
-              title: "Edit Success",
-              message: res.data.message
-            })
-            this.$router.push("/profile")
+      if (this.fileUpload) {
+        await axios.post("https://study2u-dev.s3.ap-southeast-1.amazonaws.com", this.generateData())
+        .then((res) => {})
+        .catch(err => {
+          failed = true
+          this.imgPreview = null
+          this.fileUpload = null
+          this.$store.dispatch("snackbar/getSnackbar", {
+            show: true,
+            color: "#ff004a",
+            icon: "mdi-close",
+            title: "Upload Failed",
+            message: err.response ? err.response.data.message : err
+          })
+        })
+      }
+
+      if (!failed) {
+        if (this.fileUpload) {
+          this.profile = {
+            ...this.profile, avatar_id: this.fileUpload.key.split("cache/")[1]
           }
         }
-      })
-      .catch(err => {
-        this.$store.dispatch("snackbar/getSnackbar", {
-          show: true,
-          color: "#ff004a",
-          icon: "mdi-close",
-          title: "Edit Failed",
-          message: err.response ? err.response.data.message : err
+        await this.$axios.put("users/v1/current", { user: this.profile }, this.token)
+        .then(async (res) => {
+          if (res.status == 200) {
+            res.data.data.user = {
+              ...res.data.data.user, bgAvatar: this.user.bgAvatar
+            }
+            this.$store.dispatch("login/getUser", res.data.data.user)
+            if (!failed) {
+              this.$store.dispatch("snackbar/getSnackbar", {
+                show: true,
+                color: "#74b816",
+                icon: "mdi-check",
+                title: "Edit Success",
+                message: res.data.message
+              })
+              this.$router.push("/profile")
+            }
+          }
         })
-      })
+        .catch(err => {
+          this.$store.dispatch("snackbar/getSnackbar", {
+            show: true,
+            color: "#ff004a",
+            icon: "mdi-close",
+            title: "Edit Failed",
+            message: err.response ? err.response.data.message : err
+          })
+        })
+      }
       this.loading = false
     },
     generateData() {

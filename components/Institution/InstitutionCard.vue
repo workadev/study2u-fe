@@ -7,16 +7,16 @@
           <span class="checkmark"></span>
         </label>
         <div class="wrap-logo">
-          <img class="mr-5 logo" :src="data.img">
+          <img class="mr-5 logo" :src="data.logo">
           <div class="wrap-name">
-            <nuxt-link class="name" :to="`/institutions/${data.name}`">
+            <nuxt-link class="name" :to="`/institutions/${data.id}`">
               {{ data.name }}
             </nuxt-link>
-            <div class="type mb-5">{{ data.type }}</div>
+            <div class="type mb-5">{{ data.institution_type | capitalized }}, {{ data.ownership | capitalized }}</div>
             <img
               class="icon-heart"
-              :src="require(`@/assets/icons/${data.whistlist ? 'heart-color' : 'heart'}.svg`)"
-              @click="data.whistlist = !data.whistlist"
+              :src="require(`@/assets/icons/${data.is_shortlisted ? 'heart-color' : 'heart'}.svg`)"
+              @click="clickHeart(data)"
             >
           </div>
         </div>
@@ -24,17 +24,17 @@
       <div class="mx-5 wrap-info-center">
         <div class="d-flex align-center content-center">
           <img class="mr-6" src="@/assets/icons/pin-map.svg">
-          {{ data.location }}
+          {{ data.state.name }}
         </div>
-        <div v-if="data.school" class="d-flex align-center content-center mt-4">
+        <div v-if="data.area" class="d-flex align-center content-center mt-4">
           <img class="mr-6" src="@/assets/icons/mortarboard.svg">
-          {{ data.school }}
+          {{ data.area }}
         </div>
       </div>
     </div>
     <div>
-      <div class="desc">{{ data.desc }}</div>
-      <nuxt-link v-if="data.desc" to="" class="lets-go mt-2">
+      <div class="desc">{{ data.short_desc }}</div>
+      <nuxt-link v-if="data.short_desc" :to="`/institutions/${data.id}`" class="lets-go mt-2">
         <img src="@/assets/icons/next.svg">
         Let’s go
       </nuxt-link>
@@ -44,7 +44,18 @@
 
 <script>
 export default {
-  props: ["data"]
+  props: ["data"],
+  methods: {
+    clickHeart(data) {
+      data.is_shortlisted = !data.is_shortlisted
+      let dataShortlist = {
+        id: data.id,
+        shortlist: data.is_shortlisted ? "shortlist" : "unshortlist",
+        token: this.token
+      }
+      this.$store.dispatch("institutions/getListInstitutions", dataShortlist)
+    }
+  },
 }
 </script>
 

@@ -7,28 +7,33 @@
             <div class="title-page mb-5">INSTITUTIONS</div>
             <div class="wrap-search">
               <img class="mr-4" src="@/assets/icons/magnifying-glass.svg">
-              <input type="text" placeholder="Search">
+              <input
+                type="text"
+                placeholder="Search"
+                v-model="paging.search"
+                @keypress="enterSearch"
+              >
             </div>
           </div>
           <div class="mt-n2">
             <v-btn
               v-for="(item, index) in listFilter" :key="index"
-              :text="filterActive != item"
+              :text="paging.institution_type != item.value"
               elevation
               class="btn-filter"
-              :class="{'filter-active': filterActive == item}"
-              @click="filterActive = item"
+              :class="{'filter-active': paging.institution_type == item.value}"
+              @click="clickFilterType(item)"
             >
-              {{ item }}
+              {{ item.label }}
             </v-btn>
           </div>
           <div class="ml-2">
-            <v-radio-group class="pt-0" hide-details v-model="valueType">
+            <v-radio-group class="pt-0" hide-details v-model="paging.ownership">
               <div class="d-flex align-start flex-wrap">
                 <v-radio
                   v-for="(item, index) in listType" :key="index"
-                  :label="item"
-                  :value="item"
+                  :label="item.label"
+                  :value="item.value"
                   color="#030303"
                 />
               </div>
@@ -37,18 +42,28 @@
         </div>
       </div>
     </v-container>
-    <InstitutionRecommendation />
+    <InstitutionRecommendation
+      v-if="user && recommendationList.length != 0"
+      :list="recommendationList"
+    />
     <v-container class="container-list">
       <div class="wrap-list">
+        <div v-if="loading" style="height: 50vh;">
+          <v-progress-circular
+            indeterminate
+            :size="100"
+          />
+        </div>
         <InstitutionCard 
+          v-else
           v-for="(item, index) in institutionList" :key="index"
           :data="item"
         />
       </div>
       <div class="d-flex justify-center mt-10">
         <BasePagination 
-          :totalPages="10"
-          :pageNumber="pageNumber"
+          :totalPages="totalPages"
+          :pageNumber="paging.page"
           :limitPage="3"
           @clickPage="clickPage"
         />
@@ -74,58 +89,94 @@
 export default {
   data() {
     return {
-      filterActive: "All",
       listFilter: [
-        "All", "Universities", "College"
+        {
+          label: "All",
+          value: undefined
+        },
+        {
+          label: "Universities",
+          value: "universities"
+        },
+        {
+          label: "College",
+          value: "college"
+        }
       ],
       listType: [
-        "All", "Public", "Private"
+        {
+          label: "All",
+          value: ""
+        },
+        {
+          label: "Public",
+          value: "public"
+        },
+        {
+          label: "Private",
+          value: "private"
+        }
       ],
-      valueType: "All",
-      institutionList: [
-        {
-          img: require("@/assets/images/BACedu_logofav2 1.png"),
-          name: "Brickfields Asia College",
-          type: "College, Public",
-          whistlist: false,
-          location: "Selangor",
-          school: "Scholarship",
-          desc: "The BAC Story We began with a single campus in Brickfields in 1991 with fewer than 50 students in Brickfields in 1991 with fewer than 50 students"
-        },
-        {
-          img: require("@/assets/images/Ellipse 20.png"),
-          name: "Best University",
-          type: "College, Public",
-          whistlist: true,
-          location: "Kuala Lumpur",
-          school: "",
-          desc: "The BAC Story We began with a single campus in Brickfields in 1991 with fewer than 50 students in Brickfields in 1991 with fewer than 50 students"
-        },
-        {
-          img: require("@/assets/images/Ellipse 20.png"),
-          name: "Best University",
-          type: "College, Public",
-          whistlist: false,
-          location: "Kuala Lumpur",
-          school: "",
-          desc: "The BAC Story We began with a single campus in Brickfields in 1991 with fewer than 50 students in Brickfields in 1991 with fewer than 50 students"
-        },
-        {
-          img: require("@/assets/images/Ellipse 20.png"),
-          name: "Best University",
-          type: "College, Public",
-          whistlist: false,
-          location: "Kuala Lumpur",
-          school: "Scholarship",
-          desc: "The BAC Story We began with a single campus in Brickfields in 1991 with fewer than 50 students in Brickfields in 1991 with fewer than 50 students"
-        },
-      ],
-      pageNumber: 1
+      institutionList: [],
+      recommendationList: [],
+      paging: {
+        per_page: 10,
+        page: 1,
+        ownership: "",
+        institution_type: undefined,
+        search: undefined
+      },
+      totalPages: 0,
+      loading: false
     }
   },
+  computed: {
+    user() {
+      return this.$store.state.login.user
+    }
+  },
+  watch: {
+    "paging.ownership"() {
+      this.getListInstitution()
+    }
+  },
+  async mounted() {
+    this.loading = true
+    await this.$axios.get("v1/institutions/recommendations?per_page=10&page=1", this.token)
+    .then((res) => {
+      if (res.status == 200) {
+        this.recommendationList = res.data.data.institutions
+      }
+    })
+    .catch(err => {})
+
+    this.getListInstitution()
+  },
   methods: {
-    clickPage(page) {
-      this.pageNumber = page
+    async clickPage(page) {
+      this.paging.page = page
+      this.getListInstitution()
+    },
+    async getListInstitution() {
+      this.loading = true
+      await this.$axios.get("v1/institutions", { params: this.paging, headers: this.token.headers })
+      .then((res) => {
+        if (res.status == 200) {
+          this.institutionList = res.data.data.institutions
+          this.totalPages = Math.ceil(res.headers.total / this.paging.per_page)
+        }
+      })
+      .catch(err => {})
+      this.loading = false
+    },
+    clickFilterType(item) {
+      this.paging.institution_type = item.value
+      this.getListInstitution()
+    },
+    enterSearch(evt) {
+      if (evt.keyCode == 13) {
+        this.getListInstitution()
+      }
     }
   },
 }
@@ -216,6 +267,7 @@ export default {
       .wrap-list {
         display: flex;
         flex-flow: column;
+        align-items: center;
 
         .institution-card {
           margin: 31px 0;
