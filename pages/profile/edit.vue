@@ -237,7 +237,7 @@ export default {
           this.$store.dispatch("snackbar/getSnackbar", {
             show: true,
             color: "#ff004a",
-            icon: "mdi-close",
+            icon: "mdi-close-circle-outline",
             title: "Upload Failed",
             message: err.response ? err.response.data.message : err
           })
@@ -273,7 +273,7 @@ export default {
           this.$store.dispatch("snackbar/getSnackbar", {
             show: true,
             color: "#ff004a",
-            icon: "mdi-close",
+            icon: "mdi-close-circle-outline",
             title: "Edit Failed",
             message: err.response ? err.response.data.message : err
           })

@@ -160,7 +160,7 @@ export default {
           this.$store.dispatch("snackbar/getSnackbar", {
             show: true,
             color: "#ff004a",
-            icon: "mdi-close",
+            icon: "mdi-close-circle-outline",
             title: "Register Failed",
             message: err.response ? err.response.data.message : err
           })

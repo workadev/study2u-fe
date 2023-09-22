@@ -25,37 +25,36 @@
           <div>{{ institutionDetail.is_shortlisted ? "Added to Shortlist" : "I’m Interested" }}</div>
         </v-btn>
       </div>
-      <div class="desc">
-        The BAC Story We began with a single campus in Brickfields in 1991 with fewer than 50 students and only three programmes – Cambridge A-Levels, the University of London law degree, and the Certificate of Legal Practice (CLP). Today, we offer over 500 world-class pre-university, undergraduate, postgraduate, and professional programmes in business, law, and technology across three campuses in Kuala Lumpur, Petaling Jaya, and Singapore.
-      </div>
+      <div class="desc">{{ institutionDetail.description }}</div>
       <div class="d-flex justify-space-between mt-9 wrap-content-info">
         <div class="content-left">
           <div class="wrap-info">
             <img src="@/assets/icons/pin-map.svg">
-            <div class="title-bold">Hisniaga Sdn Bhd</div>
-            <div class="text-info">
-              B-2, G-Floor, Jl. Utara, Section 14, 46200 Petaling Jaya, Selangor, Malaysia
+            <div class="title-bold">{{ institutionDetail.titleAddress }}</div>
+            <div class="text-info">{{ institutionDetail.shortAddress }}</div>
+            <div class="text-info">{{ institutionDetail.country }}</div>
+            <div v-if="institutionDetail.phone_number" class="text-info mt-2">
+              {{ institutionDetail.phone_number }}
             </div>
-            <div class="text-info mt-2">+60 3-7947 2200</div>
           </div>
           <div class="wrap-info mt-5">
             <b>Institution type:</b>
-            <div class="text-info">College</div>
+            <div class="text-info">{{ institutionDetail.institution_type | capitalized }}</div>
           </div>
           <div class="wrap-info mt-5">
             <b>Admittance:</b>
-            <div class="text-info">Public</div>
+            <div class="text-info">{{ institutionDetail.ownership | capitalized }}</div>
           </div>
           <div class="wrap-info mt-5">
             <b>Area:</b>
-            <div class="text-info">Urban</div>
+            <div class="text-info">{{ institutionDetail.area }}</div>
           </div>
         </div>
         <div class="content-center">
           <img class="mb-2" src="@/assets/icons/star.svg">
           <div class="d-flex flex-wrap mx-n1">
-            <div v-for="(item, index) in categoryList" :key="index" class="chip-square">
-              {{ item }}
+            <div v-for="(item, index) in institutionDetail.interests" :key="index" class="chip-square">
+              {{ item.name }}
             </div>
           </div>
         </div>
@@ -71,15 +70,15 @@
           Mentor
         </h6>
         <div class="d-flex justify-center flex-wrap wrap-list">
-          <div v-for="(item, index) in listMentor" :key="index" class="item-list">
+          <div v-for="(item, index) in institutionDetail.staffs" :key="index" class="item-list">
             <div class="wrap-img" :style="{background: randomColor()}">
-              <img v-if="item.photo" :src="item.photo">
+              <img v-if="item.avatar" :src="item.avatar">
               <h1 v-else class="bold-h1">
-                {{ item.name.charAt(0) }}
+                {{ item.first_name.charAt(0) }}
               </h1>
             </div>
             <h6 class="bold-h6 mt-5 mb-2">
-              {{ item.name }}
+              {{ item.first_name }} {{ item.last_name }}
             </h6>
             <v-btn
               color="#09B6DE"
@@ -107,11 +106,6 @@ export default {
         perPage: 1,
         paginationEnabled: true
       },
-      categoryList: [
-        "Pre-Uni", "Law", "Business", "Digital Media, Design & Comms", 
-        "Technology & Innovation", "Hospitality, Culinary & Tourism", 
-        "Psychology", "Early Childhood"
-      ],
       interest: false,
       listMentor: [
         {
@@ -131,17 +125,22 @@ export default {
     }
   },
   async mounted() {
-    await this.$axios.get(`v1/institutions/${this.$route.params.id}`)
+    await this.$axios.get(`v1/institutions/${this.$route.params.id}`, this.token)
     .then((res) => {
       if (res.status == 200) {
         this.institutionDetail = res.data.data.institution
+        this.institutionDetail = {
+          ...this.institutionDetail,
+          shortAddress: this.institutionDetail.address.slice(this.institutionDetail.address.indexOf(", ")+2, this.institutionDetail.address.length),
+          titleAddress: this.institutionDetail.address.slice(0, this.institutionDetail.address.indexOf(", "))
+        }
       }
     })
     .catch(err => {
       this.$store.dispatch("snackbar/getSnackbar", {
         show: true,
         color: "#ff004a",
-        icon: "mdi-close",
+        icon: "mdi-close-circle-outline",
         title: "Error Page",
         message: err.response ? err.response.data.message : err
       })

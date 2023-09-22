@@ -65,7 +65,7 @@
             >
               <img width="130" height="130" class="ml-6" src="@/assets/images/BACedu_logofav2 1 (1).png">
               <label class="container-checkbox mt-1">{{ item.name }}
-                <input type="checkbox" v-model="shortlist" :value="item.name">
+                <input type="checkbox" v-model="shortlist" :value="item.id">
                 <span class="checkmark"></span>
               </label>
             </div>

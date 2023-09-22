@@ -3,7 +3,7 @@
     <div class="d-flex align-center justify-space-between info-institution">
       <div class="d-flex align-center">
         <label class="container-checkbox mb-8">
-          <input type="checkbox">
+          <input type="checkbox" :value="data.id">
           <span class="checkmark"></span>
         </label>
         <div class="wrap-logo">
@@ -45,15 +45,30 @@
 <script>
 export default {
   props: ["data"],
+  computed: {
+    user() {
+      return this.$store.state.login.user
+    }
+  },
   methods: {
     clickHeart(data) {
-      data.is_shortlisted = !data.is_shortlisted
-      let dataShortlist = {
-        id: data.id,
-        shortlist: data.is_shortlisted ? "shortlist" : "unshortlist",
-        token: this.token
+      if (this.user) {
+        data.is_shortlisted = !data.is_shortlisted
+        let dataShortlist = {
+          id: data.id,
+          shortlist: data.is_shortlisted ? "shortlist" : "unshortlist",
+          token: this.token
+        }
+        this.$store.dispatch("institutions/getListInstitutions", dataShortlist)
+      } else {
+        this.$store.dispatch("snackbar/getSnackbar", {
+          show: true,
+          color: "#ffb734",
+          icon: "mdi-alert-circle-outline",
+          title: "Failed",
+          message: "Please login first"
+        })
       }
-      this.$store.dispatch("institutions/getListInstitutions", dataShortlist)
     }
   },
 }

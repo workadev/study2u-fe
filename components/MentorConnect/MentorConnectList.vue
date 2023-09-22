@@ -5,15 +5,21 @@
         AVAILABLE MENTORS
       </h3>
       <div class="d-flex justify-center flex-wrap wrap-list">
-        <div v-for="(item, index) in listMentor" :key="index" class="item-list">
+        <div v-if="loading" class="d-flex align-center" style="height: 50vh;">
+          <v-progress-circular
+            indeterminate
+            :size="100"
+          />
+        </div>
+        <div v-else v-for="(item, index) in listMentor" :key="index" class="item-list">
           <div class="wrap-img" :style="{background: randomColor()}">
-            <img v-if="item.photo" :src="item.photo">
+            <img v-if="item.avatar" :src="item.avatar">
             <h1 v-else class="bold-h1">
-              {{ item.name.charAt(0).toUpperCase() }}
+              {{ item.first_name.charAt(0).toUpperCase() }}
             </h1>
           </div>
           <h6 class="bold-h6 mt-5 mb-2">
-            {{ item.name }}
+            {{ item.first_name }} {{ item.last_name }}
           </h6>
           <h6 class="regular-h6 mb-7">
             {{ item.type }}
@@ -32,8 +38,8 @@
       </div>
       <div class="d-flex justify-center mt-16">
         <BasePagination 
-          :totalPages="10"
-          :pageNumber="pageNumber"
+          :totalPages="totalPages"
+          :pageNumber="paging.page"
           :limitPage="3"
           @clickPage="clickPage"
         />
@@ -47,58 +53,34 @@ export default {
   data() {
     return {
       pageNumber: 1,
-      listMentor: [
-        {
-          photo: require("@/assets/images/Ellipse 9.png"),
-          name: "Mentor Name",
-          type: "Institution"
-        },
-        {
-          photo: require("@/assets/images/Ellipse 8 2.png"),
-          name: "Hardy Tame",
-          type: "Institution"
-        },
-        {
-          photo: require("@/assets/images/Ellipse 10.png"),
-          name: "Some Name Here",
-          type: "Institution"
-        },
-        {
-          photo: require("@/assets/images/Ellipse 9.png"),
-          name: "Mentor Name",
-          type: "Institution"
-        },
-        {
-          photo: require("@/assets/images/Ellipse 8 2.png"),
-          name: "Hardy Tame",
-          type: "Institution"
-        },
-        {
-          photo: require("@/assets/images/Ellipse 10.png"),
-          name: "Some Name Here",
-          type: "Institution"
-        },
-        {
-          photo: require("@/assets/images/Ellipse 9.png"),
-          name: "Mentor Name",
-          type: "Institution"
-        },
-        {
-          photo: require("@/assets/images/Ellipse 8 2.png"),
-          name: "Hardy Tame",
-          type: "Institution"
-        },
-        {
-          photo: require("@/assets/images/Ellipse 10.png"),
-          name: "Some Name Here",
-          type: "Institution"
-        },
-      ]
+      listMentor: [],
+      paging: {
+        per_page: 10,
+        page: 1
+      },
+      totalPages: 0,
+      loading: false
     }
+  },
+  async mounted() {
+    await this.getList()
   },
   methods: {
     clickPage(page) {
       this.pageNumber = page
+      this.getList()
+    },
+    async getList() {
+      this.loading = true
+      await this.$axios.get("v1/mentors", { params: this.paging })
+      .then((res) => {
+        if (res.status == 200) {
+          this.listMentor = res.data.data.staffs
+          this.totalPages = Math.ceil(res.headers.total / this.paging.per_page)
+        }
+      })
+      .catch(err => {})
+      this.loading = false
     }
   },
 }
