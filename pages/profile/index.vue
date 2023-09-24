@@ -48,8 +48,25 @@
         >
           <img src="@/assets/icons/green-lock.svg" class="mr-10"> Change Password
         </v-btn>
+        <div class="mt-8 w-100">
+          <v-btn
+            text
+            color="#FF0000"
+            height="fit-content"
+            class="btn-logout px-0"
+            @click="clickLogout()"
+          >
+            Logout
+          </v-btn>
+        </div>
       </div>
       <div class="info-right">
+        <div v-if="unCompleted" class="notif-profile mb-10">
+          <h6 class="bold-h6 mb-3">Complete Your Profile</h6>
+          <h6 class="regular-h6">
+            For better experience with us, kindly complete your <b><u>profile</u></b>
+          </h6>
+        </div>
         <div class="wrap-info">
           <div>
             <b>My Shortlist:</b>
@@ -156,6 +173,7 @@ export default {
       shortlist: [],
       recommendationList: [],
       editShortlist: false,
+      unCompleted: false
     }
   },
   computed: {
@@ -164,6 +182,12 @@ export default {
     }
   },
   mounted() {
+    Object.keys(this.user).forEach(key => {
+      if (!this.user[key]) {
+        this.unCompleted = true
+      }
+    })
+
     this.$axios.get("v1/institutions/recommendations?per_page=10&page=1", this.token)
     .then((res) => {
       if (res.status == 200) {
@@ -171,6 +195,12 @@ export default {
       }
     })
     .catch(err => {})
+  },
+  methods: {
+    clickLogout() {
+      this.clearCookies("token")
+      this.$router.push("/login")
+    }
   },
 }
 </script>
@@ -188,7 +218,19 @@ export default {
       }
 
       .info-right {
-        padding: 23px 0 20px;
+        padding: 0 0 20px;
+
+        .notif-profile {
+          background: #FF6D3B;
+          padding: 25px 20px 37px;
+          border-radius: 20px;
+          text-align: center;
+
+          h6, 
+          u {
+            color: #fff;
+          }
+        }
 
         .btn-compare {
           font-size: 20px;
@@ -260,6 +302,11 @@ export default {
         width: 100%;
         max-width: 368px;
         margin-right: 42px;
+
+        .btn-logout {
+          font-weight: 700;
+          font-size: 20px;
+        }
 
         .wrap-avatar {
           border-radius: 50%;

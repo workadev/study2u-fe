@@ -97,5 +97,8 @@ export default {
     getCookies(name) {
       return Cookies.get(name)
     },
+    clearCookies(name) {
+      Cookies.remove(name)
+    }
   },
 }

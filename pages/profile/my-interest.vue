@@ -148,6 +148,7 @@ export default {
       .content-right {
         margin-top: 30px;
         width: inherit;
+        max-width: 65%;
 
         .wrap-list-add {
           margin-top: 13px;
@@ -173,7 +174,7 @@ export default {
       }
 
       .content-left {
-        max-width: 300px;
+        max-width: 35%;
         width: 100%;
         margin-right: 20px;
 

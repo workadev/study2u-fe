@@ -15,6 +15,7 @@
             height="38"
             placeholder="email"
             v-model="form.email"
+            @keypress="handleEnter"
           />
           <v-text-field 
             class="mt-2" 
@@ -23,6 +24,7 @@
             placeholder="password" 
             :type="showPasssword ? 'text' : 'password'"
             v-model="form.password"
+            @keypress="handleEnter"
           >
             <template v-slot:append>
               <v-btn
@@ -137,6 +139,11 @@ export default {
         })
       })
       this.loading = false
+    },
+    handleEnter(evt) {
+      if (evt.keyCode == 13) {
+        this.clickLogin()
+      }
     }
   },
 }
