@@ -9,14 +9,39 @@
       </h6>
       <div class="wrap-list mt-2">
         <div class="d-flex group-list">
-          <div class="item-list" v-for="(item, index) in 3" :key="index">
-            <img src="@/assets/images/Rectangle 75.png">
+          <div class="item-list" v-for="(item, index) in dataServices.images" :key="index">
+            <img :src="item.image ? item.image : '@/assets/images/Rectangle 75.png'">
           </div>
         </div>
       </div>
     </v-container>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      paging: {
+        per_page: 3,
+        page: 1
+      },
+      dataServices: {}
+    }
+  },
+  mounted() {
+    this.$axios.get("v1/articles", { params: this.paging })
+    .then((res) => {
+      if (res.status == 200) {
+        if (res.data.data.articles.length != 0) {
+          this.dataServices = res.data.data.articles[0]
+        }
+      }
+    })
+    .catch(err => {})
+  },
+}
+</script>
 
 <style lang="scss">
   .home-services {
@@ -43,6 +68,7 @@
         img {
           width: 269px;
           height: 326px;
+          object-fit: cover;
         }
       }
     }

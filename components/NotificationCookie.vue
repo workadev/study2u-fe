@@ -4,7 +4,14 @@
       <div class="mr-5">
         We value your privacy. study2u uses cookies to personalise content and analyse our traffic. See our <nuxt-link to="">Terms & Conditions</nuxt-link>. 
       </div>
-      <v-btn height="55" width="189" elevation outlined class="btn-understood">
+      <v-btn
+        height="55"
+        width="189"
+        elevation
+        outlined
+        class="btn-understood"
+        @click="$emit('handleClick')"
+      >
         UNDERSTOOD
       </v-btn>
     </v-container>

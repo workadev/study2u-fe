@@ -6,7 +6,7 @@
     <HomeMentor />
     <HomeReadyLeap v-if="!isLogin" />
     <HomeEmpowered v-if="!isLogin" />
-    <NotificationCookie />
+    <NotificationCookie v-if="notifCookie" @handleClick="clickUnderstood()" />
   </div>
 </template>
 
@@ -14,16 +14,29 @@
 export default {
   data() {
     return {
-      actionPlan: {
-        title: "Make your future vision today’s action plan.",
-        btnName: "Starting the journey"
-      }
+      notifCookie: false
     }
   },
   computed: {
     isLogin() {
       return this.$store.state.login.isLogin
     },
-  }
+    understood() {
+      if (this.getCookies('understood')) {
+        return JSON.parse(this.getCookies('understood'))
+      } else {
+        return false
+      }
+    }
+  },
+  mounted() {
+    this.notifCookie = !this.understood
+  },
+  methods: {
+    clickUnderstood() {
+      this.setCookies("understood", true)
+      this.notifCookie = false
+    }
+  },
 }
 </script>

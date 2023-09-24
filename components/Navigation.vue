@@ -252,6 +252,7 @@ export default {
         height: 100%;
         min-width: 100%;
         align-items: center;
+        justify-content: center;
       }
 
       .bold-h1 {
