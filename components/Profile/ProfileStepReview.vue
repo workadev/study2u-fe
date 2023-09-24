@@ -86,6 +86,7 @@
         color="#E75982"
         class="btn-next"
         @click="$emit('nextStep')"
+        :loading="loading"
       >
         UPDATE
       </v-btn>
@@ -105,7 +106,7 @@
 
 <script>
 export default {
-  props: ["form", "interests", "imgPreview"],
+  props: ["form", "interests", "imgPreview", "loading"],
   computed: {
     listStudy() {
       return this.$store.state.study.listStudy

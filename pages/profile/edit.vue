@@ -37,12 +37,14 @@
         @nextStep="nextStep"
         @handleChange="handleChangeInterests"
         @uploadPhoto="uploadPhoto"
+        @fileUpload="handleFileUpload"
       />
       <ProfileStepReview 
         v-else-if="step == 3"
         :form="form"
         :interests="interests"
         :imgPreview="imgPreview"
+        :loading="loading"
         @nextStep="nextStep"
       />
     </v-container>
@@ -50,10 +52,12 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {
-      step: 3,
+      step: 1,
       form: {
         first_name: "",
         last_name: "",
@@ -65,11 +69,12 @@ export default {
         current_school: "",
         nationality: "",
         current_education_id: "",
-        email: "",
-        avatar_id: ""
+        email: ""
       },
       interests: [],
-      imgPreview: null
+      imgPreview: null,
+      loading: false,
+      fileUpload: null
     }
   },
   computed: {
@@ -88,7 +93,6 @@ export default {
       about_me: this.user.about_me,
       address: this.user.address,
       birthday: this.user.birthday,
-      avatar_id: this.user.avatar_id,
       current_school: this.user.current_school,
       nationality: this.user.nationality,
       current_education_id: this.user.current_education.id,
@@ -97,12 +101,86 @@ export default {
     this.interests = this.user.interests
   },
   methods: {
-    nextStep(step) {
+    async nextStep(step) {
       if (step) {
         this.step = step
         window.scrollTo(0, 0); 
       } else {
+        if (!this.loading) {
+          this.loading = true
+          let failed = false
+          if (this.fileUpload) {
+            await axios.post("https://study2u-dev.s3.ap-southeast-1.amazonaws.com", this.generateData())
+            .then((res) => {})
+            .catch(err => {
+              failed = true
+              this.imgPreview = null
+              this.fileUpload = null
+              this.$store.dispatch("snackbar/getSnackbar", {
+                show: true,
+                color: "#ff004a",
+                icon: "mdi-close-circle-outline",
+                title: "Upload Failed",
+                message: err.response ? err.response.data.message : err
+              })
+            })
+          }
 
+          if (!failed) {
+            if (this.fileUpload) {
+              this.form = {
+                ...this.form, avatar_id: this.fileUpload.key.split("cache/")[1]
+              }
+            }
+            let interestsId = {
+              interest_ids: []
+            }
+            this.interests.forEach(element => {
+              interestsId.interest_ids.push(element.id)
+            });
+            await this.$axios.put("users/v1/current/update/interests", { user: interestsId }, this.token)
+            .then((res) => {})
+            .catch(err => {
+              this.$store.dispatch("snackbar/getSnackbar", {
+                show: true,
+                color: "#ff004a",
+                icon: "mdi-close-circle-outline",
+                title: "Save Interests Failed",
+                message: err.response ? err.response.data.message : err
+              })
+            })
+
+            await this.$axios.put("users/v1/current", { user: this.form }, this.token)
+            .then(async (res) => {
+              if (res.status == 200) {
+                res.data.data.user = {
+                  ...res.data.data.user, bgAvatar: this.user.bgAvatar
+                }
+                this.$store.dispatch("login/getUser", res.data.data.user)
+                if (!failed) {
+                  this.$store.dispatch("snackbar/getSnackbar", {
+                    show: true,
+                    color: "#74b816",
+                    icon: "mdi-check",
+                    title: "Edit Success",
+                    message: res.data.message
+                  })
+                  this.$router.push("/profile")
+                }
+              }
+            })
+            .catch(err => {
+              this.$store.dispatch("snackbar/getSnackbar", {
+                show: true,
+                color: "#ff004a",
+                icon: "mdi-close-circle-outline",
+                title: "Edit Failed",
+                message: err.response ? err.response.data.message : err
+              })
+            })
+          }
+          this.loading = false
+        }
       }
     },
     handleChangeInterests(list) {
@@ -110,6 +188,16 @@ export default {
     },
     uploadPhoto(src) {
       this.imgPreview = src
+    },
+    handleFileUpload(file) {
+      this.fileUpload = file
+    },
+    generateData() {
+      let data = new FormData()
+      Object.keys(this.fileUpload).forEach((key) => {
+        data.append([key], this.fileUpload[key]) 
+      })
+      return data
     }
   },
 }
@@ -125,6 +213,10 @@ export default {
       font-weight: 700;
       color: #fff;
       border-radius: 20px;
+
+      circle {
+        color: #fff;
+      }
     }
 
     .v-select__selection {

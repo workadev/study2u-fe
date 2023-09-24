@@ -125,7 +125,10 @@ export default {
     "form.birthday"(newVal) {
       this.birthdayFormat = this.formatDate(newVal, "DD MMMM YYYY")
     }
-  }
+  },
+  mounted() {
+    this.birthdayFormat = this.formatDate(this.form.birthday, "DD MMMM YYYY")
+  },
 }
 </script>
 

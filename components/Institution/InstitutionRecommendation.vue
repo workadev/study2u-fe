@@ -2,11 +2,11 @@
   <div class="our-recommendation">
     <v-container>
       <div class="section-header">
-        <div class="section-title">
+        <div class="section-title mb-2">
           YOUR RECOMMENDATION
         </div>
         <div class="d-flex wrap-chip mr-5">
-          <div class="d-flex mr-4">
+          <div class="d-flex flex-wrap mr-4">
             <div v-for="(item, index) in user.interests" :key="index" class="chip-square">
               {{ item.name }}
             </div>
@@ -25,9 +25,9 @@
         </div>
       </div>
       <div class="section-list">
-        <div class="d-flex flex-wrap">
+        <div class="d-flex flex-wrap w-100 justify-center">
           <div class="item-list" v-for="(item, index) in list" :key="index">
-            <img width="150" height="150" src="@/assets/images/BACedu_logofav2 1 (1).png">
+            <img width="150" height="150" :src="item.logo ? item.logo : '@/assets/images/BACedu_logofav2 1 (1).png'">
             <div class="name-institution my-2">
               {{ item.name }}
             </div>
@@ -67,7 +67,7 @@ export default {
         justify-content: center;
 
         img {
-          border-radius: 50%;
+          object-fit: contain;
         }
 
         .item-list {

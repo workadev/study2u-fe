@@ -2,58 +2,68 @@
   <div class="comparison">
     <v-container>
       <div class="title-page">COMPARISON</div>
-      <div class="wrap-item-compare">
+      <div v-if="loading" class="d-flex align-center justify-center" style="height: 50vh;">
+        <v-progress-circular
+          indeterminate
+          :size="100"
+        />
+      </div>
+      <div v-else class="wrap-item-compare">
         <div class="item-compare" v-for="(item, index) in listCompare" :key="index"> 
           <div class="d-flex flex-column align-center">
-            <img class="logo mb-4" :src="item.logo">
+            <img class="logo mb-4" :src="item.logo ? item.logo : '@/assets/images/Ellipse 20.png'">
             <img
               class="heart"
               width="25"
               height="25"
-              :src="require(`@/assets/icons/${item.whistlist ? 'heart-color' : 'heart'}.svg`)"
-              @click="item.whistlist = !item.whistlist"
+              :src="require(`@/assets/icons/${item.is_shortlisted ? 'heart-color' : 'heart'}.svg`)"
+              @click="item.is_shortlisted = !item.is_shortlisted"
             >
           </div>
           <div class="mt-4">
-            <div class="name-bold">{{ item.universityName }}</div>
+            <div class="name-bold">{{ item.name }}</div>
             <div class="wrap-info">
               <div class="title-info">Type</div>
-              <div class="text-info">{{ item.type }}</div>
+              <div class="text-info">{{ item.institution_type | capitalized }}</div>
             </div>
             <div class="wrap-info">
               <div class="title-info">Admittance</div>
-              <div class="text-info">{{ item.admittance }}</div>
+              <div class="text-info">{{ item.ownership | capitalized }}</div>
             </div>
             <div class="wrap-info">
               <div class="title-info">Programs</div>
-              <div class="text-info">{{ item.programs }}</div>
-            </div>
-            <div class="wrap-info">
-              <div class="title-info">State</div>
-              <div class="text-info">{{ item.state }}</div>
-            </div>
-            <div class="wrap-info">
-              <div class="title-info">Address</div>
-              <div class="name-bold">{{ item.addressName }}</div>
-              <div class="text-info">{{ item.address }}</div>
-            </div>
-            <div class="wrap-info">
-              <div class="title-info">Phone</div>
-              <div class="text-info">{{ item.phone }}</div>
-            </div>
-            <div class="wrap-info">
-              <div class="title-info">Studies</div>
-              <div class="mb-4" v-for="(itemChild, indexChild) in item.studies" :key="indexChild">
-                <!-- <div class="name-bold">{{ itemChild.name }}</div> -->
-                <div class="wrap-chip">
-                  <div class="chip-square" v-for="(itemCategory, indexCategory) in itemChild.categoryList" :key="indexCategory">
-                    {{ itemCategory }}
-                  </div>
-                </div>
+              <div class="text-info">
+                {{ programsName(item.majors) }}
               </div>
             </div>
             <div class="wrap-info">
-              <nuxt-link to="">see all</nuxt-link>
+              <div class="title-info">State</div>
+              <div class="text-info">{{ item.state.name }}</div>
+            </div>
+            <div class="wrap-info">
+              <div class="title-info">Address</div>
+              <div class="name-bold">{{ item.titleAddress }}</div>
+              <div class="text-info">{{ item.shortAddress }}</div>
+            </div>
+            <div class="wrap-info">
+              <div class="title-info">Phone</div>
+              <div class="text-info">{{ item.phone_number }}</div>
+            </div>
+            <div class="wrap-info">
+              <div class="title-info">Studies</div>
+              <div class="mb-4">
+                <div class="name-bold">{{ programsName(item.study_levels) }}</div>
+                <!-- <div class="wrap-chip">
+                  <div class="chip-square" v-for="(itemCategory, indexCategory) in itemChild.categoryList" :key="indexCategory">
+                    {{ itemCategory }}
+                  </div>
+                </div> -->
+              </div>
+            </div>
+            <div class="wrap-info">
+              <nuxt-link :to="`/institutions/${item.id}`">
+                see all
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -66,75 +76,35 @@
 export default {
   data() {
     return {
-      listCompare: [
-        {
-          logo: require("@/assets/images/BACedu_logofav2 1.png"),
-          whistlist: false,
-          universityName: "Brickfields Asia College",
-          type: "College",
-          admittance: "Public",
-          programs: "Conventional",
-          state: "Selangor",
-          addressName: "Hisniaga Sdn Bhd",
-          address: "B-2, G-Floor, Jl. Utara, Section 14, 46200 Petaling Jaya, Selangor, Malaysia",
-          phone: "+60 3-7947 2200",
-          studies: [
-            {
-              name: "Undergraduate",
-              categoryList: [
-                "Pre-Uni", "Law", "Business", "Digital Media, Design & Comms",
-                "Technology & Innovation", "Hospitality, Culinary & Tourism", 
-                "Psychology", "Early Childhood"
-              ]
+      listCompare: [],
+      loading: true
+    }
+  },
+  async mounted() {
+    await this.$axios.post("v1/institutions/compares", this.$route.query, this.token)
+    .then((res) => {
+      if (res.status == 200) {
+        this.listCompare = res.data.data.institutions
+        if (this.listCompare.length != 0) {
+          this.listCompare.forEach((element, index) => {
+            this.listCompare[index] = {
+              ...this.listCompare[index],
+              shortAddress: element.address.slice(element.address.indexOf(", ")+2, element.address.length),
+              titleAddress: element.address.slice(0, element.address.indexOf(", "))
             }
-          ]
-        },
-        {
-          logo: require("@/assets/images/University-of-Malaya-Logo_neu030719 1.png"),
-          whistlist: true,
-          universityName: "Universiti Malaya",
-          type: "University",
-          admittance: "Public",
-          programs: "Conventional, Remote Learning, Open Channel, Open Distance Learning ",
-          state: "Kuala Lumpur",
-          addressName: "Universiti Malaya",
-          address: "50603 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia",
-          phone: "+60 3-7967 3502",
-          studies: [
-            {
-              name: "D3",
-              categoryList: [
-                "Life Science", "Physical Science", "Islamic Studies", "Social Science",
-                "Islamic Studies and Science", "Special Preparation (Japan)",
-                "Music", "Law", "Nursing Science", "Science in Applied Geology", "Medicine and Surgery",
-                "Biomedical Science", "Real Estate", "Finance"
-              ]
-            },
-          ]
-        },
-        {
-          logo: require("@/assets/images/Ellipse 20.png"),
-          whistlist: false,
-          universityName: "Some Institution",
-          type: "College",
-          admittance: "Public",
-          programs: "Scholarship",
-          state: "Selangor",
-          addressName: "Some Building Space",
-          address: "19 Somewhere Once Upon a Time Road, Some Country ",
-          phone: "+00 0-0000 0000",
-          studies: [
-            {
-              name: "Undergraduate",
-              categoryList: [
-                "Pre-Uni", "Law", "Business", "Digital Media, Design & Comms",
-                "Technology & Innovation", "Hospitality, Culinary & Tourism", 
-                "Psychology", "Early Childhood"
-              ]
-            }
-          ]
-        },
-      ]
+          });
+        }
+      }
+    })
+    .catch(err => {})
+    this.loading = false
+  },
+  methods: {
+    programsName(list) {
+      var names = list.map(function(item) {
+        return item['name'];
+      });
+      return names.length == 0 ? "-" : names.toString().replace(/,/g, ", ")
     }
   },
 }

@@ -124,9 +124,12 @@ export default {
         this.photo = evt.target.files[0]
       } else {
         this.photo = null
+        this.fileUpload = null
+        this.$emit("fileUpload", null)
+        delete this.form.avatar_id
       }
+
       this.$emit("uploadPhoto", src)
-      this.fileUpload = null
       if (this.photo) {
         await this.$axios.get(`v1/presign`, { params: { filename: evt.target.files[0].name } })
         .then((res) => {
@@ -136,6 +139,7 @@ export default {
               ...this.fileUpload, file: this.photo
             }
             this.form.avatar_id = this.fileUpload.key.split("cache/")[1]
+            this.$emit("fileUpload", this.fileUpload)
           }
         })
         .catch(err => {})

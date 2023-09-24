@@ -11,7 +11,13 @@
         </slide>
       </carousel>
     </client-only>
-    <v-container class="py-0 mt-12">
+    <v-container v-if="loading" class="d-flex align-center justify-center" style="height: 50vh;">
+      <v-progress-circular
+        indeterminate
+        :size="100"
+      />
+    </v-container>
+    <v-container v-else class="py-0 mt-12">
       <div class="detail-action">
         <v-btn
           :color="institutionDetail.is_shortlisted ? '#91D1BF' : '#5EC9AA'"
@@ -58,14 +64,19 @@
             </div>
           </div>
         </div>
-        <div class="content-right mt-8">
-          <img src="@/assets/images/Rectangle 74.png">
-          <v-btn icon class="btn-play">
+        <div v-if="institutionDetail.videos.length != 0" class="content-right mt-8">
+          <video id="video_player">
+            <source
+              type="video/mp4"
+              :src="institutionDetail.videos"
+            />
+          </video>
+          <v-btn icon class="btn-play" @click="clickPlay()">
             <img src="@/assets/icons/play.svg">
           </v-btn>
         </div>
       </div>
-      <div class="text-center mt-7">
+      <div v-if="institutionDetail.staffs.length != 0" class="text-center mt-7">
         <h6 class="bold-h6">
           Mentor
         </h6>
@@ -93,6 +104,34 @@
           </div>
         </div>
       </div>
+      <v-dialog
+        width="848px"
+        content-class="full-movie"
+        v-model="showVideo"
+        overlay-color="#000000b3"
+        overlay-opacity=".8"
+        @click:outside="closeVideo()"
+      >
+        <v-btn
+          icon
+          class="btn-close"
+          color="#374957"
+          @click="closeVideo()"
+        >
+          <v-icon size="20">mdi-close</v-icon>
+        </v-btn>
+        <v-card class="wrap-fullscreen">
+          <div class="content-video">
+            <video
+              width="100%"
+              id='video_player_full'
+              controls
+            >
+              <source :src="institutionDetail.videos[0].video" type="video/mp4" />
+            </video>
+          </div>
+        </v-card>
+      </v-dialog>
     </v-container>
   </div>
 </template>
@@ -121,7 +160,9 @@ export default {
           name: "Some Name Here"
         },
       ],
-      institutionDetail: {}
+      institutionDetail: {},
+      loading: true,
+      showVideo: false
     }
   },
   async mounted() {
@@ -148,6 +189,7 @@ export default {
         this.$router.push("/institutions")
       }, 3000);
     })
+    this.loading = false
   },
   methods: {
     clickInterested() {
@@ -158,12 +200,55 @@ export default {
         token: this.token
       }
       this.$store.dispatch("institutions/getListInstitutions", dataShortlist)
+    },
+    closeVideo() {
+      this.showVideo = false
+      document.getElementById('video_player_full').pause()
+    },
+    clickPlay() {
+      this.showVideo = true
+      setTimeout(() => {
+        document.getElementById('video_player_full').play()
+      }, 100);
     }
   },
 }
 </script>
 
 <style lang="scss">
+  .full-movie {
+    padding: 40px;
+    box-shadow: none !important;
+    position: relative;
+
+    .wrap-fullscreen {
+      border-radius: 11.55px !important;
+
+      .content-video {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11.55px !important;
+
+        video {
+          border-radius: 11.55px;
+        }
+
+        button {
+          position: absolute;
+        }
+      }
+    }
+
+    .btn-close {
+      background: #fff;
+      position: absolute;
+      z-index: 10;
+      right: 0px;
+      top: 0px;
+    }
+  }
+
   .institution-detail {
     padding: 99px 0;
 
@@ -233,9 +318,9 @@ export default {
       justify-content: center;
       max-width: 360px;
       width: 100%;
-
-      img {
-        width: 100%;
+      
+      video {
+        background: #CECECE;
       }
 
       .btn-play {

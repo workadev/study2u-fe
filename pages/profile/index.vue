@@ -80,7 +80,7 @@
               v-for="(item, index) in user.institutions" 
               :key="index"
             >
-              <img width="130" height="130" class="ml-6" src="@/assets/images/BACedu_logofav2 1 (1).png">
+              <img width="130" height="130" class="ml-6" :src="item.logo ? item.logo : '@/assets/images/BACedu_logofav2 1 (1).png'">
               <label class="container-checkbox mt-1">{{ item.name }}
                 <input type="checkbox" v-model="shortlist" :value="item.id">
                 <span class="checkmark"></span>
@@ -100,7 +100,7 @@
             width="256"
             class="btn-compare"
             :disabled="shortlist.length < 2"
-            @click="$router.push('/comparison')"
+            @click="clickCompare()"
           >
             Compare Selected
           </v-btn>
@@ -152,7 +152,7 @@
                 :key="index"
                 class="item-recommendation"
               >
-                <img width="150" height="150" src="@/assets/images/BACedu_logofav2 1 (1).png">
+                <img width="150" height="150" :src="item.logo ? item.logo : '@/assets/images/BACedu_logofav2 1 (1).png'">
                 <div class="name-recommendation">{{ item.name }}</div>
                 <div class="mt-2">
                   {{ item.institution_type }}, {{ item.reputation }}
@@ -181,10 +181,23 @@ export default {
       return this.$store.state.login.user
     }
   },
-  mounted() {
+  async mounted() {
+    await this.$axios.get("users/v1/current", this.token)
+    .then((res) => {
+      if (res.status == 200) {
+        res.data.data.user = {
+          ...res.data.data.user, bgAvatar: this.user.bgAvatar
+        }
+        this.$store.dispatch("login/getUser", res.data.data.user)
+      }
+    })
+    .catch(err => {})
+
     Object.keys(this.user).forEach(key => {
-      if (!this.user[key]) {
-        this.unCompleted = true
+      if (key != "headline" && key != "unconfirmed_email") {
+        if (!this.user[key]) {
+          this.unCompleted = true
+        }
       }
     })
 
@@ -200,6 +213,14 @@ export default {
     clickLogout() {
       this.clearCookies("token")
       this.$router.push("/login")
+    },
+    clickCompare() {
+      this.$router.push({
+        name: "comparison",
+        query: {
+          ids: this.shortlist    
+        }
+      })
     }
   },
 }
@@ -251,6 +272,10 @@ export default {
               width: fit-content;
               margin: 21px 40px;
 
+              img {
+                object-fit: contain;
+              }
+
               .name-recommendation {
                 font-weight: 700;
                 margin-top: 11px;
@@ -274,6 +299,10 @@ export default {
             .item-option-shortlist {
               margin: 20px;
               max-width: 232px;
+
+              img {
+                object-fit: contain;
+              }
             }
           }
 
