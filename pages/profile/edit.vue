@@ -33,8 +33,17 @@
         v-else-if="step == 2"
         :form="form"
         :interests="interests"
+        :imgPreview="imgPreview"
         @nextStep="nextStep"
         @handleChange="handleChangeInterests"
+        @uploadPhoto="uploadPhoto"
+      />
+      <ProfileStepReview 
+        v-else-if="step == 3"
+        :form="form"
+        :interests="interests"
+        :imgPreview="imgPreview"
+        @nextStep="nextStep"
       />
     </v-container>
   </div>
@@ -44,7 +53,7 @@
 export default {
   data() {
     return {
-      step: 1,
+      step: 3,
       form: {
         first_name: "",
         last_name: "",
@@ -59,7 +68,8 @@ export default {
         email: "",
         avatar_id: ""
       },
-      interests: []
+      interests: [],
+      imgPreview: null
     }
   },
   computed: {
@@ -70,7 +80,7 @@ export default {
   mounted() {
     this.$store.dispatch("study/getStudy")
     this.$store.dispatch("interests/getListInterests")
-    this.profile = {
+    this.form = {
       first_name: this.user.first_name,
       last_name: this.user.last_name,
       phone_number: this.user.phone_number,
@@ -81,18 +91,25 @@ export default {
       avatar_id: this.user.avatar_id,
       current_school: this.user.current_school,
       nationality: this.user.nationality,
-      current_education_id: this.user.current_education,
+      current_education_id: this.user.current_education.id,
       email: this.user.email
     }
     this.interests = this.user.interests
   },
   methods: {
     nextStep(step) {
-      this.step = step
-      window.scrollTo(0, 0);
+      if (step) {
+        this.step = step
+        window.scrollTo(0, 0); 
+      } else {
+
+      }
     },
     handleChangeInterests(list) {
       this.interests = list
+    },
+    uploadPhoto(src) {
+      this.imgPreview = src
     }
   },
 }

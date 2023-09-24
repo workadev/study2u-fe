@@ -98,10 +98,9 @@
 
 <script>
 export default {
-  props: ["form", "interests"],
+  props: ["form", "interests", "imgPreview"],
   data() {
     return {
-      imgPreview: null,
       photo: null,
       fileUpload: null
     }
@@ -126,7 +125,7 @@ export default {
       } else {
         this.photo = null
       }
-      this.imgPreview = src
+      this.$emit("uploadPhoto", src)
       this.fileUpload = null
       if (this.photo) {
         await this.$axios.get(`v1/presign`, { params: { filename: evt.target.files[0].name } })
@@ -143,10 +142,10 @@ export default {
       }
     },
     clickDelete(value) {
-      this.interests = this.interests.filter((str) => {
+      let getList = this.interests.filter((str) => {
         return str != value;
       })
-      this.$emit("handleChange", this.interests)
+      this.$emit("handleChange", getList)
     },
     chipDisabled(value) {
       let checkValue = this.interests.filter((str) => {
@@ -246,6 +245,7 @@ export default {
         width: 250px;
         height: 250px;
         border-radius: 50%;
+        object-fit: cover;
       }
 
       .default-img {
@@ -273,6 +273,10 @@ export default {
 
   @media screen and(max-width: 700px) {
     .profile-step-additional {
+      .wrap-photo {
+        width: 100%;
+      }
+
       .wrap-content {
         flex-wrap: wrap-reverse;
       }
