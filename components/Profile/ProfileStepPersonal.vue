@@ -123,7 +123,9 @@ export default {
   },
   watch: {
     "form.birthday"(newVal) {
-      this.birthdayFormat = this.formatDate(newVal, "DD MMMM YYYY")
+      if (newVal) {
+        this.birthdayFormat = this.formatDate(newVal, "DD MMMM YYYY")
+      }
     }
   },
   mounted() {
