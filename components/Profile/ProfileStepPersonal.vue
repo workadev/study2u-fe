@@ -127,7 +127,9 @@ export default {
     }
   },
   mounted() {
-    this.birthdayFormat = this.formatDate(this.form.birthday, "DD MMMM YYYY")
+    if (this.form.birthday) {
+      this.birthdayFormat = this.formatDate(this.form.birthday, "DD MMMM YYYY")
+    }
   },
 }
 </script>

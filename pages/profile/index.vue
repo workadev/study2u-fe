@@ -65,7 +65,7 @@
           <h6 class="bold-h6 mb-3">Complete Your Profile</h6>
           <h6 class="regular-h6">
             For better experience with us, kindly complete your 
-            <nuxt-link to="/profile/edit">
+            <nuxt-link to="/profile/step">
               <b><u>profile</u></b>
             </nuxt-link>
           </h6>
