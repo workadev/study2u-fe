@@ -1,22 +1,17 @@
 <template>
-  <div class="edit-profile">
+  <div class="step-profile">
     <v-container class="py-0">
       <h3 class="bold-h3">PROFILE</h3>
       <div class="wrap-step">
         <div class="group-step">
+          <div class="wrap-line" />
           <div class="wrap-circle" :class="{active: step == 1 || step == 2 || step == 3}">
             <div class="circle-step">1</div>
             <h6 class="bold-h6 mt-12 text-center">Personal Information</h6>
           </div>
-          <div class="wrap-line line-first">
-            <img src="@/assets/images/Line.png">
-          </div>
           <div class="wrap-circle" :class="{active: step == 2 || step == 3}">
             <div class="circle-step">2</div>
             <h6 class="bold-h6 mt-12 text-center">Additional Information</h6>
-          </div>
-          <div class="wrap-line line-second">
-            <img src="@/assets/images/Line.png">
           </div>
           <div class="wrap-circle" :class="{active: step == 3}">
             <div class="circle-step">3</div>
@@ -204,7 +199,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .edit-profile {
+  .step-profile {
     padding-top: 72px;
     padding-bottom: 293px;
 
@@ -246,9 +241,18 @@ export default {
         margin-top: 74px;
         display: flex;
         width: calc(100% - 220px);
+        position: relative;
+        justify-content: center;
 
         .wrap-line {
-          margin: 18px -120px 0;
+          position: absolute;
+          width: 73%;
+          height: 33px;
+          margin: 12px 0 0 0;
+          background-image: radial-gradient(ellipse, #000 6px, #000 6px, transparent 6px);
+          background-size: 44px 44px;
+          background-position: 0px 0;
+          background-repeat: repeat-x;
         }
         
         .wrap-circle {
@@ -292,21 +296,57 @@ export default {
   }
 
   @media screen and(max-width: 790px) {
-    .edit-profile {
+    .step-profile {
       .wrap-step {
         .group-step {
           width: 100%;
 
-          .line-first {
-            position: relative;
-            left: 27px;
-          }
-
-          .line-second {
-            position: relative;
-            right: 27px;
+          .wrap-line {
+            img {
+              height: 10px;
+            }
           }
         }
+      }
+    }
+  }
+
+  @media screen and(max-width: 700px) {
+    .step-profile {
+      .profile-step-review {
+        .wrap-content {
+          flex-flow: column-reverse;
+
+          .content-left {
+            width: 100%;
+            padding-right: 0px !important;
+          }
+
+          .content-right {
+            width: 100%;
+
+            .regular-h6 {
+              text-align: center;
+              margin-bottom: 40px;
+            }
+          }
+        }
+      }
+
+      .profile-step-additional {
+        .content-right {
+          max-width: 100%;
+        }
+
+        .content-left {
+          margin-top: 20px;
+          width: 100%;
+        }
+      }
+
+      .v-input,
+      textarea {
+        max-width: 100%;
       }
     }
   }

@@ -154,6 +154,7 @@
                 v-for="(item, index) in recommendationList" 
                 :key="index"
                 class="item-recommendation"
+                @click="$router.push(`/institutions/${item.id}`)"
               >
                 <img width="150" height="150" :src="item.logo ? item.logo : '@/assets/images/BACedu_logofav2 1 (1).png'">
                 <div class="name-recommendation">{{ item.name }}</div>
@@ -274,6 +275,7 @@ export default {
               flex-flow: column;
               width: fit-content;
               margin: 21px 40px;
+              cursor: pointer;
 
               img {
                 object-fit: contain;

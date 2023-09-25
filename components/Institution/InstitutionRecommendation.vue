@@ -26,7 +26,12 @@
       </div>
       <div class="section-list">
         <div class="d-flex flex-wrap w-100 justify-center">
-          <div class="item-list" v-for="(item, index) in list" :key="index">
+          <div
+            class="item-list"
+            v-for="(item, index) in list"
+            :key="index"
+            @click="$router.push(`/institutions/${item.id}`)"
+          >
             <img width="150" height="150" :src="item.logo ? item.logo : '@/assets/images/BACedu_logofav2 1 (1).png'">
             <div class="name-institution my-2">
               {{ item.name }}
@@ -74,6 +79,7 @@ export default {
           font-size: 20px;
           margin: 38px 54px 10px;
           text-align: center;
+          cursor: pointer;
 
           .name-institution {
             font-weight: 700;

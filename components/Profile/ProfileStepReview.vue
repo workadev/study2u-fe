@@ -11,7 +11,7 @@
         <div class="info-review mt-5">
           <h6 class="bold-h6 mb-1">Birthday</h6>
           <h6 class="regular-h6">
-            {{ formatDate(form.birthday, "DD MMMM YYYY") }}
+            {{ form.birthday ? formatDate(form.birthday, "DD MMMM YYYY") : "-" }}
           </h6>
         </div>
         <div class="info-review mt-5">

@@ -120,7 +120,7 @@
         >
           <v-icon size="20">mdi-close</v-icon>
         </v-btn>
-        <v-card class="wrap-fullscreen">
+        <v-card v-if="institutionDetail.videos.length != 0" class="wrap-fullscreen">
           <div class="content-video">
             <video
               width="100%"

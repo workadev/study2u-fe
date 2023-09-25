@@ -162,8 +162,9 @@ export default {
       return false
     },
     addInterest(value) {
-      this.interests.push(value)
-      this.$emit("handleChange", this.interests)
+      let getList = [...this.interests]
+      getList.push(value)
+      this.$emit("handleChange", getList)
     },
   },
 }

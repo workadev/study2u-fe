@@ -21,7 +21,7 @@
               class="item-nav" 
               :class="{
                 'mr-7': listNavigation.length -1 != index,
-                'active': item.to == $route.path,
+                'active': item.to == '/'+$route.path.split('/')[1],
                 'disabled': item.disabled
               }"
               :to="item.to"
@@ -194,6 +194,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.$route.path.split("/"));
     let getElement = document.getElementById('navigation')
     window.onscroll = function () {
       if (window.pageYOffset > 10) {
