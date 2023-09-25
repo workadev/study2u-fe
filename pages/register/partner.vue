@@ -20,7 +20,7 @@
             class="mt-2" 
             hide-details 
             height="38" 
-            placeholder="user typed in password" 
+            placeholder="password" 
             :type="showPasssword ? 'text' : 'password'"
             v-model="form.password"
           >
