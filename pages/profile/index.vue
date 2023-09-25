@@ -64,7 +64,10 @@
         <div v-if="unCompleted" class="notif-profile mb-10">
           <h6 class="bold-h6 mb-3">Complete Your Profile</h6>
           <h6 class="regular-h6">
-            For better experience with us, kindly complete your <b><u>profile</u></b>
+            For better experience with us, kindly complete your 
+            <nuxt-link to="/profile/edit">
+              <b><u>profile</u></b>
+            </nuxt-link>
           </h6>
         </div>
         <div class="wrap-info">

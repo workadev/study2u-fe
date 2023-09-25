@@ -95,7 +95,7 @@ export default {
       birthday: this.user.birthday,
       current_school: this.user.current_school,
       nationality: this.user.nationality,
-      current_education_id: this.user.current_education.id,
+      current_education_id: this.user.current_education ? this.user.current_education.id : "",
       email: this.user.email
     }
     this.interests = this.user.interests
