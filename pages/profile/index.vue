@@ -2,42 +2,45 @@
   <div class="page-profile">
     <v-container class="profile-container">
       <div class="info-profile">
-        <div class="wrap-avatar" :style="{background: user.bgAvatar}">
-          <img
-            v-if="user.avatar"
-            width="250"
-            :src="user.avatar"
-          >
-          <h1 v-else class="bold-h1">
-            {{ user.first_name.charAt(0).toUpperCase() }}
-          </h1>
-        </div>
-        <div class="user-name">
-          {{ user.first_name }} {{ user.last_name }}
-        </div>
-        <div class="w-100 mt-6 info-contact">
-          <div v-if="user.birthday">
-            {{ formatDate(user.birthday, "DD MMMM YYYY") }}
+        <div class="card-profile mb-12">
+          <div class="wrap-avatar" :style="{background: user.bgAvatar}">
+            <img
+              v-if="user.avatar"
+              width="250"
+              :src="user.avatar"
+            >
+            <h1 v-else class="bold-h1">
+              {{ user.first_name.charAt(0).toUpperCase() }}
+            </h1>
           </div>
-          <div>{{ user.email }}</div>
-          <div v-if="user.phone_number">{{ user.phone_number }}</div>
-        </div>
-        <div class="w-100 info-study">
-          <div class="mb-3">
-            <b>Education</b>
+          <div class="user-name">
+            {{ user.first_name }} {{ user.last_name }}
           </div>
-          <div>
-            {{ user.current_education ? user.current_education.name : "-" }}
+          <div class="w-100 mt-6 info-contact">
+            <div v-if="user.birthday">
+              {{ formatDate(user.birthday, "DD MMMM YYYY") }}
+            </div>
+            <div>{{ user.email }}</div>
+            <div v-if="user.phone_number">{{ user.phone_number }}</div>
           </div>
-          <div v-if="user.current_school">{{ user.current_school }}</div>
-          <div v-if="user.nationality">{{ user.nationality }}</div>
+          <div class="w-100 info-study">
+            <div class="mb-3">
+              <b>Education</b>
+            </div>
+            <div>
+              {{ user.current_education ? user.current_education.name : "-" }}
+            </div>
+            <div v-if="user.current_school">{{ user.current_school }}</div>
+            <div v-if="user.nationality">{{ user.nationality }}</div>
+          </div>
+          <div class="w-100 mt-7">
+            <nuxt-link class="btn-edit" to="/profile/edit">
+              <img class="mr-3" src="@/assets/icons/icon-edit.svg">
+              Edit my profile
+            </nuxt-link>
+          </div>
         </div>
-        <div class="w-100 mt-7 mb-13">
-          <nuxt-link class="btn-edit" to="/profile/edit">
-            <img class="mr-3" src="@/assets/icons/icon-edit.svg">
-            Edit my profile
-          </nuxt-link>
-        </div>
+        
         <v-btn
           elevation
           color="#5EC9AA"
@@ -48,11 +51,13 @@
         >
           <img src="@/assets/icons/green-lock.svg" class="mr-10"> Change Password
         </v-btn>
-        <div class="mt-8 w-100">
+        <div class="mt-3 w-100">
           <v-btn
-            text
+            elevation
+            height="58"
+            width="100%"
             color="#FF0000"
-            height="fit-content"
+            dark
             class="btn-logout px-0"
             @click="clickLogout()"
           >
@@ -232,10 +237,17 @@ export default {
 
 <style lang="scss">
   .page-profile {
+    background: #D9D9D9;
     .profile-container {
       padding-top: 83px;
       padding-bottom: 50vh;
       display: flex;
+
+      .card-profile {
+        background: #fff;
+        border-radius: 20px;
+        padding: 23px 27px 56px;
+      }
 
       .btn-compare:disabled {
         background: #CECECE !important;
@@ -327,18 +339,21 @@ export default {
       }
 
       .info-profile {
-        padding: 23px 25px 20px;
-        width: fit-content;
-        display: flex;
-        flex-flow: column;
-        align-items: center;
-        width: 100%;
-        max-width: 368px;
-        margin-right: 42px;
+        margin-right: 22px;
+        min-width: 360px;
+
+        .card-profile {
+          width: fit-content;
+          display: flex;
+          flex-flow: column;
+          align-items: center;
+          width: 100%;
+        }
 
         .btn-logout {
           font-weight: 700;
           font-size: 20px;
+          border-radius: 16px;
         }
 
         .wrap-avatar {
