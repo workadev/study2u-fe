@@ -16,18 +16,38 @@
           <div class="user-name">
             {{ user.first_name }} {{ user.last_name }}
           </div>
-          <div class="w-100 mt-6 info-contact">
-            <div v-if="user.birthday">
-              {{ formatDate(user.birthday, "DD MMMM YYYY") }}
-            </div>
-            <div>{{ user.email }}</div>
-            <div v-if="user.phone_number">{{ user.phone_number }}</div>
-          </div>
-          <div class="w-100 info-study">
-            <div class="mb-3">
-              <b>Education</b>
+          <h6 class="regular-h6 mt-5 mb-6 w-100">
+            "{{ user.about_me }}"
+          </h6>
+          <div class="w-100 info-contact mb-3">
+            <div class="mb-1">
+              <b>Birthday</b>
             </div>
             <div>
+              {{ user.birthday ? formatDate(user.birthday, "DD MMMM YYYY") : "-" }}
+            </div>
+          </div>
+          <div class="w-100 info-contact mb-3">
+            <div class="mb-1">
+              <b>Email</b>
+            </div>
+            <div>
+              {{ user.email ? user.email : "-" }}
+            </div>
+          </div>
+          <div class="w-100 info-contact">
+            <div class="mb-1">
+              <b>Phone</b>
+            </div>
+            <div>
+              {{ user.phone_number ? user.phone_number : "-" }}
+            </div>
+          </div>
+          <div class="w-100 info-study">
+            <div class="mb-1">
+              <b>Education</b>
+            </div>
+            <div v-if="user.current_education">
               {{ user.current_education ? user.current_education.name : "-" }}
             </div>
             <div v-if="user.current_school">{{ user.current_school }}</div>
@@ -256,6 +276,7 @@ export default {
 
       .info-right {
         padding: 0 0 20px;
+        width: 100%;
 
         .notif-profile {
           background: #FF6D3B;
@@ -386,7 +407,7 @@ export default {
 
         .info-study {
           font-size: 20px;
-          margin-top: 42px;
+          margin-top: 26px;
         }
 
         .info-contact {
