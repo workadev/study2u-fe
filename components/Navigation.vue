@@ -194,7 +194,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$route.path.split("/"));
     let getElement = document.getElementById('navigation')
     window.onscroll = function () {
       if (window.pageYOffset > 10) {
@@ -381,7 +380,7 @@ export default {
   }
 
   .stickyBorder {
-    border-bottom: 1px solid #FF5ABE;
+    background: #F3F3F3;
   }
 
   @media screen and(max-width: 875px) {
