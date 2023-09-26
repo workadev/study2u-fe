@@ -66,7 +66,7 @@
         </div>
       </div>
       <div class="info-right">
-        <div v-if="unCompleted" class="notif-profile mb-10">
+        <div v-if="unCompleted" class="notif-profile mb-5">
           <h6 class="bold-h6 mb-3">Complete Your Profile</h6>
           <h6 class="regular-h6">
             For better experience with us, kindly complete your 
@@ -75,7 +75,7 @@
             </nuxt-link>
           </h6>
         </div>
-        <div class="wrap-info">
+        <div class="wrap-info card-profile">
           <div>
             <b>My Shortlist:</b>
           </div>
@@ -113,7 +113,7 @@
             Compare Selected
           </v-btn>
         </div>
-        <div class="wrap-info mt-12">
+        <div class="wrap-info mt-5 card-profile">
           <div>
             <b>My Interests:</b>
           </div>
@@ -136,7 +136,7 @@
             </nuxt-link>
           </div>
         </div>
-        <div class="wrap-info mt-12">
+        <div class="wrap-info mt-5 card-profile">
           <div>
             <b>Recommendation</b>
           </div>

@@ -194,7 +194,6 @@ export default {
       about_me: this.user.about_me,
       address: this.user.address,
       birthday: this.user.birthday,
-      avatar_id: this.user.avatar,
       current_school: this.user.current_school,
       nationality: this.user.nationality,
       current_education_id: this.user.current_education,
