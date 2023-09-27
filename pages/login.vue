@@ -4,7 +4,7 @@
       <img src="@/assets/icons/big-s.svg">
     </div>
     <div class="content-left">
-      <div class="wrap-form">
+      <div class="wrap-form form-input">
         <div class="wrap-header">
           <img class="mb-3" src="@/assets/images/Study2U-Logo-FA-04.png">
           <h3 class="bold-h3">LOGIN</h3>

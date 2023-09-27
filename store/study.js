@@ -14,7 +14,7 @@ const mutations = {
 
 const actions = {
   async getStudy(context, data) {
-    await this.$axios.get("v1/study_levels?per_page=10&page=1")
+    await this.$axios.get("v1/study_levels", { params: data })
     .then((res) => {
       if (res.status == 200) {
         context.commit('SET_LIST_STUDY', res.data.data.study_levels)

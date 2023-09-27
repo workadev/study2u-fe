@@ -9,7 +9,12 @@
         />
       </div>
       <div v-else class="wrap-item-compare">
-        <div class="item-compare" v-for="(item, index) in listCompare" :key="index"> 
+        <div 
+          class="item-compare" 
+          v-for="(item, index) in listCompare" 
+          :key="index"
+          :style="{width: `calc(100% / ${listCompare.length > 3 ? '3' : listCompare.length} - 46px)`}"
+        > 
           <div class="d-flex flex-column align-center">
             <img class="logo mb-4" :src="item.logo ? item.logo : '@/assets/images/Ellipse 20.png'">
             <img
@@ -124,8 +129,6 @@ export default {
         .item-compare {
           display: flex;
           flex-flow: column;
-          width: fit-content;
-          max-width: calc(100% / 3 - 46px);
           margin: 23px;
 
           .wrap-info {

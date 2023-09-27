@@ -50,6 +50,20 @@
         </v-btn>
       </template>
     </v-snackbar>
+    <div v-if="user" class="group-messaging">
+      <MessagingPersonal
+        v-for="(item, index) in listMessage" :key="index"
+        class="ml-5"
+        :user="user"
+        :dataMessage="item"
+        @closeMessage="closeMessage"
+      />
+      <Messaging
+        class="ml-5"
+        :user="user"
+        @clickMessage="clickMessage"
+      />
+    </div>
   </v-app>
 </template>
 
@@ -75,7 +89,8 @@ export default {
   },
   data() {
     return {
-      snackbarShow: false
+      snackbarShow: false,
+      listMessage: []
     }
   },
   computed: {
@@ -84,7 +99,10 @@ export default {
     },
     loading() {
       return this.$store.state.login.loading
-    }
+    },
+    user() {
+      return this.$store.state.login.user
+    },
   },
   watch: {
     snackbar: {
@@ -108,11 +126,41 @@ export default {
     .catch(err => {})
     this.$store.dispatch("login/getLoading", false)
   },
+  methods: {
+    closeMessage(item) {
+      let checkMessage = this.listMessage.filter(str => {
+        return str.name != item.name
+      })
+      this.listMessage = checkMessage
+    },
+    clickMessage(item) {
+      let checkMessage = this.listMessage.filter(str => {
+        return str.name == item.name
+      })
+      if (checkMessage.length == 0) {
+        this.listMessage.push(item)
+      }
+    }
+  },
 }
 </script>
 
 
 <style lang="scss">
+  .group-messaging {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    z-index: 7;
+
+    .messaging-personal:first-child {
+      margin-left: 0px !important;
+    }
+  }
+
   .alert-snackbar {
     .wrap-alert {
       display: flex;

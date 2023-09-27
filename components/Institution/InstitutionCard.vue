@@ -3,7 +3,7 @@
     <div class="d-flex align-center justify-space-between info-institution">
       <div class="d-flex align-center">
         <label class="container-checkbox mb-8">
-          <input type="checkbox" :value="data.id">
+          <input type="checkbox" :value="data.id" v-model="data.check">
           <span class="checkmark"></span>
         </label>
         <div class="wrap-logo">
@@ -170,6 +170,7 @@ export default {
 
   .institution-card:hover {
     border: 2px solid #000000;
+    background: #fff;
 
     .wrap-info-center {
       border-color: #000;

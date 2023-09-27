@@ -16,7 +16,7 @@
           <div class="user-name">
             {{ user.first_name }} {{ user.last_name }}
           </div>
-          <h6 class="regular-h6 mt-5 mb-6 w-100">
+          <h6 v-if="user.about_me" class="regular-h6 mt-5 mb-6 w-100">
             "{{ user.about_me }}"
           </h6>
           <div class="w-100 info-contact mb-3">

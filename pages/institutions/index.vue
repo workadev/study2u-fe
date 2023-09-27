@@ -76,7 +76,7 @@
           elevation
           height="33"
           width="171"
-          to="/comparison"
+          @click="clickCompare()"
         >
           Compare seletion
         </v-btn>
@@ -177,6 +177,20 @@ export default {
       if (evt.keyCode == 13) {
         this.getListInstitution()
       }
+    },
+    clickCompare() {
+      let dataCheck = []
+      this.institutionList.forEach(element => {
+        if (element.check) {
+          dataCheck.push(element.id)
+        }
+      });
+      this.$router.push({
+        name: "comparison",
+        query: {
+          ids: dataCheck
+        }
+      })
     }
   },
 }

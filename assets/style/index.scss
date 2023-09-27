@@ -201,24 +201,6 @@ body {
   color: $color-white !important;
 }
 
-// input
-.v-input {
-  .v-input__slot {
-    min-height: 46px !important;
-    border-radius: 8px !important;
-    padding: 0 16px !important;
-
-    fieldset {
-      border-color: #EEF1F4 !important;
-    }
-  }
-
-  .v-input__append-inner {
-    align-self: center !important;
-    margin-top: 0px !important;
-  }
-}
-
 .v-select {
   .v-input__append-inner {
     align-self: center !important;
