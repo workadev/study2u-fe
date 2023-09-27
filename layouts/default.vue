@@ -53,13 +53,12 @@
     <div v-if="user" class="group-messaging">
       <MessagingPersonal
         v-for="(item, index) in listMessage" :key="index"
-        class="ml-5"
+        class="mr-5"
         :user="user"
         :dataMessage="item"
         @closeMessage="closeMessage"
       />
       <Messaging
-        class="ml-5"
         :user="user"
         @clickMessage="clickMessage"
       />

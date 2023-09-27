@@ -1,5 +1,9 @@
 <template>
-  <div class="messaging" :style="{height: showMessage ? activeHeight : '60px'}">
+  <div
+    class="messaging"
+    :class="{'active-show': showMessage}"
+    :style="{height: showMessage ? activeHeight : '60px'}"
+  >
     <div class="messaging-header">
       <div class="d-flex align-center">
         <div class="wrap-avatar" :style="{background: user.bgAvatar}">
@@ -201,6 +205,9 @@ export default {
   methods: {
     getActiveHeight() {
       this.activeHeight = `${document.getElementsByClassName("messaging-content")[0].clientHeight + 60}px`
+      setTimeout(() => {
+        console.log(document.getElementsByClassName("active-show")[0].clientWidth);
+      }, 1);
     },
   },
 }
@@ -313,8 +320,8 @@ export default {
 
     .wrap-avatar {
       border-radius: 50%;
-      width: 44px;
-      height: 44px;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -325,11 +332,47 @@ export default {
       }
       
       img {
-        width: 44px;
-        height: 44px;
+        width: 100%;
+        height: 100%;
         border-radius: 50%;
         object-fit: cover;
       }
+    }
+  }
+
+  @media screen and(max-width: 700px) {
+    .messaging {
+      max-height: 50px;
+      margin-left: 0px !important;
+      max-width: 300px;
+
+      .messaging-content {
+        .message-search {
+          max-width: calc(100% - 8em);
+        }
+      }
+
+      .v-icon {
+        font-size: 32px !important;
+      }
+
+      .wrap-avatar {
+        margin-right: 16px;
+      }
+
+      .messaging-header {
+        height: 50px;
+
+        .bold-h6 {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .active-show {
+      max-width: 100%;
+      max-height: 100%;
+      height: 100vh !important;
     }
   }
 </style>
