@@ -22,7 +22,7 @@
             {{ item.first_name }} {{ item.last_name }}
           </h6>
           <h6 class="regular-h6 mb-7">
-            {{ item.type }}
+            {{ item.institutions.length == 0 ? "-" : item.institutions[0].name }}
           </h6>
           <v-btn
             color="#09B6DE"
