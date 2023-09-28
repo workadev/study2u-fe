@@ -1,7 +1,7 @@
 <template>
   <div
     class="messaging"
-    :class="{'active-show': showMessage}"
+    :class="{'active-messaging': showMessage}"
     :style="{height: showMessage ? activeHeight : '60px'}"
   >
     <div class="messaging-header">
@@ -197,6 +197,7 @@ export default {
       } else {
         this.activeHeight = "0px"
       }
+      this.$emit("handleShow", newVal)
     }
   },
   mounted() {
@@ -205,9 +206,6 @@ export default {
   methods: {
     getActiveHeight() {
       this.activeHeight = `${document.getElementsByClassName("messaging-content")[0].clientHeight + 60}px`
-      setTimeout(() => {
-        console.log(document.getElementsByClassName("active-show")[0].clientWidth);
-      }, 1);
     },
   },
 }
@@ -369,7 +367,7 @@ export default {
       }
     }
 
-    .active-show {
+    .active-messaging {
       max-width: 100%;
       max-height: 100%;
       height: 100vh !important;

@@ -50,17 +50,23 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <div v-if="user" class="group-messaging">
+    <div
+      v-if="user"
+      class="group-messaging"
+      :style="{width: showMessaging ? '100%' : ''}"
+    >
       <MessagingPersonal
+        v-if="user"
         v-for="(item, index) in listMessage" :key="index"
-        class="mr-5"
         :user="user"
         :dataMessage="item"
         @closeMessage="closeMessage"
       />
       <Messaging
+        v-if="user"
         :user="user"
         @clickMessage="clickMessage"
+        @handleShow="handleShow"
       />
     </div>
   </v-app>
@@ -89,7 +95,8 @@ export default {
   data() {
     return {
       snackbarShow: false,
-      listMessage: []
+      listMessage: [],
+      showMessaging: false
     }
   },
   computed: {
@@ -139,6 +146,9 @@ export default {
       if (checkMessage.length == 0) {
         this.listMessage.push(item)
       }
+    },
+    handleShow(val) {
+      this.showMessaging = val
     }
   },
 }
@@ -151,7 +161,6 @@ export default {
     bottom: 0px;
     right: 0px;
     display: flex;
-    width: 100%;
     justify-content: flex-end;
     z-index: 7;
 
@@ -178,6 +187,12 @@ export default {
       span {
         color: #ffffff;
       }
+    }
+  }
+
+  @media screen and(max-width: 700px) {
+    .group-messaging {
+      // width: 100%;
     }
   }
 </style>

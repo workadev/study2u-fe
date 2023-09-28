@@ -53,13 +53,14 @@ export default {
       justify-content: space-evenly;
       margin-top: 29px;
       margin: 19px -10px -10px;
+      flex-wrap: wrap;
 
       .item {
         display: flex;
         flex-flow: column;
         align-items: center;
         margin: 10px;
-        width: calc(100% / 4 - 15px);
+        width: calc(100% / 4 - 18px);
 
         img {
           height: 118px;
@@ -86,11 +87,9 @@ export default {
     }
   }
 
-  @media screen and(max-width: 700px) {
+  @media screen and(max-width: 900px) {
     .home-trending {
       .group-item {
-        flex-wrap: wrap;
-        
         .item {
           width: 197px;
         }

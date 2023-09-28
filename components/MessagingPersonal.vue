@@ -1,7 +1,11 @@
 <template>
-  <div class="messaging-personal" :style="{height: showMessage ? activeHeight : '60px'}">
+  <div
+    class="messaging-personal"
+    :class="{'active-personal': showMessage}"
+    :style="{height: showMessage ? activeHeight : '60px'}"
+  >
     <div class="messaging-header">
-      <div class="d-flex align-center">
+      <div class="d-flex align-center pointer" @click="showMessage = !showMessage">
         <div class="wrap-avatar" :style="{background: bgUserMessaging}">
           <img v-if="dataMessage.avatar" :src="dataMessage.avatar">
           <h5 v-else class="bold-h5">
@@ -72,19 +76,49 @@
       <div class="send-message">
         <textarea placeholder="Write a message" v-model="message" />
         <div class="d-flex justify-space-between mt-3">
-          <div>
+          <div class="d-flex align-center">
+            <!-- <v-menu 
+              v-model="menuEmojis"
+              transition="slide-y-transition"
+              origin="center center"
+              offset-y
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  text
+                  height="fit-content"
+                  min-width="fit-content"
+                  class="px-0 mr-2"
+                >
+                  <img src="@/assets/icons/happy.svg">
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-subtitle>
+                  Emojis
+                </v-card-subtitle>
+              </v-card>
+            </v-menu> -->
+            <div class="relative d-flex">
+              <v-btn
+                text
+                height="fit-content"
+                min-width="fit-content"
+                class="px-0 mr-2"
+              >
+                <img src="@/assets/icons/happy.svg">
+              </v-btn>
+              <BaseEmojis 
+                :show="showEmojis"
+                @clickOutside="showEmojis = false"
+              />
+            </div>
             <v-btn
               text
               height="fit-content"
               min-width="fit-content"
-              class="px-0 mr-2"
-            >
-              <img src="@/assets/icons/happy.svg">
-            </v-btn>
-            <v-btn
-              text
-              height="fit-content"
-             min-width="fit-content"
               class="px-0"
             >
               <img src="@/assets/icons/image.svg">
@@ -117,7 +151,8 @@ export default {
       showMessage: false,
       activeHeight: "0px",
       bgUserMessaging: "",
-      message: ""
+      message: "",
+      showEmojis: false
     }
   },
   watch: {
@@ -139,11 +174,11 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('click', (e) => {
-      if (!this.$el.contains(e.target)){
-        this.showMessage = false
-      }
-    })
+    // window.addEventListener('click', (e) => {
+    //   if (!this.$el.contains(e.target)){
+    //     this.showMessage = false
+    //   }
+    // })
     this.listTemp = [...this.dataMessage.message]
     this.bgUserMessaging = this.randomColor()
     setTimeout(() => {
@@ -174,6 +209,7 @@ export default {
     transition: all .2s;
     align-self: flex-end;
     border: 1px solid;
+    margin-right: 20px;
 
     .messaging-content-personal {
       background: #F4F4F4;
@@ -284,6 +320,32 @@ export default {
         border-radius: 50%;
         object-fit: cover;
       }
+    }
+  }
+
+  @media screen and(max-width: 700px) {
+    .messaging-personal {
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
+      z-index: 1;
+      max-width: 100%;
+      margin-right: 0px;
+      width: 100%;
+
+      .messaging-content-personal {
+        height: 100%;
+
+        .wrap-overflow {
+          height: calc(100% - 352px);
+          max-height: none;
+        }
+      }
+    }
+
+    .active-personal {
+      max-height: 100%;
+      height: 100vh !important;
     }
   }
 </style>
