@@ -204,8 +204,8 @@ export default {
 <style lang="scss">
   .messaging-personal {
     background: #F4F4F4;
-    width: 100%;
     max-width: 400px;
+    min-width: 400px;
     transition: all .2s;
     align-self: flex-end;
     border: 1px solid;

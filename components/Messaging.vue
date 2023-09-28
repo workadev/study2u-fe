@@ -216,6 +216,7 @@ export default {
     background: #F4F4F4;
     width: 100%;
     max-width: 400px;
+    min-width: 400px;
     transition: all .2s;
     align-self: flex-end;
 
