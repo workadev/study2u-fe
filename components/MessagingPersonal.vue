@@ -192,7 +192,6 @@ export default {
     clickIcon() {
       if (this.showMessage) {
         this.$emit("closeMessage", this.dataMessage)
-        this.showMessage = false
       } else {
         this.showMessage = !this.showMessage
       }

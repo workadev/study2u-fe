@@ -76,6 +76,7 @@
           elevation
           height="33"
           width="171"
+          :disabled="disBtnCompare"
           @click="clickCompare()"
         >
           Compare seletion
@@ -133,6 +134,16 @@ export default {
   computed: {
     user() {
       return this.$store.state.login.user
+    },
+    disBtnCompare() {
+      let checkSelect = this.institutionList.filter(str => {
+        return str.check
+      })
+
+      if (checkSelect.length >= 2) {
+        return false
+      }
+      return true
     }
   },
   watch: {

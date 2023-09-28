@@ -12,7 +12,7 @@
           <div class="wrap-img" :style="{background: randomColor()}">
             <img v-if="item.avatar" :src="item.avatar">
             <h1 v-else class="bold-h1">
-              {{ item.first_name.charAt(0).toUpperCase() }}
+              {{ item.first_name ? item.first_name.charAt(0).toUpperCase() : "" }}
             </h1>
           </div>
           <h6 class="bold-h6 mt-7">{{ item.first_name }} {{ item.last_name }}</h6>

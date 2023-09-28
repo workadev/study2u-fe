@@ -53,7 +53,6 @@
     <div
       v-if="user"
       class="group-messaging"
-      :style="{width: showMessaging ? '100%' : ''}"
     >
       <MessagingPersonal
         v-if="user"

@@ -2,36 +2,108 @@
   <div class="contact-form">
     <v-container class="py-0">
       <h5 class="bold-h5">Contact Us</h5>
-      <div class="wrap-form">
-        <v-text-field hide-details height="38" placeholder="Name" />
-        <v-text-field hide-details height="38" placeholder="e-mail" />
-        <textarea class="mt-9" placeholder="message" cols="30" rows="10" />
+      <v-form class="wrap-form">
+        <v-text-field
+          hide-details
+          height="38"
+          placeholder="Name"
+          v-model="form.name"
+        />
+        <div v-if="error.name" class="error-field ml-2 mt-1">
+          {{ error.name }}
+        </div>
+        <v-text-field
+          hide-details
+          height="38"
+          placeholder="e-mail"
+          v-model="form.email"
+        />
+        <div v-if="error.email" class="error-field ml-2 mt-1">
+          {{ error.email }}
+        </div>
+        <textarea
+          class="mt-9"
+          placeholder="message"
+          cols="30"
+          rows="10"
+          v-model="form.message"
+        />
+        <div v-if="error.message" class="error-field ml-2 mt-1">
+          {{ error.message }}
+        </div>
         <v-btn
           elevation
           color="#09B6DE"
-          dark
           class="btn-submit mt-6"
           height="58"
           width="189"
+          :loading="loading"
+          @click="clickSubmit()"
         >
           SUBMIT
         </v-btn>
-      </div>
-      <h5 class="bold-h5">Partnership Inquiries</h5>
+      </v-form>
+      <h5 class="bold-h5">Discover Partnership Possibilities</h5>
       <h6 class="regular-h6 my-3">
-        Tempor orci dapibus ultrices in iaculis nunc sed. Mauris ultrices eros in cursus turpis massa tincidunt. Interdum posuere lorem ipsum dolor sit amet.
+        Are you excited to explore potential collaborations? We’re eager to hear from you! Reach out to us at 
       </h6>
-      <div class="d-flex align-center mb-3">
+      <!-- <div class="d-flex align-center mb-3">
         <img class="mr-1" src="@/assets/icons/phone.svg">
         <h6 class="regular-h6">+00 00-0000-0000</h6>
-      </div>
+      </div> -->
       <div class="d-flex align-center">
         <img class="mr-1" src="@/assets/icons/arroba.svg">
-        <h6 class="regular-h6">email@address.com</h6>
+        <h6 class="regular-h6">admin@study2u.com</h6>
       </div>
     </v-container>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      form: {
+        name: "",
+        email: "",
+        message: ""
+      },
+      loading: false,
+      error: {
+        name: "",
+        email: "",
+        message: ""
+      }
+    }
+  },
+  methods: {
+    clickSubmit() {
+      if (!this.validation() && !this.loading) {
+        // this.loading = true
+      }
+    },
+    validation() {
+      // check required
+      let error = false
+      Object.keys(this.error).forEach(key => {
+        this.error[key] = ""
+        if (!this.form[key]) {
+          this.error[key] = `${key} is required`
+          error = true
+        } else {
+          if (key == "email") {
+            if (!/.+@.+\..+/.test(this.form[key])) {
+              this.error[key] = "E-mail must be valid"
+              error = true
+            }
+          }
+        }
+      });
+      return error
+    }
+  },
+}
+</script>
 
 <style lang="scss">
   .contact-form {
@@ -54,6 +126,11 @@
         font-size: 20px;
         font-weight: 700;
         border-radius: 16px;
+        color: #fff;
+
+        circle {
+          color: #fff;
+        }
       }
 
       textarea {
