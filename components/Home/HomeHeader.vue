@@ -12,7 +12,14 @@
           At Study2U, we're dedicated to empowering students like you to embark on an extraordinary educational journey.
   Our platform is designed to connect you with valuable resources, incredible opportunities, and a network of like-minded individuals who share your passion for learning and growth.
         </h6>
-        <v-btn color="#FABF48" height="58" elevation dark class="btn-start mt-7">
+        <v-btn
+          color="#FABF48"
+          height="58"
+          elevation
+          dark
+          class="btn-start mt-7"
+          to="/register"
+        >
           TAKE THE FIRST STEP
         </v-btn>
       </div>

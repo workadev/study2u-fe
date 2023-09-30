@@ -26,11 +26,12 @@
           </h6>
           <v-btn
             color="#09B6DE"
-            dark
             width="115"
             height="45"
             class="btn-connect"
             elevation
+            :disabled="!user"
+            @click="clickConnect(item)"
           >
             Connect
           </v-btn>
@@ -62,6 +63,23 @@ export default {
       loading: false
     }
   },
+  // channels: {
+  //   computed: [
+  //     {
+  //       connected() {},
+  //       rejected() {},
+  //       received(data) {
+  //         console.log("Message received");
+  //       },
+  //       disconnected() {},
+  //     }
+  //   ]
+  // },
+  computed: {
+    user() {
+      return this.$store.state.login.user
+    }
+  },
   async mounted() {
     await this.getList()
   },
@@ -81,6 +99,22 @@ export default {
       })
       .catch(err => {})
       this.loading = false
+    },
+    clickConnect(item) {
+      this.$axios.post(`users/v1/conversations/${item.id}`, null, this.token)
+      .then((res) => {
+        if (res.status == 201) {
+          let dataMessaging = [...this.$store.state.messaging.listMessaging]
+          let checkUser = dataMessaging.filter(str => {
+            return str.id == res.data.data.chat.user.id
+          })
+          if (checkUser == 0) {
+            dataMessaging.push(res.data.data.chat.user)
+            this.$store.dispatch("messaging/getListMessaging", dataMessaging)
+          }
+        }
+      })
+      .catch(err => {})
     }
   },
 }
@@ -105,6 +139,7 @@ export default {
             border-radius: 14px;
             font-size: 16px;
             font-weight: 700;
+            color: #fff;
           }
 
           .wrap-img {

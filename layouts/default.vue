@@ -64,8 +64,6 @@
       <Messaging
         v-if="user"
         :user="user"
-        @clickMessage="clickMessage"
-        @handleShow="handleShow"
       />
     </div>
   </v-app>
@@ -93,9 +91,7 @@ export default {
   },
   data() {
     return {
-      snackbarShow: false,
-      listMessage: [],
-      showMessaging: false
+      snackbarShow: false
     }
   },
   computed: {
@@ -108,6 +104,9 @@ export default {
     user() {
       return this.$store.state.login.user
     },
+    listMessage() {
+      return this.$store.state.messaging.listMessaging
+    }
   },
   watch: {
     snackbar: {
@@ -130,25 +129,22 @@ export default {
     })
     .catch(err => {})
     this.$store.dispatch("login/getLoading", false)
+    if (this.user) {
+      this.$store.dispatch("websocket/getConnect", this)
+      this.$store.dispatch("websocket/getSubscribe", { _this: this, channel: "PresenceChannel" })
+      this.$store.dispatch("websocket/getSubscribe", { _this: this, channel: "ErrorChannel" })
+      setTimeout(() => {
+        this.$store.dispatch("websocket/getMessage", { _this: this, channel: "PresenceChannel", data: { text: "Online" } })
+      }, 500);
+    }
   },
   methods: {
     closeMessage(item) {
       let checkMessage = this.listMessage.filter(str => {
-        return str.name != item.name
+        return str.id != item.id
       })
-      this.listMessage = checkMessage
+      this.$store.dispatch("messaging/getListMessaging", checkMessage)
     },
-    clickMessage(item) {
-      let checkMessage = this.listMessage.filter(str => {
-        return str.name == item.name
-      })
-      if (checkMessage.length == 0) {
-        this.listMessage.push(item)
-      }
-    },
-    handleShow(val) {
-      this.showMessaging = val
-    }
   },
 }
 </script>

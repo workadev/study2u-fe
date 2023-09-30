@@ -9,11 +9,11 @@
         <div class="wrap-avatar" :style="{background: bgUserMessaging}">
           <img v-if="dataMessage.avatar" :src="dataMessage.avatar">
           <h5 v-else class="bold-h5">
-            {{ dataMessage.name.charAt(0).toUpperCase() }}
+            {{ dataMessage.first_name.charAt(0).toUpperCase() }}
           </h5>
         </div>
         <h6 class="bold-h6">
-          {{ dataMessage.name }}
+          {{ dataMessage.first_name }} {{ dataMessage.last_name }}
         </h6>
       </div>
       <v-icon
@@ -31,13 +31,13 @@
             <div class="wrap-avatar" :style="{background: bgUserMessaging}">
               <img v-if="dataMessage.avatar" :src="dataMessage.avatar">
               <h5 v-else class="bold-h5">
-                {{ dataMessage.name.charAt(0).toUpperCase() }}
+                {{ dataMessage.first_name.charAt(0).toUpperCase() }}
               </h5>
             </div>
             <div class="text-message">
-              <b>{{ dataMessage.name }}</b>
+              <b>{{ dataMessage.first_name }}</b>
               <div class="regular-title"> 
-                {{ dataMessage.institutions }}
+                {{ dataMessage.title }}
               </div>
             </div>
           </div>
@@ -46,7 +46,7 @@
           </div>
         </div>
       </div>
-      <div class="wrap-overflow">
+      <!-- <div class="wrap-overflow">
         <div 
           v-for="(item, index) in listTemp" :key="index"
           class="item-message"
@@ -72,7 +72,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="send-message">
         <textarea placeholder="Write a message" v-model="message" />
         <div class="d-flex justify-space-between mt-3">
@@ -174,12 +174,7 @@ export default {
     },
   },
   mounted() {
-    // window.addEventListener('click', (e) => {
-    //   if (!this.$el.contains(e.target)){
-    //     this.showMessage = false
-    //   }
-    // })
-    this.listTemp = [...this.dataMessage.message]
+    // this.listTemp = [...this.dataMessage.message]
     this.bgUserMessaging = this.randomColor()
     setTimeout(() => {
       this.showMessage = true

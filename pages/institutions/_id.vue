@@ -25,6 +25,7 @@
           class="btn-action"
           height="58"
           width="256"
+          :disabled="!user"
           @click="clickInterested()"
         >
           <v-icon :color="institutionDetail.is_shortlisted ? '#ff5abe' : '#2ca481'" size="35">mdi-heart</v-icon> 
@@ -93,11 +94,11 @@
             </h6>
             <v-btn
               color="#09B6DE"
-              dark
               width="115"
               height="45"
               class="btn-connect"
               elevation
+              :disabled="!user"
             >
               Connect
             </v-btn>
@@ -163,6 +164,11 @@ export default {
       institutionDetail: {},
       loading: true,
       showVideo: false
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.login.user
     }
   },
   async mounted() {
@@ -263,6 +269,7 @@ export default {
           border-radius: 14px;
           font-size: 16px;
           font-weight: 700;
+          color: #fff;
         }
 
         .wrap-img {

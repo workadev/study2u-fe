@@ -14,6 +14,7 @@
             </nuxt-link>
             <div class="type mb-5">{{ data.institution_type | capitalized }}, {{ data.ownership | capitalized }}</div>
             <img
+              v-if="user"
               class="icon-heart"
               :src="require(`@/assets/icons/${data.is_shortlisted ? 'heart-color' : 'heart'}.svg`)"
               @click="clickHeart(data)"

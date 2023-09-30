@@ -62,7 +62,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: './plugins/vue-carousel.js', mode: 'client' }
+    { src: './plugins/vue-carousel.js', mode: 'client' },
+    { src: './plugins/action-cable.js', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -98,6 +99,7 @@ export default {
 
   env: {
     apiUrl: process.env.apiUrl,
+    WEBSOCKET_HOST: process.env.WEBSOCKET_HOST,
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

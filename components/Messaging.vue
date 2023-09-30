@@ -19,7 +19,7 @@
       <v-icon
         size="40"
         color="#000"
-        @click="showMessage = !showMessage"
+        @click="clickShow()"
       >
         {{ showMessage ? "mdi-chevron-down" : "mdi-chevron-up" }}
       </v-icon>
@@ -207,6 +207,10 @@ export default {
     getActiveHeight() {
       this.activeHeight = `${document.getElementsByClassName("messaging-content")[0].clientHeight + 60}px`
     },
+    clickShow() {
+      this.$store.dispatch("conversation/getListPresence", this.token)
+      this.showMessage = !this.showMessage
+    }
   },
 }
 </script>
