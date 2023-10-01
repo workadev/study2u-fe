@@ -82,7 +82,10 @@
                 RESET
               </v-btn>
               <div class="mt-4">
-                or return to login <nuxt-link class="link" to="/login">here</nuxt-link>
+                or return to login 
+                <nuxt-link class="link" :to="$route.query.resource_name == 'staff' ? '/partner/login' : '/login'">
+                  here
+                </nuxt-link>
               </div>
             </div>
           </div>
@@ -136,7 +139,7 @@ export default {
       token: Object.keys(this.$route.query)[0]
     }
     this.errorToken.title = ""
-    await this.$axios.get("users/v1/reset_passwords", { headers: this.$store.state.config.headers, params: getToken })
+    await this.$axios.get(`${this.$route.query.resource_name}s/v1/reset_passwords`, { headers: this.$store.state.config.headers, params: getToken })
     .then((res) => {
       this.loadingForm = false
       this.headers.headers.authorization = res.headers.token
@@ -144,8 +147,9 @@ export default {
     .catch(err => {
       this.errorToken.title = "Reset Failed"
       this.errorToken.message = err.response ? err.response.data.message : err
+      let urlRedirect = this.$route.query.resource_name == "user" ? "/login" : "/partner/login"
       setTimeout(() => {
-        this.$router.push("/login")
+        this.$router.push(urlRedirect)
       }, 3000);
     })
     this.loadingForm = false
@@ -154,10 +158,10 @@ export default {
     async clickReset() {
       if (!this.loading) {
         this.loading = true
-        await this.$axios.put("users/v1/reset_passwords", { user: this.form }, this.headers)
+        await this.$axios.put(`${this.$route.query.resource_name}s/v1/reset_passwords`, { [this.$route.query.resource_name]: this.form }, this.headers)
         .then((res) => {
           if (res.status == 200) {
-            this.$router.push("/forgot-password/reset/confirm")
+            this.$router.push(`/forgot-password/reset/confirm?resource_name=${this.$route.query.resource_name}`)
           }
         })
         .catch(err => {

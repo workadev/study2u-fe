@@ -61,7 +61,7 @@
             >
               LOGIN
             </v-btn>
-            <nuxt-link to="/forgot-password" class="link text-decoration-none">
+            <nuxt-link to="/partner/forgot-password" class="link text-decoration-none">
               <b>I forgot my password</b>
             </nuxt-link>
           </div>
