@@ -427,7 +427,7 @@ export default {
         height: 100%;
 
         .wrap-overflow {
-          height: calc(100% - 352px);
+          height: calc(100% - 341px);
           max-height: none;
         }
       }

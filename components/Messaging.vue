@@ -93,6 +93,18 @@ export default {
       activeHeight: "0px"
     }
   },
+  channels: {
+    GlobalMessageChannel: {
+      received(data) {
+        if (data) {
+          let index = this.listTemp.findIndex(object => {
+            return object.user.id == data.data.message.user.id;
+          });
+          this.listTemp[index].last_message.text = data.data.message.text
+        }
+      }
+    }
+  },
   watch: {
     searchMessage(newVal) {
       if (newVal) {
@@ -111,6 +123,8 @@ export default {
     },
     showMessage(newVal) {
       if (newVal) {
+        this.getList()
+        this.listTemp = [...this.listMessage]
         this.getActiveHeight()
       } else {
         this.activeHeight = "0px"
@@ -119,16 +133,10 @@ export default {
     }
   },
   async mounted() {
-    await this.$axios.get(`${this.userType}/v1/conversations`, this.token)
-    .then((res) => {
-      if (res.status == 200) {
-        this.listMessage = res.data.data.chats
-        this.listMessage.forEach(element => {
-          element.bgAvatar = this.randomColor()
-        });
-      }
-    })
-    .catch(err => {})
+    await this.getList()
+    this.listMessage.forEach(element => {
+      element.bgAvatar = this.randomColor()
+    });
     this.listTemp = [...this.listMessage]
   },
   methods: {
@@ -136,7 +144,6 @@ export default {
       this.activeHeight = `${document.getElementsByClassName("messaging-content")[0].clientHeight + 60}px`
     },
     clickShow() {
-      this.$store.dispatch("conversation/getListPresence", this)
       this.showMessage = !this.showMessage
     },
     clickMessage(item) {
@@ -151,6 +158,15 @@ export default {
             dataMessaging.push(res.data.data.chat)
             this.$store.dispatch("messaging/getListMessaging", dataMessaging)
           }
+        }
+      })
+      .catch(err => {})
+    },
+    async getList() {
+      await this.$axios.get(`${this.userType}/v1/conversations`, this.token)
+      .then((res) => {
+        if (res.status == 200) {
+          this.listMessage = res.data.data.chats
         }
       })
       .catch(err => {})
