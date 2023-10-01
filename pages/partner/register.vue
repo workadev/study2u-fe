@@ -13,6 +13,18 @@
           <v-text-field
             hide-details
             height="38"
+            placeholder="first name"
+            v-model="form.first_name"
+          />
+          <v-text-field
+            hide-details
+            height="38"
+            placeholder="last name"
+            v-model="form.last_name"
+          />
+          <v-text-field
+            hide-details
+            height="38"
             placeholder="email"
             v-model="form.email"
           />
@@ -65,7 +77,7 @@
             placeholder="current qualification"
             item-text="name"
             item-value="id"
-            v-model="form.current_education_id"
+            v-model="form.current_qualification_id"
           >
             <template v-slot:append>
               <img width="21" src="@/assets/icons/chevron-down.svg">
@@ -108,7 +120,7 @@
             CREATE
           </v-btn>
           <div class="mt-4">
-            Already have one? <nuxt-link class="link" to="/login">Login here</nuxt-link>.
+            Already have one? <nuxt-link class="link" to="/partner/login">Login here</nuxt-link>.
           </div>
         </div>
       </div>
@@ -134,8 +146,7 @@ export default {
         email: "",
         password: "",
         password_confirmation: "",
-        current_education_id: "",
-        interest_ids: [],
+        current_qualification_id: "",
         nationality: "",
         tnc: false
       },
@@ -148,8 +159,8 @@ export default {
     },
     disCreate() {
       if (this.form.email && this.form.password && this.form.password_confirmation &&
-        this.form.current_education_id && this.form.nationality && this.form.tnc && 
-        (this.form.password == this.form.password_confirmation)
+        this.form.current_qualification_id && this.form.nationality && this.form.tnc && 
+        (this.form.password == this.form.password_confirmation) && this.form.first_name
       ) {
         return false  
       }
@@ -163,7 +174,7 @@ export default {
     async clickRegister() {
       if (!this.loading) {
         this.loading = true
-        await this.$axios.post("users/v1/sign_up", { user: this.form })
+        await this.$axios.post("staffs/v1/sign_up", { staff: this.form })
         .then((res) => {
           if (res.status == 201) {
             this.formClear()
@@ -198,8 +209,7 @@ export default {
         email: "",
         password: "",
         password_confirmation: "",
-        current_education_id: "",
-        interest_ids: [],
+        current_qualification_id: "",
         nationality: "",
         tnc: false
       }

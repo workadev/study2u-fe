@@ -122,6 +122,7 @@ export default {
       .then((res) => {
         if (res.status == 200) {
           this.setCookies("token", res.headers.token)
+          this.setCookies("userType", "users")
           res.data.data.user = {
             ...res.data.data.user, bgAvatar: this.randomColor()
           }

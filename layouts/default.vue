@@ -116,13 +116,14 @@ export default {
   },
   async mounted() {
     this.$store.dispatch("login/getLoading", true)
-    await this.$axios.get("users/v1/current", this.token)
+    await this.$axios.get(`${this.userType}/v1/current`, this.token)
     .then((res) => {
       if (res.status == 200) {
-        res.data.data.user = {
-          ...res.data.data.user, bgAvatar: this.randomColor()
+        let getData = this.userType == "users" ? res.data.data.user : res.data.data.staff
+        getData = {
+          ...getData, bgAvatar: this.randomColor()
         }
-        this.$store.dispatch("login/getUser", res.data.data.user)
+        this.$store.dispatch("login/getUser", getData)
       }
     })
     .catch(err => {})
@@ -131,6 +132,7 @@ export default {
       this.$store.dispatch("websocket/getConnect", this)
       this.$store.dispatch("websocket/getSubscribe", { _this: this, channel: "PresenceChannel" })
       this.$store.dispatch("websocket/getSubscribe", { _this: this, channel: "ErrorChannel" })
+      this.$store.dispatch("websocket/getSubscribe", { _this: this, channel: "GlobalMessageChannel" })
       setTimeout(() => {
         this.$store.dispatch("websocket/getMessage", { _this: this, channel: "PresenceChannel", data: { text: "Online" } })
       }, 500);
@@ -158,6 +160,8 @@ export default {
     right: 0px;
     display: flex;
     z-index: 7;
+    max-height: 60px;
+    justify-content: flex-end;
 
     .messaging-personal:first-child {
       margin-left: 0px !important;
@@ -187,7 +191,8 @@ export default {
 
   @media screen and(max-width: 700px) {
     .group-messaging {
-      // width: 100%;
+      width: 100%;
+      max-height: unset;
     }
   }
 </style>

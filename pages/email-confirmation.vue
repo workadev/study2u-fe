@@ -24,13 +24,14 @@ export default {
     let getToken = {
       token: Object.keys(this.$route.query)[0]
     }
-    await this.$axios.get("users/v1/confirmation", { params: getToken })
+    await this.$axios.get(`${this.$route.query.resource_name}s/v1/confirmation`, { params: getToken })
     .then((res) => {
       if (res.status == 200) {
         this.title = "Email Verified"
         this.message = "Thank you for verifiying your email. Please wait you will be redirected in a moment."
+        let urlRedirect = this.$route.query.resource_name == "user" ? "/login" : "/partner/login"
         setTimeout(() => {
-          this.$router.push("/login")
+          this.$router.push(urlRedirect)
         }, 3000);
       }
     })

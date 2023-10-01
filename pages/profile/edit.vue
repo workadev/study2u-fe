@@ -251,13 +251,14 @@ export default {
             ...this.profile, avatar_id: this.fileUpload.key.split("cache/")[1]
           }
         }
-        await this.$axios.put("users/v1/current", { user: this.profile }, this.token)
+        await this.$axios.put(`${this.userType}/v1/current`, { user: this.profile }, this.token)
         .then(async (res) => {
           if (res.status == 200) {
-            res.data.data.user = {
-              ...res.data.data.user, bgAvatar: this.user.bgAvatar
+            let getData = this.userType == "users" ? res.data.data.user : res.data.data.staff
+            getData = {
+              ...getData, bgAvatar: this.user.bgAvatar
             }
-            this.$store.dispatch("login/getUser", res.data.data.user)
+            this.$store.dispatch("login/getUser", getData)
             if (!failed) {
               this.$store.dispatch("snackbar/getSnackbar", {
                 show: true,

@@ -107,7 +107,7 @@ export default {
   methods: {
     async clickDone() {
       this.loading = true
-      await this.$axios.put("users/v1/current/update/password", { user: this.form }, this.token)
+      await this.$axios.put(`${this.userType}/v1/current/update/password`, { user: this.form }, this.token)
       .then((res) => {
         if (res.status == 200) {
           this.$store.dispatch("snackbar/getSnackbar", {

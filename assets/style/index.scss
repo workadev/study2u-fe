@@ -297,13 +297,13 @@ body {
 }
 
 .chip-square {
-  box-shadow: 0px 4px 4px 0px #00000040;
   width: fit-content;
   height: fit-content;
   border: 2px solid #000;
   padding: 4px 18px;
   line-height: 25.88px;
   position: relative;
+  border-radius: 12px;
 }
 
 .error-field {

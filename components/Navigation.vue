@@ -74,7 +74,10 @@
             <nuxt-link to="/profile" class="d-flex">
               <img v-if="user.avatar" :src="user.avatar">
               <h1 v-else class="bold-h1 mb-1">
-                {{ user.first_name.charAt(0).toUpperCase() }}
+                {{ 
+                  user.first_name ? user.first_name.charAt(0).toUpperCase() 
+                  : user.email.charAt(0).toUpperCase() 
+                }}
               </h1>
             </nuxt-link>
           </div>
@@ -139,7 +142,10 @@
                 <nuxt-link to="/profile" class="d-flex">
                   <img v-if="user.avatar" width="70" :src="user.avatar">
                   <h1 v-else class="bold-h1">
-                    {{ user.first_name.charAt(0).toUpperCase() }}
+                    {{ 
+                      user.first_name ? user.first_name.charAt(0).toUpperCase() 
+                      : user.email.charAt(0).toUpperCase() 
+                    }}
                   </h1>
                 </nuxt-link>
               </div>

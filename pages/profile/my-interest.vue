@@ -101,13 +101,14 @@ export default {
       });
       if (!this.loading) {
         this.loading = true
-        await this.$axios.put("users/v1/current/update/interests", { user: interestsId }, this.token)
+        await this.$axios.put(`${this.userType}/v1/current/update/interests`, { user: interestsId }, this.token)
         .then((res) => {
           if (res.status == 200) {
-            res.data.data.user = {
-              ...res.data.data.user, bgAvatar: this.user.bgAvatar
+            let getData = this.userType == "users" ? res.data.data.user : res.data.data.staff
+            getData = {
+              ...getData, bgAvatar: this.user.bgAvatar
             }
-            this.$store.dispatch("login/getUser", res.data.data.user)
+            this.$store.dispatch("login/getUser", getData)
             this.$store.dispatch("snackbar/getSnackbar", {
               show: true,
               color: "#74b816",

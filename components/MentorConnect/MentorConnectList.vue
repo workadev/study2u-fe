@@ -101,7 +101,7 @@ export default {
       this.loading = false
     },
     clickConnect(item) {
-      this.$axios.post(`users/v1/conversations/${item.id}`, null, this.token)
+      this.$axios.post(`${this.userType}/v1/conversations/${item.id}`, null, this.token)
       .then((res) => {
         if (res.status == 201) {
           let dataMessaging = [...this.$store.state.messaging.listMessaging]

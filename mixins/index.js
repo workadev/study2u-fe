@@ -86,6 +86,9 @@ export default {
         }
       }
       return getHeaders
+    },
+    userType() {
+      return this.getCookies("userType")
     }
   },
   methods: {

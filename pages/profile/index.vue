@@ -95,7 +95,7 @@
             </nuxt-link>
           </h6>
         </div>
-        <div class="wrap-info card-profile">
+        <div v-if="user.institutions" class="wrap-info card-profile">
           <div>
             <b>My Shortlist:</b>
           </div>
@@ -133,7 +133,7 @@
             Compare Selected
           </v-btn>
         </div>
-        <div class="wrap-info mt-5 card-profile">
+        <div v-if="user.interests" class="wrap-info mt-5 card-profile">
           <div>
             <b>My Interests:</b>
           </div>
@@ -156,7 +156,7 @@
             </nuxt-link>
           </div>
         </div>
-        <div class="wrap-info mt-5 card-profile">
+        <div v-if="user.interests" class="wrap-info mt-5 card-profile">
           <div>
             <b>Recommendation</b>
           </div>
@@ -211,13 +211,14 @@ export default {
     }
   },
   async mounted() {
-    await this.$axios.get("users/v1/current", this.token)
+    await this.$axios.get(`${this.userType}/v1/current`, this.token)
     .then((res) => {
       if (res.status == 200) {
-        res.data.data.user = {
-          ...res.data.data.user, bgAvatar: this.user.bgAvatar
+        let getData = this.userType == "users" ? res.data.data.user : res.data.data.staff
+        getData = {
+          ...getData, bgAvatar: this.user.bgAvatar
         }
-        this.$store.dispatch("login/getUser", res.data.data.user)
+        this.$store.dispatch("login/getUser", getData)
       }
     })
     .catch(err => {})

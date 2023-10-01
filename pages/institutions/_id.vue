@@ -99,6 +99,7 @@
               class="btn-connect"
               elevation
               :disabled="!user"
+              @click="clickConnect(item)"
             >
               Connect
             </v-btn>
@@ -216,6 +217,22 @@ export default {
       setTimeout(() => {
         document.getElementById('video_player_full').play()
       }, 100);
+    },
+    clickConnect(item) {
+      this.$axios.post(`${this.userType}/v1/conversations/${item.id}`, null, this.token)
+      .then((res) => {
+        if (res.status == 201) {
+          let dataMessaging = [...this.$store.state.messaging.listMessaging]
+          let checkUser = dataMessaging.filter(str => {
+            return str.user.id == res.data.data.chat.user.id
+          })
+          if (checkUser.length == 0) {
+            dataMessaging.push(res.data.data.chat)
+            this.$store.dispatch("messaging/getListMessaging", dataMessaging)
+          }
+        }
+      })
+      .catch(err => {})
     }
   },
 }

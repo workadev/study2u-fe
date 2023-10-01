@@ -133,7 +133,7 @@ export default {
             this.interests.forEach(element => {
               interestsId.interest_ids.push(element.id)
             });
-            await this.$axios.put("users/v1/current/update/interests", { user: interestsId }, this.token)
+            await this.$axios.put(`${this.userType}/v1/current/update/interests`, { user: interestsId }, this.token)
             .then((res) => {})
             .catch(err => {
               this.$store.dispatch("snackbar/getSnackbar", {
@@ -145,13 +145,14 @@ export default {
               })
             })
 
-            await this.$axios.put("users/v1/current", { user: this.form }, this.token)
+            await this.$axios.put(`${this.userType}/v1/current`, { user: this.form }, this.token)
             .then(async (res) => {
               if (res.status == 200) {
-                res.data.data.user = {
-                  ...res.data.data.user, bgAvatar: this.user.bgAvatar
+                let getData = this.userType == "users" ? res.data.data.user : res.data.data.staff
+                getData = {
+                  ...getData, bgAvatar: this.user.bgAvatar
                 }
-                this.$store.dispatch("login/getUser", res.data.data.user)
+                this.$store.dispatch("login/getUser", getData)
                 if (!failed) {
                   this.$store.dispatch("snackbar/getSnackbar", {
                     show: true,

@@ -13,8 +13,8 @@ const mutations = {
 }
 
 const actions = {
-  getListPresence(context, token) {
-    this.$axios.get("users/v1/presences", token)
+  getListPresence(context, _this) {
+    this.$axios.get(`${_this.userType}/v1/presences`, _this.token)
     .then((res) => {
       if (res.status == 200) {
         context.commit("SET_LIST_PRESENCE", res.data.data.staffs)

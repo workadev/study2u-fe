@@ -62,7 +62,9 @@
                 </h5>
               </div>
               <div class="text-message">
-                <b>{{ item.user.first_name }} {{ item.user.last_name }}</b>
+                <b>
+                  {{ user.id == item.user.id ? "You" : `${item.user.first_name} ${item.user.last_name}` }}
+                </b>
                 <pre class="regular-title">
 {{ item.text }}
 </pre>
@@ -232,7 +234,7 @@ export default {
       }
     },
     getStatus() {
-      this.$store.dispatch("conversation/getListPresence", this.token)
+      this.$store.dispatch("conversation/getListPresence", this)
       let dataList = {
         id: this.dataMessage.user.id,
         online: true
@@ -269,7 +271,7 @@ export default {
       this.message = ""
     },
     async getListMessage() {
-      await this.$axios.get(`users/v1/conversations/${this.dataMessage.conversation_id}/messages`, this.token)
+      await this.$axios.get(`${this.userType}/v1/conversations/${this.dataMessage.conversation_id}/messages`, this.token)
       .then((res) => {
         if (res.status == 200) {
           this.listMessage = res.data.data.messages

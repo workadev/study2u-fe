@@ -9,7 +9,10 @@
         <div class="wrap-avatar" :style="{background: user.bgAvatar}">
           <img v-if="user.avatar" :src="user.avatar">
           <div v-else class="regular-body">
-            {{ user.first_name.charAt(0).toUpperCase() }}
+            {{ 
+              user.first_name ? user.first_name.charAt(0).toUpperCase() 
+              : user.email.charAt(0).toUpperCase() 
+            }}
           </div>
         </div>
         <h6 class="bold-h6">
@@ -51,13 +54,17 @@
               <div class="wrap-avatar" :style="{background: item.bgAvatar}">
                 <img v-if="item.user.avatar" :src="item.user.avatar">
                 <h5 v-else class="bold-h5">
-                  {{ item.user.first_name.charAt(0).toUpperCase() }}
+                  {{ 
+                    item.user.first_name ? item.user.first_name.charAt(0).toUpperCase() 
+                    : item.user.email.charAt(0).toUpperCase()
+                  }}
                 </h5>
               </div>
               <div class="text-message">
                 {{ item.user.first_name }} {{ item.user.last_name }}
                 <div v-if="item.last_message" class="regular-title">
-                  {{ item.user.first_name }} {{ item.user.last_name }}: {{ item.last_message.text }}
+                  {{ user.id == item.last_message.user.id ? "You" : `${item.last_message.user.first_name} ${item.last_message.user.last_name}` }}
+                  : {{ item.last_message.text }}
                 </div>
               </div>
             </div>
@@ -112,7 +119,7 @@ export default {
     }
   },
   async mounted() {
-    await this.$axios.get("users/v1/conversations", this.token)
+    await this.$axios.get(`${this.userType}/v1/conversations`, this.token)
     .then((res) => {
       if (res.status == 200) {
         this.listMessage = res.data.data.chats
@@ -129,11 +136,11 @@ export default {
       this.activeHeight = `${document.getElementsByClassName("messaging-content")[0].clientHeight + 60}px`
     },
     clickShow() {
-      this.$store.dispatch("conversation/getListPresence", this.token)
+      this.$store.dispatch("conversation/getListPresence", this)
       this.showMessage = !this.showMessage
     },
     clickMessage(item) {
-      this.$axios.post(`users/v1/conversations/${item.user.id}`, null, this.token)
+      this.$axios.post(`${this.userType}/v1/conversations/${item.user.id}`, null, this.token)
       .then((res) => {
         if (res.status == 201) {
           let dataMessaging = [...this.$store.state.messaging.listMessaging]
@@ -270,6 +277,12 @@ export default {
       h5 {
         color: #fff;
       }
+
+      .regular-body {
+        font-size: 26px !important;
+        font-weight: bold;
+        color: #fff;
+      }
       
       img {
         width: 100%;
@@ -285,6 +298,7 @@ export default {
       max-height: 50px;
       margin-left: 0px !important;
       max-width: 300px;
+      min-width: 300px;
 
       .messaging-content {
         .message-search {

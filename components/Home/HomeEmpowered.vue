@@ -19,7 +19,7 @@
             elevation
             height="58"
             width="212"
-            to="/register/partner"
+            to="/partner/register"
           >
             GET STARTED
           </v-btn>
