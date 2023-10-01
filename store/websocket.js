@@ -31,7 +31,20 @@ const actions = {
       channel: data.channel,
       data: data.data
     });
-  }
+  },
+  getSubscribeChat(context, data) {
+    data._this.$cable.subscribe({
+      channel: data.channel,
+      conversation_id: data.conversation_id
+    });
+  },
+  getMessageChat(context, data) {
+    data._this.$cable.perform({
+      channel: data.channel,
+      conversation_id: data.conversation_id,
+      data: data.data
+    });
+  },
 }
 
 const websocketModule = () => ({

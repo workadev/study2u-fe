@@ -10,6 +10,12 @@ const mutations = {
   SET_LIST(state, data) {
     state.listMessaging = data
   },
+  UPDATE_STATUS_LIST_ONLINE(state, data) {
+    let index = state.listMessaging.findIndex(object => {
+      return object.user.id == data.id;
+    });
+    state.listMessaging[index].user.online = data.online
+  }
 }
 
 const actions = {

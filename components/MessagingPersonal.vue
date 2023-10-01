@@ -7,13 +7,14 @@
     <div class="messaging-header">
       <div class="d-flex align-center pointer" @click="showMessage = !showMessage">
         <div class="wrap-avatar" :style="{background: bgUserMessaging}">
-          <img v-if="dataMessage.avatar" :src="dataMessage.avatar">
+          <img v-if="dataMessage.user.avatar" :src="dataMessage.user.avatar">
           <h5 v-else class="bold-h5">
-            {{ dataMessage.first_name.charAt(0).toUpperCase() }}
+            {{ dataMessage.user.first_name.charAt(0).toUpperCase() }}
           </h5>
+          <div v-if="dataMessage.user.online" class="user-online ml-2" />
         </div>
         <h6 class="bold-h6">
-          {{ dataMessage.first_name }} {{ dataMessage.last_name }}
+          {{ dataMessage.user.first_name }} {{ dataMessage.user.last_name }}
         </h6>
       </div>
       <v-icon
@@ -29,28 +30,28 @@
         <div class="w-100">
           <div class="d-flex wrap-message pb-0">
             <div class="wrap-avatar" :style="{background: bgUserMessaging}">
-              <img v-if="dataMessage.avatar" :src="dataMessage.avatar">
+              <img v-if="dataMessage.user.avatar" :src="dataMessage.user.avatar">
               <h5 v-else class="bold-h5">
-                {{ dataMessage.first_name.charAt(0).toUpperCase() }}
+                {{ dataMessage.user.first_name.charAt(0).toUpperCase() }}
               </h5>
             </div>
             <div class="text-message">
-              <b>{{ dataMessage.first_name }}</b>
+              <b>{{ dataMessage.user.first_name }} {{ dataMessage.user.last_name }}</b>
               <div class="regular-title"> 
-                {{ dataMessage.title }}
+                {{ dataMessage.user.title }}
               </div>
             </div>
           </div>
           <div class="bold-title text-center mt-5 pb-2 mb-1 title-date">
-            {{ dataMessage.date }}
+            {{ dataMessage.user.date }}
           </div>
         </div>
       </div>
       <!-- <div class="wrap-overflow">
         <div 
-          v-for="(item, index) in listTemp" :key="index"
+          v-for="(item, index) in listMessage" :key="index"
           class="item-message"
-          :class="{'mb-1': index == listTemp.length - 1}"
+          :class="{'mb-1': index == listMessage.length - 1}"
         >
           <div class="w-100 d-flex justify-space-between">
             <div class="d-flex wrap-message">
@@ -73,8 +74,13 @@
           </div>
         </div>
       </div> -->
+      <div v-if="isTyping" class="regular-body ml-3 typing">typing . . .</div>
       <div class="send-message">
-        <textarea placeholder="Write a message" v-model="message" />
+        <textarea 
+          placeholder="Write a message" 
+          v-model="message"
+          @keypress="handleTyping()"
+        />
         <div class="d-flex justify-space-between mt-3">
           <div class="d-flex align-center">
             <!-- <v-menu 
@@ -132,6 +138,7 @@
             color="#FF5ABE"
             class="btn-send"
             :disabled="!message"
+            @click="clickSend()"
           >
             SEND
           </v-btn>
@@ -146,13 +153,38 @@ export default {
   props: ["user", "dataMessage"],
   data() {
     return {
-      listTemp: [],
+      listMessage: [],
       searchMessage: "",
       showMessage: false,
       activeHeight: "0px",
       bgUserMessaging: "",
       message: "",
-      showEmojis: false
+      showEmojis: false,
+      isTyping: false
+    }
+  },
+  channels: {
+    PresenceChannel: {
+      received(data) {
+        if (data) {
+          this.getStatus()
+        }
+      }
+    },
+    TypingChannel: {
+      received(data) {
+        if (data) {
+          this.isTyping = true
+        }
+      }
+    },
+    ChatChannel: {
+      received(data) {
+        if (data) {
+          this.isTyping = false
+          this.listMessage.push(data)
+        }
+      }
     }
   },
   watch: {
@@ -160,7 +192,7 @@ export default {
       let getSearch = this.dataMessage.message.filter(str => {
         return str.message.toLowerCase().search(newVal.toLowerCase()) != -1
       })
-      this.listTemp = getSearch
+      this.listMessage = getSearch
       setTimeout(() => {
         this.getActiveHeight()
       }, 1);
@@ -174,8 +206,21 @@ export default {
     },
   },
   mounted() {
-    // this.listTemp = [...this.dataMessage.message]
     this.bgUserMessaging = this.randomColor()
+    this.$axios.get(`users/v1/conversations/${this.dataMessage.conversation_id}/messages`, this.token)
+    .then((res) => {
+      if (res.status == 200) {
+        this.listMessage = res.data.data.messages
+      }
+    })
+    this.$store.dispatch("websocket/getSubscribe", { _this: this, channel: "TypingChannel" })
+    this.$store.dispatch("websocket/getSubscribeChat", 
+      { 
+        _this: this, 
+        channel: "ChatChannel",
+        conversation_id: this.dataMessage.conversation_id
+      }
+    )
     setTimeout(() => {
       this.showMessage = true
     }, 1);
@@ -190,6 +235,40 @@ export default {
       } else {
         this.showMessage = !this.showMessage
       }
+    },
+    getStatus() {
+      this.$store.dispatch("conversation/getListPresence", this.token)
+      let dataList = {
+        id: this.dataMessage.user.id,
+        online: true
+      }
+      this.$store.commit("messaging/UPDATE_STATUS_LIST_ONLINE", dataList)
+    },
+    handleTyping() {
+      this.$store.dispatch("websocket/getMessageChat",
+        { 
+          _this: this, 
+          channel: "TypingChannel",
+          conversation_id: undefined,
+          data: {
+            typing: this.message,
+            conversation_id: this.dataMessage.conversation_id
+          }
+        }
+      )
+    },
+    clickSend() {
+      this.$store.dispatch("websocket/getMessageChat",
+        { 
+          _this: this, 
+          channel: "ChatChannel",
+          conversation_id: this.dataMessage.conversation_id,
+          data: {
+            text: this.message,
+            action: "create"
+          }
+        }
+      )
     }
   },
 }
@@ -208,6 +287,10 @@ export default {
     .messaging-content-personal {
       background: #F4F4F4;
       padding: 21px 0 0;
+
+      .typing {
+        margin-top: -20px
+      }
 
       .send-message {
         background: #D9D9D9;
@@ -303,6 +386,7 @@ export default {
       align-items: center;
       justify-content: center;
       margin-right: 30px;
+      position: relative;
 
       h5 {
         color: #fff;

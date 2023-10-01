@@ -55,14 +55,12 @@
       class="group-messaging"
     >
       <MessagingPersonal
-        v-if="user"
         v-for="(item, index) in listMessage" :key="index"
         :user="user"
         :dataMessage="item"
         @closeMessage="closeMessage"
       />
       <Messaging
-        v-if="user"
         :user="user"
       />
     </div>
@@ -141,9 +139,12 @@ export default {
   methods: {
     closeMessage(item) {
       let checkMessage = this.listMessage.filter(str => {
-        return str.id != item.id
+        return str.user.id != item.user.id
       })
       this.$store.dispatch("messaging/getListMessaging", checkMessage)
+      setTimeout(() => {
+        this.$store.dispatch("websocket/getSubscribe", { _this: this, channel: "PresenceChannel" })
+      }, 100);
     },
   },
 }

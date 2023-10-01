@@ -106,10 +106,10 @@ export default {
         if (res.status == 201) {
           let dataMessaging = [...this.$store.state.messaging.listMessaging]
           let checkUser = dataMessaging.filter(str => {
-            return str.id == res.data.data.chat.user.id
+            return str.user.id == res.data.data.chat.user.id
           })
-          if (checkUser == 0) {
-            dataMessaging.push(res.data.data.chat.user)
+          if (checkUser.length == 0) {
+            dataMessaging.push(res.data.data.chat)
             this.$store.dispatch("messaging/getListMessaging", dataMessaging)
           }
         }
