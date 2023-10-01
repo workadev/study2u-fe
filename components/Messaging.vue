@@ -36,36 +36,39 @@
           v-model="searchMessage"
         />
       </div>
-      <div class="wrap-overflow">
+      <div v-if="listTemp.length != 0" class="wrap-overflow">
         <div 
           v-for="(item, index) in listTemp" :key="index"
           class="item-message"
           :class="{
             'mb-1': index == listTemp.length - 1,
-            active: item.active
+            active: item.last_message ? item.last_message.read : ''
           }"
-          @click="$emit('clickMessage', item)"
+          @click="clickMessage(item)"
         >
           <div class="w-100 d-flex justify-space-between wrap-content">
             <div class="d-flex wrap-message">
-              <div class="wrap-avatar" :style="{background: randomColor()}">
-                <img v-if="item.avatar" :src="item.avatar">
+              <div class="wrap-avatar" :style="{background: item.bgAvatar}">
+                <img v-if="item.user.avatar" :src="item.user.avatar">
                 <h5 v-else class="bold-h5">
-                  {{ item.name.charAt(0).toUpperCase() }}
+                  {{ item.user.first_name.charAt(0).toUpperCase() }}
                 </h5>
               </div>
               <div class="text-message">
-                {{ item.name }}
-                <div class="regular-title">
-                  {{ item.shortMessage.nameLastSend }}: {{ item.shortMessage.message }}
+                {{ item.user.first_name }} {{ item.user.last_name }}
+                <div v-if="item.last_message" class="regular-title">
+                  {{ item.user.first_name }} {{ item.user.last_name }}: {{ item.last_message.text }}
                 </div>
               </div>
             </div>
             <div class="regular-title mt-1">
-              {{ item.date }}
+              {{ formatDate(item.created_at, "MMM DD") }}
             </div>
           </div>
         </div>
+      </div>
+      <div v-else class="text-center pb-5">
+        Message not found.
       </div>
     </div>
   </div>
@@ -76,105 +79,7 @@ export default {
   props: ["user"],
   data() {
     return {
-      listMessage: [
-        {
-          avatar: "",
-          name: "Fatima Van De Broer",
-          institutions: "Brickfields Asia College",
-          date: "Sep 01",
-          active: true,
-          shortMessage: {
-            nameLastSend: "Fatima Van De Broer",
-            message: "Hi, thank you for the opportunity!",
-          },
-          message: [
-            {
-              avatar:  this.user.avatar,
-              name: `${this.user.first_name} ${this.user.last_name}`,
-              message: `Hi Mr. Hardy. Greetings!
-
-    I would like to know more regarding Brickfields Asia College`,
-              date: "9:15 am"
-            },
-            {
-              avatar: "",
-              name: "Fatima Van De Broer",
-              message: "Hello Marisjke!  Yes ofcourse, how may I be of service for you?",
-              date: "9:19 am"
-            },
-            {
-              avatar: this.user.avatar,
-              name: `${this.user.first_name} ${this.user.last_name}`,
-              message: "Thanks for getting back to me. I was wondering if there’s more information on the law major at Brickfields?",
-              date: "9:23 am"
-            },
-          ]
-        },
-        {
-          avatar: "",
-          name: "Dedi Rustam",
-          institutions: "Brickfields Asia College",
-          date: "Aug 29",
-          shortMessage: {
-            nameLastSend: "You",
-            message: "Will get back asap, oh and also got the reservation already oh and also got the reservation",
-          },
-          message: [
-            {
-              avatar:  this.user.avatar,
-              name: `${this.user.first_name} ${this.user.last_name}`,
-              message: `Hi Mr. Hardy. Greetings!
-
-    I would like to know more regarding Brickfields Asia College`,
-              date: "9:15 am"
-            },
-            {
-              avatar: "",
-              name: "Dedi Rustam",
-              message: "Hello Marisjke!  Yes ofcourse, how may I be of service for you?",
-              date: "9:19 am"
-            },
-            {
-              avatar: this.user.avatar,
-              name: `${this.user.first_name} ${this.user.last_name}`,
-              message: "Thanks for getting back to me. I was wondering if there’s more information on the law major at Brickfields?",
-              date: "9:23 am"
-            },
-          ]
-        },
-        {
-          avatar: "",
-          name: "Hardy Tame",
-          institutions: "Brickfields Asia College",
-          date: "Aug 27",
-          shortMessage: {
-            nameLastSend: "You",
-            message: "Will get back asap, oh and also got the reservation already oh and also got the reservation",
-          },
-          message: [
-            {
-              avatar:  this.user.avatar,
-              name: `${this.user.first_name} ${this.user.last_name}`,
-              message: `Hi Mr. Hardy. Greetings!
-
-    I would like to know more regarding Brickfields Asia College`,
-              date: "9:15 am"
-            },
-            {
-              avatar: "",
-              name: "Hardy Tame",
-              message: "Hello Marisjke!  Yes ofcourse, how may I be of service for you?",
-              date: "9:19 am"
-            },
-            {
-              avatar: this.user.avatar,
-              name: `${this.user.first_name} ${this.user.last_name}`,
-              message: "Thanks for getting back to me. I was wondering if there’s more information on the law major at Brickfields?",
-              date: "9:23 am"
-            },
-          ]
-        },
-      ],
+      listMessage: [],
       listTemp: [],
       searchMessage: "",
       showMessage: false,
@@ -183,10 +88,16 @@ export default {
   },
   watch: {
     searchMessage(newVal) {
-      let getSearch = this.listMessage.filter(str => {
-        return str.shortMessage.message.toLowerCase().search(newVal.toLowerCase()) != -1
-      })
-      this.listTemp = getSearch
+      if (newVal) {
+        let getSearch = this.listMessage.filter(str => {
+          if (str.last_message) {
+            return str.last_message.text.toLowerCase().search(newVal.toLowerCase()) != -1
+          }
+        })
+        this.listTemp = getSearch
+      } else {
+        this.listTemp = this.listMessage
+      }
       setTimeout(() => {
         this.getActiveHeight()
       }, 1);
@@ -200,7 +111,17 @@ export default {
       this.$emit("handleShow", newVal)
     }
   },
-  mounted() {
+  async mounted() {
+    await this.$axios.get("users/v1/conversations", this.token)
+    .then((res) => {
+      if (res.status == 200) {
+        this.listMessage = res.data.data.chats
+        this.listMessage.forEach(element => {
+          element.bgAvatar = this.randomColor()
+        });
+      }
+    })
+    .catch(err => {})
     this.listTemp = [...this.listMessage]
   },
   methods: {
@@ -210,6 +131,22 @@ export default {
     clickShow() {
       this.$store.dispatch("conversation/getListPresence", this.token)
       this.showMessage = !this.showMessage
+    },
+    clickMessage(item) {
+      this.$axios.post(`users/v1/conversations/${item.user.id}`, null, this.token)
+      .then((res) => {
+        if (res.status == 201) {
+          let dataMessaging = [...this.$store.state.messaging.listMessaging]
+          let checkUser = dataMessaging.filter(str => {
+            return str.user.id == res.data.data.chat.user.id
+          })
+          if (checkUser.length == 0) {
+            dataMessaging.push(res.data.data.chat)
+            this.$store.dispatch("messaging/getListMessaging", dataMessaging)
+          }
+        }
+      })
+      .catch(err => {})
     }
   },
 }

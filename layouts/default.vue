@@ -157,7 +157,6 @@ export default {
     bottom: 0px;
     right: 0px;
     display: flex;
-    justify-content: flex-end;
     z-index: 7;
 
     .messaging-personal:first-child {

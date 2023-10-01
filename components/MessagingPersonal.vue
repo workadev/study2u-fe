@@ -43,11 +43,11 @@
             </div>
           </div>
           <div class="bold-title text-center mt-5 pb-2 mb-1 title-date">
-            {{ dataMessage.user.date }}
+            {{ formatDate(dataMessage.created_at, "MMM DD") }}
           </div>
         </div>
       </div>
-      <!-- <div class="wrap-overflow">
+      <div class="wrap-overflow">
         <div 
           v-for="(item, index) in listMessage" :key="index"
           class="item-message"
@@ -56,25 +56,25 @@
           <div class="w-100 d-flex justify-space-between">
             <div class="d-flex wrap-message">
               <div class="wrap-avatar" :style="{background: bgUserMessaging}">
-                <img v-if="item.avatar" :src="item.avatar">
+                <img v-if="item.user.avatar" :src="item.user.avatar">
                 <h5 v-else class="bold-h5">
-                  {{ item.name.charAt(0).toUpperCase() }}
+                  {{ item.user.first_name.charAt(0).toUpperCase() }}
                 </h5>
               </div>
               <div class="text-message">
-                <b>{{ item.name }}</b>
+                <b>{{ item.user.first_name }} {{ item.user.last_name }}</b>
                 <pre class="regular-title">
-{{ item.message }}
+{{ item.text }}
 </pre>
               </div>
             </div>
             <div class="regular-subtitle mt-1">
-              {{ item.date }}
+              {{ formatDate(item.created_at, "h:mm a") }}
             </div>
           </div>
         </div>
-      </div> -->
-      <div v-if="isTyping" class="regular-body ml-3 typing">typing . . .</div>
+      </div>
+      <div v-if="isTyping" class="regular-body pl-3 typing">typing . . .</div>
       <div class="send-message">
         <textarea 
           placeholder="Write a message" 
@@ -182,7 +182,7 @@ export default {
       received(data) {
         if (data) {
           this.isTyping = false
-          this.listMessage.push(data)
+          this.getListMessage()
         }
       }
     }
@@ -198,21 +198,16 @@ export default {
       }, 1);
     },
     showMessage(newVal) {
-      if (newVal) {
-        this.getActiveHeight()
-      } else {
+      if (!newVal) {
         this.activeHeight = "0px"
+      } else {
+        this.getActiveHeight()
       }
     },
   },
   mounted() {
     this.bgUserMessaging = this.randomColor()
-    this.$axios.get(`users/v1/conversations/${this.dataMessage.conversation_id}/messages`, this.token)
-    .then((res) => {
-      if (res.status == 200) {
-        this.listMessage = res.data.data.messages
-      }
-    })
+    this.getListMessage()
     this.$store.dispatch("websocket/getSubscribe", { _this: this, channel: "TypingChannel" })
     this.$store.dispatch("websocket/getSubscribeChat", 
       { 
@@ -264,11 +259,23 @@ export default {
           channel: "ChatChannel",
           conversation_id: this.dataMessage.conversation_id,
           data: {
-            text: this.message,
-            action: "create"
+            message: {
+              text: this.message,
+              action: "create"
+            }
           }
         }
       )
+      this.message = ""
+    },
+    async getListMessage() {
+      await this.$axios.get(`users/v1/conversations/${this.dataMessage.conversation_id}/messages`, this.token)
+      .then((res) => {
+        if (res.status == 200) {
+          this.listMessage = res.data.data.messages
+        }
+      })
+      this.getActiveHeight()
     }
   },
 }
@@ -289,7 +296,10 @@ export default {
       padding: 21px 0 0;
 
       .typing {
-        margin-top: -20px
+        margin-top: -20px;
+        z-index: 1;
+        position: relative;
+        background: #F4F4F4;
       }
 
       .send-message {
