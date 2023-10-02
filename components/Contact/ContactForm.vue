@@ -77,9 +77,36 @@ export default {
     }
   },
   methods: {
-    clickSubmit() {
+    async clickSubmit() {
       if (!this.validation() && !this.loading) {
-        // this.loading = true
+        this.loading = true
+        await this.$axios.post("v1/contact_us", { contact: this.form })
+        .then((res) => {
+          if (res.status == 201) {
+            this.$store.dispatch("snackbar/getSnackbar", {
+              show: true,
+              color: "#74b816",
+              icon: "mdi-check",
+              title: "Submit Success",
+              message: res.data.message
+            })
+          }
+        })
+        .catch(err => {
+          this.$store.dispatch("snackbar/getSnackbar", {
+            show: true,
+            color: "#ff004a",
+            icon: "mdi-close-circle-outline",
+            title: "Submit Failed",
+            message: err.response ? err.response.data.message : err
+          })
+        })
+        this.loading = false
+        this.form = {
+          name: "",
+          email: "",
+          message: ""
+        }
       }
     },
     validation() {
