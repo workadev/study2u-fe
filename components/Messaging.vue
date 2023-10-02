@@ -45,7 +45,7 @@
           class="item-message"
           :class="{
             'mb-1': index == listTemp.length - 1,
-            active: item.last_message ? item.last_message.read : ''
+            active: item.last_message ? !item.last_message.read : ''
           }"
           @click="clickMessage(item)"
         >
@@ -146,8 +146,8 @@ export default {
     clickShow() {
       this.showMessage = !this.showMessage
     },
-    clickMessage(item) {
-      this.$axios.post(`${this.userType}/v1/conversations/${item.user.id}`, null, this.token)
+    async clickMessage(item) {
+      await this.$axios.post(`${this.userType}/v1/conversations/${item.user.id}`, null, this.token)
       .then((res) => {
         if (res.status == 201) {
           let dataMessaging = [...this.$store.state.messaging.listMessaging]
@@ -161,6 +161,24 @@ export default {
         }
       })
       .catch(err => {})
+
+      // action read
+      this.$store.dispatch("websocket/getMessageChat",
+        { 
+          _this: this, 
+          channel: "ChatChannel",
+          conversation_id: item.conversation_id,
+          data: {
+            message: {
+              read_timetoken: item.last_message.timetoken,
+              action: "read"
+            }
+          }
+        }
+      )
+
+      this.getList()
+      this.listTemp = [...this.listMessage]
     },
     async getList() {
       await this.$axios.get(`${this.userType}/v1/conversations`, this.token)
