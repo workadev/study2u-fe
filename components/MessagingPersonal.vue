@@ -61,10 +61,10 @@
                   {{ item.user.first_name.charAt(0).toUpperCase() }}
                 </h5>
               </div>
-              <div class="text-message">
-                <b>
+              <div class="text-message" :class="{'text-read': item.read}">
+                <div>
                   {{ user.id == item.user.id ? "You" : `${item.user.first_name} ${item.user.last_name}` }}
-                </b>
+                </div>
                 <pre class="regular-title">
 {{ item.text }}
 </pre>
@@ -85,11 +85,12 @@
         />
         <div class="d-flex justify-space-between mt-3">
           <div class="d-flex align-center">
-            <!-- <v-menu 
+            <v-menu 
               v-model="menuEmojis"
               transition="slide-y-transition"
               origin="center center"
               offset-y
+              content-class="menu-emoji"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -104,25 +105,9 @@
                 </v-btn>
               </template>
               <v-card>
-                <v-card-subtitle>
-                  Emojis
-                </v-card-subtitle>
+                <BaseEmojiPicker @emoji_click="append"  />
               </v-card>
-            </v-menu> -->
-            <div class="relative d-flex">
-              <v-btn
-                text
-                height="fit-content"
-                min-width="fit-content"
-                class="px-0 mr-2"
-              >
-                <img src="@/assets/icons/happy.svg">
-              </v-btn>
-              <BaseEmojis 
-                :show="showEmojis"
-                @clickOutside="showEmojis = false"
-              />
-            </div>
+            </v-menu>
             <v-btn
               text
               height="fit-content"
@@ -161,7 +146,7 @@ export default {
       activeHeight: "0px",
       bgUserMessaging: "",
       message: "",
-      showEmojis: false,
+      menuEmojis: false,
       isTyping: false
     }
   },
@@ -188,6 +173,13 @@ export default {
         }
       }
     }
+  },
+  directives: {
+    focus: {
+      inserted(el) {
+        el.focus()
+      },
+    },
   },
   watch: {
     searchMessage(newVal) {
@@ -278,12 +270,19 @@ export default {
         }
       })
       this.getActiveHeight()
-    }
+    },
+    append(emoji) {
+      this.message += emoji
+    },
   },
 }
 </script>
 
 <style lang="scss">
+  .menu-emoji {
+    margin-top: -36px;
+  }
+
   .messaging-personal {
     background: #F4F4F4;
     max-width: 400px;
@@ -348,6 +347,7 @@ export default {
         pre {
           white-space: break-spaces;
           font-family: 'PTSans';
+          font-weight: bold;
         }
 
         .wrap-message {
@@ -361,6 +361,7 @@ export default {
             font-size: 18px;
             max-width: 254.74px;
             margin-top: 4px;
+            font-weight: bold;
           }
   
           img {
@@ -368,6 +369,13 @@ export default {
             height: 44px;
             border-radius: 50%;
             object-fit: cover;
+          }
+        }
+
+        .text-read {
+          div,
+          pre {
+            font-weight: 400 !important;
           }
         }
       }

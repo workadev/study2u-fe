@@ -135,7 +135,7 @@ export default {
       this.$store.dispatch("websocket/getSubscribe", { _this: this, channel: "GlobalMessageChannel" })
       setTimeout(() => {
         this.$store.dispatch("websocket/getMessage", { _this: this, channel: "PresenceChannel", data: { text: "Online" } })
-      }, 500);
+      }, 1000);
     }
   },
   methods: {
@@ -147,6 +147,9 @@ export default {
       setTimeout(() => {
         this.$store.dispatch("websocket/getSubscribe", { _this: this, channel: "PresenceChannel" })
       }, 100);
+      setTimeout(() => {
+        this.$store.dispatch("websocket/getMessage", { _this: this, channel: "PresenceChannel", data: { text: "Online" } })
+      }, 1000);
     },
   },
 }

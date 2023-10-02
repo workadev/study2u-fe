@@ -241,6 +241,7 @@ export default {
   },
   methods: {
     clickLogout() {
+      this.$cable.unsubscribe("PresenceChannel")
       this.clearCookies("token")
       this.$router.push("/login")
     },

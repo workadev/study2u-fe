@@ -51,7 +51,7 @@
         >
           <div class="w-100 d-flex justify-space-between wrap-content">
             <div class="d-flex wrap-message">
-              <div class="wrap-avatar" :style="{background: item.bgAvatar}">
+              <div class="wrap-avatar" :style="{background: bgColor[index]}">
                 <img v-if="item.user.avatar" :src="item.user.avatar">
                 <h5 v-else class="bold-h5">
                   {{ 
@@ -59,6 +59,7 @@
                     : item.user.email.charAt(0).toUpperCase()
                   }}
                 </h5>
+                <div v-if="item.user.online" class="user-online ml-2" />
               </div>
               <div class="text-message">
                 {{ item.user.first_name }} {{ item.user.last_name }}
@@ -90,17 +91,24 @@ export default {
       listTemp: [],
       searchMessage: "",
       showMessage: false,
-      activeHeight: "0px"
+      activeHeight: "0px",
+      bgColor: []
     }
   },
   channels: {
     GlobalMessageChannel: {
       received(data) {
         if (data) {
-          let index = this.listTemp.findIndex(object => {
-            return object.user.id == data.data.message.user.id;
-          });
-          this.listTemp[index].last_message.text = data.data.message.text
+          this.getList()
+        }
+      }
+    },
+    ChatChannel: {
+      received(data) {
+        if (data) {
+          if (data.action == "read") {
+            this.getList()
+          }
         }
       }
     }
@@ -124,7 +132,6 @@ export default {
     showMessage(newVal) {
       if (newVal) {
         this.getList()
-        this.listTemp = [...this.listMessage]
         this.getActiveHeight()
       } else {
         this.activeHeight = "0px"
@@ -135,9 +142,8 @@ export default {
   async mounted() {
     await this.getList()
     this.listMessage.forEach(element => {
-      element.bgAvatar = this.randomColor()
+      this.bgColor.push(this.randomColor())
     });
-    this.listTemp = [...this.listMessage]
   },
   methods: {
     getActiveHeight() {
@@ -178,7 +184,6 @@ export default {
       )
 
       this.getList()
-      this.listTemp = [...this.listMessage]
     },
     async getList() {
       await this.$axios.get(`${this.userType}/v1/conversations`, this.token)
@@ -188,6 +193,7 @@ export default {
         }
       })
       .catch(err => {})
+      this.listTemp = [...this.listMessage]
     }
   },
 }
@@ -247,8 +253,8 @@ export default {
           }
   
           img {
-            width: 44px;
-            height: 44px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
           }
@@ -307,6 +313,7 @@ export default {
       align-items: center;
       justify-content: center;
       margin-right: 30px;
+      position: relative;
 
       h5 {
         color: #fff;
