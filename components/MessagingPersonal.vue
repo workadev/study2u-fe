@@ -91,6 +91,7 @@
               origin="center center"
               offset-y
               content-class="menu-emoji"
+              :close-on-content-click="false"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -105,7 +106,10 @@
                 </v-btn>
               </template>
               <v-card>
-                <BaseEmojiPicker @emoji_click="append"  />
+                <BaseEmojiPicker
+                  @emoji_click="append"
+                  @close="menuEmojis = false"
+                 />
               </v-card>
             </v-menu>
             <v-btn
