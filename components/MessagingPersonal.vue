@@ -78,11 +78,13 @@
       </div>
       <div v-if="isTyping" class="regular-body pl-3 typing">typing . . .</div>
       <div class="send-message">
-        <textarea 
-          placeholder="Write a message" 
-          v-model="message"
-          @keypress="handleTyping()"
-        />
+        <div
+          id="message"
+          contentEditable="true"
+          class="textarea"
+          placeholder="Write a message"
+          @input="handleValue"
+        ></div>
         <div class="d-flex justify-space-between mt-3">
           <div class="d-flex align-center">
             <v-menu 
@@ -112,14 +114,16 @@
                  />
               </v-card>
             </v-menu>
-            <v-btn
-              text
-              height="fit-content"
-              min-width="fit-content"
-              class="px-0"
+            <input
+              id="uploadImg"
+              type="file"
+              accept="image/*"
+              hidden
+              @change="inputImg"
             >
+            <label for="uploadImg" class="d-flex uploadImg pointer">
               <img src="@/assets/icons/image.svg">
-            </v-btn>
+            </label>
           </div>
           <v-btn
             height="30"
@@ -276,8 +280,23 @@ export default {
       this.getActiveHeight()
     },
     append(emoji) {
-      this.message += emoji
+      document.getElementById("message").focus();
+      document.execCommand("InsertHTML", false, emoji)
     },
+    handleValue(e) {
+      this.message = e.srcElement.innerHTML
+    },
+    inputImg(e) {
+      if (e.target.files[0]) {
+        document.getElementById("message").focus();
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById("message").focus();
+          document.execCommand('insertImage', false, e.target.result);
+        }
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    }
   },
 }
 </script>
@@ -318,13 +337,24 @@ export default {
           font-weight: 700;
         }
 
-        textarea {
+        textarea,
+        .textarea {
           background: #fff;
           resize: none;
           width: 100%;
           height: 100px;
           outline: none;
           padding: 12px 14px;
+          overflow: auto;
+        }
+
+        [placeholder]:empty::before {
+          content: attr(placeholder);
+          color: #555; 
+        }
+
+        [placeholder]:empty:focus::before {
+          content: "";
         }
       }
 
