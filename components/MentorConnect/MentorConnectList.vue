@@ -101,7 +101,15 @@ export default {
           }
         }
       })
-      .catch(err => {})
+      .catch(err => {
+        this.$store.dispatch("snackbar/getSnackbar", {
+          show: true,
+          color: "#ff004a",
+          icon: "mdi-close-circle-outline",
+          title: "Connect Failed",
+          message: err.response ? err.response.data.message : err
+        })
+      })
     }
   },
 }

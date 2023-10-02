@@ -65,7 +65,7 @@
                 {{ item.user.first_name }} {{ item.user.last_name }}
                 <div v-if="item.last_message" class="regular-title">
                   {{ user.id == item.last_message.user.id ? "You" : `${item.last_message.user.first_name} ${item.last_message.user.last_name}` }}
-                  : {{ item.last_message.text }}
+                  : <span v-html="item.last_message.text" />
                 </div>
               </div>
             </div>
@@ -342,6 +342,10 @@ export default {
       min-width: 300px;
 
       .messaging-content {
+        .wrap-overflow {
+          max-height: 100%;
+        }
+        
         .message-search {
           max-width: calc(100% - 8em);
         }

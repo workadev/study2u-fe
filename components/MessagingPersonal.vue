@@ -65,9 +65,7 @@
                 <div>
                   {{ user.id == item.user.id ? "You" : `${item.user.first_name} ${item.user.last_name}` }}
                 </div>
-                <pre class="regular-title">
-{{ item.text }}
-</pre>
+                <pre class="regular-title" v-html="item.text" />
               </div>
             </div>
             <div class="regular-subtitle mt-1">
@@ -268,6 +266,7 @@ export default {
           }
         }
       )
+      document.getElementById("message").innerHTML = ""
       this.message = ""
     },
     async getListMessage() {
