@@ -58,11 +58,11 @@
               <div class="title-info">Studies</div>
               <div class="mb-4">
                 <div class="name-bold">{{ programsName(item.study_levels) }}</div>
-                <!-- <div class="wrap-chip">
-                  <div class="chip-square" v-for="(itemCategory, indexCategory) in itemChild.categoryList" :key="indexCategory">
-                    {{ itemCategory }}
+                <div class="wrap-chip">
+                  <div class="chip-square" v-for="(itemCategory, indexCategory) in item.interests" :key="indexCategory">
+                    {{ itemCategory.name }}
                   </div>
-                </div> -->
+                </div>
               </div>
             </div>
             <div class="wrap-info">
