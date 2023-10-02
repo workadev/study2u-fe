@@ -8,7 +8,7 @@
         Connect with a vibrant community of students, mentors, and industry professionals. Engage in meaningful discussions, collaborate on projects, and build lifelong connections. Study2U is your gateway to networking opportunities and a support system that will inspire you to reach new heights.
       </h6>
       <div class="wrap-list">
-        <div class="item-list" v-for="(item, index) in listMentor" :key="index">
+        <div class="item-list" v-for="(item, index) in listMentor.slice(0,3)" :key="index">
           <div class="wrap-img" :style="{background: randomColor()}">
             <img v-if="item.avatar" :src="item.avatar">
             <h1 v-else class="bold-h1">
@@ -20,6 +20,19 @@
             {{ item.institutions.length == 0 ? "-" : item.institutions[0].name }}
           </h6>
         </div>
+        <div class="w-100 text-center">
+          <v-btn
+            elevation
+            color="#739EF1"
+            dark
+            class="btn-see mt-11"
+            height="58px"
+            width="212px"
+            to="/mentor-connect"
+          >
+            SEE MENTORS
+          </v-btn>
+        </div>
       </div>
     </v-container>
   </div>
@@ -30,7 +43,7 @@ export default {
   data() {
     return {
       paging: {
-        per_page: 3,
+        per_page: 100,
         page: 1
       },
       listMentor: []
@@ -41,6 +54,9 @@ export default {
     .then((res) => {
       if (res.status == 200) {
         this.listMentor = res.data.data.staffs
+        this.listMentor = this.listMentor.filter(str => {
+          return str.institutions.length != 0
+        })
       }
     })
     .catch(err => {})
@@ -57,6 +73,12 @@ export default {
       width: 100%;
       display: flex;
       flex-wrap: wrap;
+
+      .btn-see {
+        border-radius: 16px;
+        font-size: 20px;
+        font-weight: 700;
+      }
 
       .item-list {
         display: flex;

@@ -2,7 +2,7 @@
   <div class="notification-cookie">
     <v-container class="py-6">
       <div class="mr-5">
-        We value your privacy. study2u uses cookies to personalise content and analyse our traffic. See our <nuxt-link to="">Terms & Conditions</nuxt-link>. 
+        We value your privacy. study2u uses cookies to personalise content and analyse our traffic.
       </div>
       <v-btn
         height="55"

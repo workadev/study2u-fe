@@ -102,7 +102,7 @@
             >
               <template v-slot:label>
                 <div>
-                  I hereby agree with study2u <nuxt-link to="" class="link">Terms & Conditions</nuxt-link> and <nuxt-link to="" class="link">Privacy Policy</nuxt-link>
+                  I hereby agree with study2u <nuxt-link to="/privacy-policy" class="link">Privacy Policy</nuxt-link>
                 </div>
               </template>
             </v-checkbox>

@@ -23,6 +23,9 @@
           >
             GET STARTED
           </v-btn>
+          <div class="regular-title mt-2">
+            or login <nuxt-link to="/partner/login" class="link">here</nuxt-link>
+          </div>
         </div>
       </div>
     </v-container>
@@ -50,6 +53,10 @@
       margin: 30px 0 57px;
       max-width: 499px;
       width: 100%;
+
+      .link {
+        color: #000;
+      }
 
       .btn-started {
         border-radius: 16px;

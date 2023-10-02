@@ -61,8 +61,7 @@
           © {{ new Date().getFullYear() }} study2u. All rights reserved.
         </div>
         <div class="d-flex content-copyright">
-          <nuxt-link to="">Privacy Policy</nuxt-link>
-          <nuxt-link to="" class="mx-0">Terms & Conditions</nuxt-link>
+          <nuxt-link to="" class="mx-0">Privacy Policy</nuxt-link>
         </div>
       </div>
     </v-container>

@@ -87,6 +87,21 @@
           TAKE THE FIRST STEP
         </v-btn>
       </div>
+      <div class="mt-16 d-flex flex-column align-center">
+        <h6 class="bold-h6 mb-3">
+          Are you a mentor?
+        </h6>
+        <v-btn
+          height="58px"
+          width="142px"
+          color="#78CAB7"
+          elevation
+          to="/partner/login"
+          class="btn-action mt-0"
+        >
+          LOGIN
+        </v-btn>
+      </div>
       <div class="mb-10 copyright">
         © {{ new Date().getFullYear() }} study2u. All rights reserved.
       </div>
@@ -172,7 +187,8 @@ export default {
       }
     }
 
-    .bold-h3 {
+    .bold-h3,
+    .bold-h6 {
       color: #fff;
     }
 
