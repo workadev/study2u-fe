@@ -25,7 +25,7 @@
         {{ showMessage ? "mdi-close" : "mdi-chevron-up" }}
       </v-icon>
     </div>
-    <div class="messaging-content-personal">
+    <div :class="`messaging-content-personal ${dataMessage.conversation_id}`">
       <div class="item-message pt-0">
         <div class="w-100">
           <div class="d-flex wrap-message pb-0">
@@ -220,7 +220,7 @@ export default {
   },
   methods: {
     getActiveHeight() {
-      this.activeHeight = `${document.getElementsByClassName("messaging-content-personal")[0].clientHeight + 60}px`
+      this.activeHeight = `${document.getElementsByClassName(this.dataMessage.conversation_id)[0].clientHeight + 60}px`
     },
     clickIcon() {
       if (this.showMessage) {

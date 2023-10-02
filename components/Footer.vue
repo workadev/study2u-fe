@@ -35,8 +35,14 @@
           <div class="more">MORE FROM US</div>
           <div class="text-more">Subscribe to our newsletter and keep up to date with the latest news from study2u</div>
           <div class="wrap-input mt-5">
-            <input type="text" placeholder="Your email">
-            <v-btn elevation width="135" class="btn-subscribe" color="#D9D9D9">
+            <input type="text" placeholder="Your email" v-model="form.subscription.email">
+            <v-btn
+              elevation
+              width="135"
+              class="btn-subscribe"
+              color="#D9D9D9"
+              @click="clickSubscribe()"
+            >
               Subscribe
             </v-btn>
           </div>
@@ -97,7 +103,38 @@ export default {
           name: "Contact Us",
           to: "/contact"
         },
-      ]
+      ],
+      form: {
+        subscription:  {
+          email: ""
+        }
+      }
+    }
+  },
+  methods: {
+    clickSubscribe() {
+      this.$axios.post("v1/subscriptions", this.form)
+      .then((res) => {
+        if (res.status == 201) {
+          this.$store.dispatch("snackbar/getSnackbar", {
+            show: true,
+            color: "#74b816",
+            icon: "mdi-check",
+            title: "Subscribe Success",
+            message: res.data.message
+          })
+          this.form.subscription.email = ""
+        }
+      })
+      .catch(err => {
+        this.$store.dispatch("snackbar/getSnackbar", {
+          show: true,
+          color: "#ff004a",
+          icon: "mdi-close-circle-outline",
+          title: "Subscribe Failed",
+          message: err.response ? err.response.data.message : err
+        })
+      })
     }
   },
 }
