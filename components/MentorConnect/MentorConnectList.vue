@@ -53,7 +53,6 @@
 export default {
   data() {
     return {
-      pageNumber: 1,
       listMentor: [],
       paging: {
         per_page: 10,
@@ -63,18 +62,6 @@ export default {
       loading: false
     }
   },
-  // channels: {
-  //   computed: [
-  //     {
-  //       connected() {},
-  //       rejected() {},
-  //       received(data) {
-  //         console.log("Message received");
-  //       },
-  //       disconnected() {},
-  //     }
-  //   ]
-  // },
   computed: {
     user() {
       return this.$store.state.login.user
@@ -85,7 +72,7 @@ export default {
   },
   methods: {
     clickPage(page) {
-      this.pageNumber = page
+      this.paging.page = page
       this.getList()
     },
     async getList() {

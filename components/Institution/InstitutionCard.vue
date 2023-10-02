@@ -84,6 +84,8 @@ export default {
     border: 2px solid #E2E2E2;
     transition: .3s;
     padding: 30px 13px;
+    width: 100%;
+    max-width: 1120px;
 
     .info-institution {
       width: 100%;
