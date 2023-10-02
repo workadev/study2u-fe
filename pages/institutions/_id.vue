@@ -66,10 +66,10 @@
           </div>
         </div>
         <div v-if="institutionDetail.videos.length != 0" class="content-right mt-8">
-          <video id="video_player">
+          <video id="video_player" width="100%" height="100%">
             <source
               type="video/mp4"
-              :src="institutionDetail.videos"
+              :src="institutionDetail.videos[0].video"
             />
           </video>
           <v-btn icon class="btn-play" @click="clickPlay()">
@@ -343,10 +343,6 @@ export default {
       justify-content: center;
       max-width: 360px;
       width: 100%;
-      
-      video {
-        background: #CECECE;
-      }
 
       .btn-play {
         position: absolute;
@@ -418,6 +414,12 @@ export default {
 
     .VueCarousel-dot--active {
       background-color: #fff !important;
+    }
+
+    .VueCarousel-slide {
+      img {
+        height: 350px;
+      }
     }
 
     .container-header {
