@@ -418,7 +418,7 @@ export default {
 
     .VueCarousel-slide {
       img {
-        height: 350px;
+        height: 650px;
       }
     }
 
