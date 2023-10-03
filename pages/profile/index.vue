@@ -86,110 +86,13 @@
         </div>
       </div>
       <div class="info-right">
-        <div v-if="unCompleted" class="notif-profile mb-5">
-          <h6 class="bold-h6 mb-3">Complete Your Profile</h6>
-          <h6 class="regular-h6">
-            For better experience with us, kindly complete your 
-            <nuxt-link to="/profile/step">
-              <b><u>profile</u></b>
-            </nuxt-link>
-          </h6>
-        </div>
-        <div v-if="user.institutions" class="wrap-info card-profile">
-          <div>
-            <b>My Shortlist:</b>
-          </div>
-          <div v-if="user.institutions.length == 0 && !editShortlist" class="mt-4">
-            Oops, you have not select any institution. <nuxt-link to="/institutions">Go here</nuxt-link>!
-          </div>
-          <div v-else class="mt-1 d-flex flex-wrap wrap-option-shortlist">
-            <div 
-              class="d-flex flex-column item-option-shortlist" 
-              v-for="(item, index) in user.institutions" 
-              :key="index"
-            >
-              <img width="130" height="130" class="ml-6" :src="item.logo ? item.logo : '@/assets/images/BACedu_logofav2 1 (1).png'">
-              <label class="container-checkbox mt-1">{{ item.name }}
-                <input type="checkbox" v-model="shortlist" :value="item.id">
-                <span class="checkmark"></span>
-              </label>
-            </div>
-          </div>
-          <div class="my-11">
-            <v-btn text class="btn-edit px-0" height="fit-content">
-              <img class="mr-3" src="@/assets/icons/icon-edit.svg">
-              Edit Shortlist
-            </v-btn>
-          </div>
-          <v-btn
-            elevation
-            color="#5EC9AA"
-            height="58"
-            width="256"
-            class="btn-compare"
-            :disabled="shortlist.length < 2"
-            @click="clickCompare()"
-          >
-            Compare Selected
-          </v-btn>
-        </div>
-        <div v-if="user.interests" class="wrap-info mt-5 card-profile">
-          <div>
-            <b>My Interests:</b>
-          </div>
-          <div v-if="user.interests.length == 0" class="mt-4">
-            Add something you’re interested <nuxt-link to="/profile/my-interest">here.</nuxt-link>
-          </div>
-          <div v-else class="d-flex flex-wrap wrap-item-interest">
-            <div
-              v-for="(item, index) in user.interests"
-              :key="index"
-              class="chip-square"
-            >
-              {{ item.name }}
-            </div>
-          </div>
-          <div class="mt-11">
-            <nuxt-link class="btn-edit" to="/profile/my-interest">
-              <img class="mr-3" src="@/assets/icons/icon-edit.svg">
-              Edit Interests
-            </nuxt-link>
-          </div>
-        </div>
-        <div v-if="user.interests" class="wrap-info mt-5 card-profile">
-          <div>
-            <b>Recommendation</b>
-          </div>
-          <div v-if="user.interests.length == 0" class="mt-4">
-            Sorry we are unable to show you any recommendation yet.<br>
-            Please  add your interests first.
-          </div>
-          <div v-else>
-            <div class="d-flex flex-wrap wrap-item-interest mb-2">
-              <div
-                v-for="(item, index) in user.interests"
-                :key="index"
-                class="chip-square"
-              >
-                {{ item.name }}
-              </div>
-            </div>
-            <div class="d-flex flex-wrap wrap-item-recommendation">
-              <div 
-                v-for="(item, index) in recommendationList" 
-                :key="index"
-                class="item-recommendation"
-                @click="$router.push(`/institutions/${item.id}`)"
-              >
-                <img width="150" height="150" :src="item.logo ? item.logo : '@/assets/images/BACedu_logofav2 1 (1).png'">
-                <div class="name-recommendation">{{ item.name }}</div>
-                <div class="mt-2">
-                  {{ item.institution_type }}, {{ item.reputation }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProfileAlert v-if="unCompleted" />
+        <ProfileShortlist v-if="user.institutions" :user="user" />
+        <ProfileInterest v-if="user.interests" :user="user" />
+        <ProfileRecommendation v-if="user.interests" :user="user" />
+        <ProfileInstitution v-if="userType == 'staffs'" />
+        <ProfileArticle v-if="userType == 'staffs'" />
+        <!-- <ProfileMentor v-if="userType == 'staffs'" /> -->
       </div>
     </v-container>
   </div>
@@ -199,9 +102,6 @@
 export default {
   data() {
     return {
-      shortlist: [],
-      recommendationList: [],
-      editShortlist: false,
       unCompleted: false
     }
   },
@@ -230,14 +130,6 @@ export default {
         }
       }
     })
-
-    this.$axios.get("v1/institutions/recommendations?per_page=10&page=1", this.token)
-    .then((res) => {
-      if (res.status == 200) {
-        this.recommendationList = res.data.data.institutions
-      }
-    })
-    .catch(err => {})
   },
   methods: {
     clickLogout() {
@@ -245,14 +137,6 @@ export default {
       this.clearCookies("token")
       this.$router.push("/login")
     },
-    clickCompare() {
-      this.$router.push({
-        name: "comparison",
-        query: {
-          ids: this.shortlist    
-        }
-      })
-    }
   },
 }
 </script>
@@ -279,18 +163,6 @@ export default {
       .info-right {
         padding: 0 0 20px;
         width: 100%;
-
-        .notif-profile {
-          background: #FF6D3B;
-          padding: 25px 20px 37px;
-          border-radius: 20px;
-          text-align: center;
-
-          h6, 
-          u {
-            color: #fff;
-          }
-        }
 
         .btn-compare {
           font-size: 20px;
