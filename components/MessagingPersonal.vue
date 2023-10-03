@@ -369,6 +369,10 @@ export default {
         justify-content: space-between;
         transition: .3s;
 
+        .regular-subtitle {
+          min-width: fit-content;
+        }
+
         .title-date {
           border-bottom: 2px solid #E7E7E7;
         }
@@ -398,9 +402,7 @@ export default {
           }
   
           img {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
+            max-width: 100%;
             object-fit: cover;
           }
         }
@@ -440,6 +442,7 @@ export default {
       justify-content: center;
       margin-right: 30px;
       position: relative;
+      min-width: 44px;
 
       h5 {
         color: #fff;

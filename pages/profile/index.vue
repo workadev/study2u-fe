@@ -443,6 +443,7 @@ export default {
 
         .info-right {
           width: 100%;
+          margin-top: 20px;
         }
 
         .info-profile {
@@ -450,6 +451,7 @@ export default {
           padding-left: 0px;
           padding-right: 0px;
           margin-right: 0px;
+          min-width: 100%;
         }
       }
     }
