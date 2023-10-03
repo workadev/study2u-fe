@@ -480,6 +480,8 @@ export default {
     .active-personal {
       max-height: 100%;
       height: 100vh !important;
+      border: none;
+      min-height: 100vh !important;
     }
   }
 </style>
