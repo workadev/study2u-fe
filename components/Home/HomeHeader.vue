@@ -59,6 +59,7 @@
     .home-header {
       .container {
         background-image: none;
+        padding-top: 50px;
       }
     }
   }

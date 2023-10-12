@@ -301,6 +301,14 @@ export default {
     }
   }
 
+  @media screen and(max-width: 700px) {
+    .page-institution {
+      .container {
+        padding-top: 50px;
+      }
+    }
+  }
+
   @media screen and(max-width: 525px) {
     .page-institution {
       .container {

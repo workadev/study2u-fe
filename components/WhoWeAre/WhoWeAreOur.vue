@@ -11,7 +11,7 @@
           :class="{reverse: item.reverse}"
         >
           <img width="350" height="350" :src="item.img">
-          <div>
+          <div class="pb-13">
             <h5 class="bold-h5 mb-4">
               {{ item.name }}
             </h5>

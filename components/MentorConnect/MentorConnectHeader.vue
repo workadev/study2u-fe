@@ -35,6 +35,9 @@
     .mentor-connect-header {
       .container {
         background-image: none;
+        height: fit-content;
+        padding-top: 50px !important;
+        padding-bottom: 50px !important;
       }
     }
   }

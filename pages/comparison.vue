@@ -124,12 +124,13 @@ export default {
       .wrap-item-compare {
         margin: 27px -23px -23px;
         display: flex;
-        flex-wrap: wrap;
+        overflow-x: auto;
 
         .item-compare {
           display: flex;
           flex-flow: column;
           margin: 23px;
+          min-width: 200px;
 
           .wrap-info {
             margin-top: 14px;
@@ -199,6 +200,8 @@ export default {
   @media screen and(max-width: 700px) {
     .comparison {
       .container {
+        padding-top: 50px;
+        
         .wrap-item-compare {
           .item-compare {
             max-width: calc(100% / 1 - 46px);

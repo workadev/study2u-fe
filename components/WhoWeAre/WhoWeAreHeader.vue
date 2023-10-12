@@ -72,6 +72,8 @@
   @media screen and(max-width: 700px) {
     .who-we-are-header {
       .container {
+        height: 400px;
+        
         .wrap-img {
           display: none;
         }
