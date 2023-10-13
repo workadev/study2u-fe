@@ -55,7 +55,7 @@ export default {
       if (res.status == 200) {
         this.listMentor = res.data.data.staffs
         this.listMentor = this.listMentor.filter(str => {
-          return str.institutions.length != 0
+          return str.institutions.length != 0 && str.avatar
         })
       }
     })
