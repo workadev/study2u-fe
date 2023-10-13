@@ -69,8 +69,8 @@
                 </div>
               </div>
             </div>
-            <div class="regular-title mt-1">
-              {{ formatDate(item.created_at, "MMM DD") }}
+            <div v-if="item.last_message" class="regular-title mt-1">
+              {{ formatDate(item.last_message.created_at, "MMM DD") }}
             </div>
           </div>
         </div>

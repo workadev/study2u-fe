@@ -42,34 +42,38 @@
               </div>
             </div>
           </div>
-          <div class="bold-title text-center mt-5 pb-2 mb-1 title-date">
-            {{ formatDate(dataMessage.created_at, "MMM DD") }}
-          </div>
         </div>
       </div>
       <div class="wrap-overflow">
-        <div 
-          v-for="(item, index) in listMessage" :key="index"
-          class="item-message"
-          :class="{'mb-1': index == listMessage.length - 1}"
+        <div
+          v-for="(key, index) in Object.keys(listMessage)" :key="index"
         >
-          <div class="w-100 d-flex justify-space-between">
-            <div class="d-flex wrap-message">
-              <div class="wrap-avatar" :style="{background: bgUserMessaging}">
-                <img v-if="item.user.avatar" :src="item.user.avatar">
-                <h5 v-else class="bold-h5">
-                  {{ item.user.first_name.charAt(0).toUpperCase() }}
-                </h5>
-              </div>
-              <div class="text-message" :class="{'text-read': item.read}">
-                <div>
-                  {{ user.id == item.user.id ? "You" : `${item.user.first_name} ${item.user.last_name}` }}
+          <div class="bold-title text-center pt-5 pb-2 title-date">
+            {{ formatDate(key, "MMM DD") }}
+          </div>
+          <div 
+            v-for="(item, indexChild) in listMessage[key]" :key="indexChild"
+            class="item-message"
+            :class="{'mb-1': indexChild == listMessage.length - 1}"
+          >
+            <div class="w-100 d-flex justify-space-between">
+              <div class="d-flex wrap-message">
+                <div class="wrap-avatar" :style="{background: bgUserMessaging}">
+                  <img v-if="item.user.avatar" :src="item.user.avatar">
+                  <h5 v-else class="bold-h5">
+                    {{ item.user.first_name.charAt(0).toUpperCase() }}
+                  </h5>
                 </div>
-                <pre class="regular-title" v-html="item.text" />
+                <div class="text-message" :class="{'text-read': item.read}">
+                  <div>
+                    {{ user.id == item.user.id ? "You" : `${item.user.first_name} ${item.user.last_name}` }}
+                  </div>
+                  <pre class="regular-title" v-html="item.text" />
+                </div>
               </div>
-            </div>
-            <div class="regular-subtitle mt-1">
-              {{ formatDate(item.created_at, "h:mm a") }}
+              <div class="regular-subtitle mt-1">
+                {{ formatDate(item.created_at, "h:mm a") }}
+              </div>
             </div>
           </div>
         </div>
@@ -273,7 +277,10 @@ export default {
       await this.$axios.get(`${this.userType}/v1/conversations/${this.dataMessage.conversation_id}/messages`, this.token)
       .then((res) => {
         if (res.status == 200) {
-          this.listMessage = res.data.data.messages
+          res.data.data.messages.forEach(element => {
+            element.created_at = this.formatDate(element.created_at, "YYYY-MM-DD")
+          });
+          this.listMessage = this.groupBy(res.data.data.messages, 'created_at')
         }
       })
       this.getActiveHeight()
@@ -356,6 +363,15 @@ export default {
     .messaging-content-personal {
       background: #F4F4F4;
       padding: 21px 0 0;
+      
+      .title-date {
+        border-bottom: 2px solid #E7E7E7;
+        padding: 0 12px;
+        background: #F4F4F4;
+        position: sticky;
+        top: 0px;
+        z-index: 1;
+      }
 
       .typing {
         margin-top: -20px;
@@ -410,10 +426,6 @@ export default {
 
         .regular-subtitle {
           min-width: fit-content;
-        }
-
-        .title-date {
-          border-bottom: 2px solid #E7E7E7;
         }
 
         .regular-title {
