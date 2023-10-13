@@ -4,9 +4,9 @@
       <h3 class="bold-h3">EDUCATION AFFILIATES</h3>
       <div class="group-item">
         <div v-for="(item, index) in affiliateList" :key="index" class="item">
-          <img :src="item.img">
+          <img :src="item.logo">
           <div class="title-name mt-2">{{ item.name }}</div>
-          <div class="type">{{ item.type }}</div>
+          <div class="type">{{ item.institution_type | capitalized }}</div>
         </div>
       </div>
     </v-container>
@@ -17,28 +17,28 @@
 export default {
   data() {
     return {
-      affiliateList: [
-        {
-          img: require("@/assets/images/ea-inst-logo-admal 1.png"),
-          name: "ADMAL Aviation College",
-          type: "College"
-        },
-        {
-          img: require("@/assets/images/BACedu_logofav2 1.png"),
-          name: "Brickfields Asia College",
-          type: "College"
-        },
-        {
-          img: require("@/assets/images/logo apu 1.png"),
-          name: "Asia Pacific University of Technology & Innovation",
-          type: "University"
-        },
-        {
-          img: require("@/assets/images/Limkokwing_University_resized_corporate_logo 1.png"),
-          name: "LIMKOKWING University",
-          type: "University"
+      affiliateList: [],
+      paging: {
+        per_page: 4,
+        page: 1,
+        ownership: "",
+        institution_type: undefined,
+        search: undefined
+      },
+    }
+  },
+  mounted() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      this.$axios.get("v1/institutions", { params: this.paging, headers: this.token.headers })
+      .then((res) => {
+        if (res.status == 200) {
+          this.affiliateList = res.data.data.institutions
         }
-      ]
+      })
+      .catch(err => {})
     }
   },
 }
@@ -64,7 +64,7 @@ export default {
 
         img {
           height: 118px;
-          object-fit: none;
+          object-fit: contain;
         }
 
         .type {
