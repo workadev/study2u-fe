@@ -12,14 +12,24 @@
     <div v-else>
       <h6 class="bold-h6 mb-3">Manage Institution</h6>
       <h6 class="regular-h6"> 
-        <nuxt-link to="">
+        <a :href="staffUrl">
           <b><u>Go here</u></b>
-        </nuxt-link>
+        </a>
         to manage your institution
       </h6>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    staffUrl() {
+      return process.env.apiUrl+"staff"
+    }
+  }
+}
+</script>
 
 <style lang="scss">
   .profile-alert {

@@ -3,10 +3,16 @@
     <v-container>
       <h3 class="bold-h3">EDUCATION AFFILIATES</h3>
       <div class="group-item">
-        <div v-for="(item, index) in affiliateList" :key="index" class="item">
-          <img :src="item.logo">
-          <div class="title-name mt-2">{{ item.name }}</div>
-          <div class="type">{{ item.institution_type | capitalized }}</div>
+        <div 
+          v-for="(item, index) in affiliateList" 
+          :key="index" 
+          class="item"
+        >
+          <nuxt-link class="text-center text-decoration-none" :to="`/institutions/${item.id}`">
+            <img :src="item.logo">
+            <div class="title-name mt-2">{{ item.name }}</div>
+            <div class="type">{{ item.institution_type | capitalized }}</div>
+          </nuxt-link>
         </div>
       </div>
     </v-container>
