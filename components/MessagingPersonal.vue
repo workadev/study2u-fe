@@ -72,7 +72,7 @@
                 </div>
               </div>
               <div class="regular-subtitle mt-1">
-                {{ formatDate(item.created_at, "h:mm a") }}
+                {{ formatDate(item.updated_at, "h:mm a") }}
               </div>
             </div>
           </div>
@@ -522,7 +522,7 @@ export default {
         height: 100%;
 
         .wrap-overflow {
-          height: calc(100% - 341px);
+          height: calc(100% - 284px);
           max-height: none;
         }
       }
