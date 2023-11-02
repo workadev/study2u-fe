@@ -5,21 +5,40 @@
         <b>Mentors</b>
       </div>
       <div class="mt-1 d-flex flex-wrap wrap-list">
-        <div class="d-flex flex-column align-center item-mentor">
+        <div class="d-flex flex-column align-center item-mentor" v-for="(item, index) in mentors" :key="index">
           <div class="wrap-img" :style="{background: randomColor()}">
-            <img src="@/assets/images/Ellipse 10.png">
-            <!-- <h1 v-else class="bold-h1">
+            <img v-if="item.avatar" :src="item.avatar">
+            <h1 v-else class="bold-h1">
               {{ item.first_name ? item.first_name.charAt(0).toUpperCase() : "" }}
-            </h1> -->
+            </h1>
           </div>
           <h6 class="bold-h6 mt-4">
-            Wall E.
+            {{ item.first_name }} {{ item.last_name }}
           </h6>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      mentors: []
+    }
+  },
+  mounted() {
+    this.$axios.get("staffs/v1/current/mentors", this.token)
+    .then((res) => {
+      if (res.status == 200) {
+        this.mentors = res.data.data.staffs
+      }
+    })
+    .catch(err => {})
+  },
+}
+</script>
 
 <style lang="scss">
   .profile-mentor {
@@ -44,7 +63,7 @@
       justify-content: center;
 
       .bold-h1 {
-        font-size: 12em;
+        font-size: 6em;
         color: #fff;
       }
 

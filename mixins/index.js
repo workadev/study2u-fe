@@ -49,11 +49,6 @@ export default {
         "United Arab Emirates", "United Kingdom", "United States of America",
         "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam",
         "Yemen", "Zambia", "Zimbabwe"
-      ],
-      emojis: [
-        {
-          
-        }
       ]
     }
   },

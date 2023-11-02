@@ -92,7 +92,7 @@
         <ProfileRecommendation v-if="user.interests" :user="user" />
         <ProfileInstitution v-if="userType == 'staffs'" />
         <ProfileArticle v-if="userType == 'staffs'" />
-        <!-- <ProfileMentor v-if="userType == 'staffs'" /> -->
+        <ProfileMentor v-if="userType == 'staffs'" />
       </div>
     </v-container>
   </div>
