@@ -5,7 +5,10 @@
         <b>Mentors</b>
       </div>
       <div class="mt-1 d-flex flex-wrap wrap-list">
-        <div class="d-flex flex-column align-center item-mentor" v-for="(item, index) in mentors" :key="index">
+        <div v-if="mentors.length == 0" class="mt-4 mb-10">
+          You haven’t any mentor yet
+        </div>
+        <div v-else class="d-flex flex-column align-center item-mentor" v-for="(item, index) in mentors" :key="index">
           <div class="wrap-img" :style="{background: randomColor()}">
             <img v-if="item.avatar" :src="item.avatar">
             <h1 v-else class="bold-h1">

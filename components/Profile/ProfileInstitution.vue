@@ -1,7 +1,7 @@
 <template>
   <div class="profile-institution">
     <div class="wrap-info card-profile">
-      <div class="mb-4">
+      <div class="mb-8">
         <b>Institution</b>
       </div>
       <div class="mt-4 mb-10">
