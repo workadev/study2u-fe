@@ -25,7 +25,7 @@
 export default {
   computed: {
     staffUrl() {
-      return process.env.apiUrl+"staff"
+      return process.env.apiUrl+`staff/authentications?token=${this.getCookies("token")}`
     }
   }
 }
